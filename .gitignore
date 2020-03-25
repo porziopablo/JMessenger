@@ -2,3 +2,5 @@
 .data/00000000/00000000.jdb
 *.lck
 *.jdb
+*.cdi
+*.class
