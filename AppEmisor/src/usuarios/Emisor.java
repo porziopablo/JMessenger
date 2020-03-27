@@ -13,10 +13,9 @@ import java.util.TreeSet;
 
 public class Emisor extends Usuario
 {
-    private static Emisor instancia = null;
     private TreeSet<Destinatario> agenda;
     
-    private Emisor(String nombre, String ip, String puerto)
+    public Emisor(String nombre, String ip, String puerto)
     {
         super(nombre, ip, puerto);
         this.agenda = new TreeSet<Destinatario>();
@@ -51,22 +50,6 @@ public class Emisor extends Usuario
         {
             System.out.println("Error al levantar agenda: " + e.getMessage());
         }
-    }
-
-    public static Emisor getInstancia(String nombre, String ip, String puerto)
-    {
-        if (instancia == null)
-            instancia = new Emisor(nombre, ip, puerto);
-        
-        return instancia;
-    }
-    
-    public static Emisor getInstancia()
-    {
-        if (instancia == null )
-            instancia = new Emisor("","","");
-        
-        return instancia;
     }
     
     public Iterator<Destinatario> getAgendaIterator()
