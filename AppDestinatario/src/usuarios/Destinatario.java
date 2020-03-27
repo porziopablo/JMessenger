@@ -1,9 +1,8 @@
 package usuarios;
 
-public class Destinatario {
-    public Destinatario() {
-        super();
-        
+public class Destinatario extends Usuario{
     
+    public Destinatario(String nombre, String ip, String puerto) {
+        super(nombre, ip, puerto);
     }
 }
