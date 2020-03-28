@@ -2,6 +2,7 @@ package vista;
 
 import java.awt.event.ActionListener;
 
+import java.util.Iterator;
 import java.util.List;
 
 import usuarios.Destinatario;
@@ -19,4 +20,5 @@ public interface IVista
     public String getPuerto();
     public void addActionListener(ActionListener listener);
     public void informarEmisor(String mensaje);
+    public void actualizarAgenda(Iterator<Destinatario> destinatarios);
 }

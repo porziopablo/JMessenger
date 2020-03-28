@@ -1,26 +1,15 @@
 package main;
 
-import emisora.Emisora;
+import controlador.Controlador;
 
-import java.util.Iterator;
-
-import mensaje.Mensaje;
-
-import usuarios.Destinatario;
-import usuarios.Emisor;
+import vista.VistaEmisor;
 
 public class Main
 {
     public static void main(String[] args)
     {   
-        Emisor emisor = new Emisor("Pablo Porzio", "192.168.0.9", "2380");
-        String asunto = "Prueba Mensaje\nIntento 1";
-        String cuerpo = "Hola\ntodo bien?\nchau";
-        
-        Mensaje mensaje = new Mensaje(asunto, cuerpo, Mensaje.MENSAJE_ALERTA, null);
-        
-        Emisora emisora = new Emisora(emisor);
-        
-        System.out.println(emisora.mensajeAString(mensaje));
+        VistaEmisor ventana = new VistaEmisor();
+        Controlador controlador = new Controlador(ventana);
+        ventana.setVisible(true);
     }
 }

@@ -61,10 +61,14 @@ public class Controlador implements Observer, ActionListener
             this.emisora = new Emisora(new Emisor(nombre, ip, puerto));
             this.emisora.addObserver(this);
             this.emisora.recibirConfirmacion();
+            
+            this.vista.actualizarAgenda(this.emisora.getEmisor().getAgendaIterator());
+            
+            System.out.println("INICIO SESION");
         }
         catch (UnknownHostException e)
         {
-            this.vista.informarEmisor("NO SE PUDO OBTENER IP, REVISAR CONEXION Y REINICIAR: " + e.getMessage());       
+            this.vista.informarEmisor("NO SE PUDO OBTENER IP, REVISAR CONEXION Y REINICIAR.");       
         }
     }
 

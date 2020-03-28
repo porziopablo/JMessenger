@@ -12,4 +12,11 @@ public class Destinatario extends Usuario implements Comparable
     {
         return this.getNombre().compareTo(((Destinatario)otro).getNombre());
     }
+
+
+    @Override
+    public String toString()
+    {
+        return this.getNombre();
+    }
 }

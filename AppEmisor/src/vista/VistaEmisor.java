@@ -1,17 +1,42 @@
 
 package vista;
 
-/**
- *
- * @author Pablo Porzio
- */
-public class VistaEmisor extends javax.swing.JFrame
-{
+import java.awt.event.ActionListener;
 
-    /** Creates new form VistaEmisor */
+import java.awt.event.WindowAdapter;
+
+import java.awt.event.WindowEvent;
+
+import java.util.Iterator;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+
+import mensaje.Mensaje;
+
+import usuarios.Destinatario;
+
+public class VistaEmisor extends javax.swing.JFrame implements IVista
+{
+    private DefaultListModel<Destinatario> modeloDestinatarios; 
+
     public VistaEmisor()
     {
+        this.modeloDestinatarios = new DefaultListModel<Destinatario>();
+        
         initComponents();
+        
+        this.BotonEnviar.setActionCommand(IVista.COMANDO_ENVIAR);
+        this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        
+        this.DialogIniciarSesion.addWindowListener(
+            new WindowAdapter() 
+            { 
+                @Override public void windowClosing(WindowEvent e) 
+                { 
+                    System.exit(0);
+                }
+            });
     }
 
     /** This method is called from within the constructor to
@@ -71,7 +96,7 @@ public class VistaEmisor extends javax.swing.JFrame
         PanelTipoMsj = new javax.swing.JPanel();
         JRBSimple = new javax.swing.JRadioButton();
         JRBAviso = new javax.swing.JRadioButton();
-        JRRecepcion = new javax.swing.JRadioButton();
+        JRBRecepcion = new javax.swing.JRadioButton();
         PanelCentralInferiorDer = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
@@ -89,6 +114,7 @@ public class VistaEmisor extends javax.swing.JFrame
         jScrollPane3 = new javax.swing.JScrollPane();
         JECuerpo = new javax.swing.JEditorPane();
 
+        DialogIniciarSesion.setAlwaysOnTop(true);
         DialogIniciarSesion.setModal(true);
 
         PanelDialogFondo.setBackground(new java.awt.Color(51, 204, 255));
@@ -180,6 +206,13 @@ public class VistaEmisor extends javax.swing.JFrame
         DialogTFNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         DialogTFNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         DialogTFNombre.setToolTipText("");
+        DialogTFNombre.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                DialogTFNombreActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelDialogTFNombreLayout = new javax.swing.GroupLayout(PanelDialogTFNombre);
         PanelDialogTFNombre.setLayout(PanelDialogTFNombreLayout);
@@ -276,6 +309,13 @@ public class VistaEmisor extends javax.swing.JFrame
         DialogBotonEntrar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         DialogBotonEntrar.setText("Entrar");
         DialogBotonEntrar.setBorderPainted(false);
+        DialogBotonEntrar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                DialogBotonEntrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelDialogEntrarLayout = new javax.swing.GroupLayout(PanelDialogEntrar);
         PanelDialogEntrar.setLayout(PanelDialogEntrarLayout);
@@ -290,7 +330,7 @@ public class VistaEmisor extends javax.swing.JFrame
             PanelDialogEntrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDialogEntrarLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -335,12 +375,7 @@ public class VistaEmisor extends javax.swing.JFrame
         PanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
         jListDestinatarios.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
-        jListDestinatarios.setModel(new javax.swing.AbstractListModel<String>()
-        {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public String getElementAt(int i) { return strings[i]; }
-        });
+        jListDestinatarios.setModel(this.modeloDestinatarios);
         jListDestinatarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jListDestinatarios.setSelectionBackground(new java.awt.Color(204, 204, 204));
         jScrollPane1.setViewportView(jListDestinatarios);
@@ -542,11 +577,11 @@ public class VistaEmisor extends javax.swing.JFrame
         });
         PanelTipoMsj.add(JRBAviso);
 
-        JRRecepcion.setBackground(new java.awt.Color(51, 204, 255));
-        BGTipoMsj.add(JRRecepcion);
-        JRRecepcion.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        JRRecepcion.setText("Con Recepción");
-        PanelTipoMsj.add(JRRecepcion);
+        JRBRecepcion.setBackground(new java.awt.Color(51, 204, 255));
+        BGTipoMsj.add(JRBRecepcion);
+        JRBRecepcion.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        JRBRecepcion.setText("Con Recepción");
+        PanelTipoMsj.add(JRBRecepcion);
 
         PanelCentralInferiorIzq.add(PanelTipoMsj, java.awt.BorderLayout.CENTER);
 
@@ -583,6 +618,13 @@ public class VistaEmisor extends javax.swing.JFrame
         BotonCancelar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         BotonCancelar.setText("Cancelar");
         BotonCancelar.setBorderPainted(false);
+        BotonCancelar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                BotonCancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelEnviarLayout = new javax.swing.GroupLayout(PanelEnviar);
         PanelEnviar.setLayout(PanelEnviarLayout);
@@ -744,84 +786,23 @@ public class VistaEmisor extends javax.swing.JFrame
         // TODO add your handling code here:
     }//GEN-LAST:event_JTFAsuntoActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[])
-    {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try
-        {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing
-                                                                   .UIManager
-                                                                   .getInstalledLookAndFeels())
-            {
-                if ("Nimbus".equals(info.getName()))
-                {
-                    javax.swing
-                         .UIManager
-                         .setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            java.util
-                .logging
-                .Logger
-                .getLogger(VistaEmisor.class.getName())
-                .log(java.util
-                         .logging
-                         .Level
-                         .SEVERE, null, ex);
-        } catch (InstantiationException ex)
-        {
-            java.util
-                .logging
-                .Logger
-                .getLogger(VistaEmisor.class.getName())
-                .log(java.util
-                         .logging
-                         .Level
-                         .SEVERE, null, ex);
-        } catch (IllegalAccessException ex)
-        {
-            java.util
-                .logging
-                .Logger
-                .getLogger(VistaEmisor.class.getName())
-                .log(java.util
-                         .logging
-                         .Level
-                         .SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex)
-        {
-            java.util
-                .logging
-                .Logger
-                .getLogger(VistaEmisor.class.getName())
-                .log(java.util
-                         .logging
-                         .Level
-                         .SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void BotonCancelarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_BotonCancelarActionPerformed
+    {//GEN-HEADEREND:event_BotonCancelarActionPerformed
+        this.JTFAsunto.setText("");
+        this.JECuerpo.setText("");
+        this.jListDestinatarios.clearSelection();
+        this.JRBSimple.setSelected(true);
+    }//GEN-LAST:event_BotonCancelarActionPerformed
 
-        /* Create and display the form */
-        java.awt
-            .EventQueue
-            .invokeLater(new Runnable()
-            {
-                public void run()
-                {
-                    new VistaEmisor().setVisible(true);
-                }
-            });
-    }
+    private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DialogBotonEntrarActionPerformed
+    {//GEN-HEADEREND:event_DialogBotonEntrarActionPerformed
+        this.DialogIniciarSesion.dispose();
+    }//GEN-LAST:event_DialogBotonEntrarActionPerformed
+
+    private void DialogTFNombreActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DialogTFNombreActionPerformed
+    {//GEN-HEADEREND:event_DialogTFNombreActionPerformed
+
+    }//GEN-LAST:event_DialogTFNombreActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BGTipoMsj;
@@ -833,8 +814,8 @@ public class VistaEmisor extends javax.swing.JFrame
     private javax.swing.JTextField DialogTFPuerto;
     private javax.swing.JEditorPane JECuerpo;
     private javax.swing.JRadioButton JRBAviso;
+    private javax.swing.JRadioButton JRBRecepcion;
     private javax.swing.JRadioButton JRBSimple;
-    private javax.swing.JRadioButton JRRecepcion;
     private javax.swing.JTextArea JTANotificaciones;
     private javax.swing.JTextField JTFAsunto;
     private javax.swing.JLabel LabelAsunto;
@@ -871,7 +852,7 @@ public class VistaEmisor extends javax.swing.JFrame
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelSuperior;
     private javax.swing.JPanel PanelTipoMsj;
-    private javax.swing.JList<String> jListDestinatarios;
+    private javax.swing.JList<Destinatario> jListDestinatarios;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
@@ -891,4 +872,81 @@ public class VistaEmisor extends javax.swing.JFrame
     private javax.swing.JScrollPane jScrollPane3;
     // End of variables declaration//GEN-END:variables
 
+    @Override
+    public List<Destinatario> getDestinatarios()
+    {
+        return this.jListDestinatarios.getSelectedValuesList();
+    }
+
+    @Override
+    public String getAsunto()
+    {
+        return this.JTFAsunto.getText();
+    }
+
+    @Override
+    public String getCuerpo()
+    {
+        return this.JECuerpo.getText();
+    }
+
+    @Override
+    public int getTipoMensaje()
+    {
+        int tipo = 0;
+        
+        if (this.JRBSimple.isSelected())
+            tipo = Mensaje.MENSAJE_SIMPLE;
+        else if (this.JRBAviso.isSelected())
+            tipo = Mensaje.MENSAJE_ALERTA;
+        else if (this.JRBRecepcion.isSelected())
+            tipo = Mensaje.MENSAJE_RECEPCION;
+        
+        return tipo;
+    }
+
+    @Override
+    public String getNombre()
+    {
+        return this.DialogTFNombre.getText();
+    }
+
+    @Override
+    public String getPuerto()
+    {
+        return this.DialogTFPuerto.getText();
+    }
+
+    @Override
+    public void addActionListener(ActionListener listener)
+    {
+        this.BotonCancelar.addActionListener(listener);
+        this.BotonEnviar.addActionListener(listener);
+        this.DialogBotonEntrar.addActionListener(listener);
+    }
+
+    @Override
+    public void informarEmisor(String mensaje)
+    {
+        this.JTANotificaciones.append(mensaje + "\n");
+        this.repaint();
+    }
+
+    @Override
+    public void actualizarAgenda(Iterator<Destinatario> destinatarios)
+    {
+        this.modeloDestinatarios.clear();
+        while (destinatarios.hasNext())
+            this.modeloDestinatarios.addElement(destinatarios.next());
+        this.repaint();
+    }
+
+    @Override
+    public void setVisible(boolean b)
+    {
+        super.setVisible(b);
+        
+        this.DialogIniciarSesion.setSize(614, 340);
+        this.DialogIniciarSesion.setVisible(b);
+    }
 }
