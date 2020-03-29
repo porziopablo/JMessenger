@@ -1,16 +1,28 @@
 
 package vista;
 
+import java.awt.TextField;
 import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
 
 import java.awt.event.WindowEvent;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+
+import javax.swing.JTextField;
+import javax.swing.event.ChangeListener;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.text.JTextComponent;
 
 import mensaje.Mensaje;
 
@@ -18,16 +30,29 @@ import usuarios.Destinatario;
 
 public class VistaEmisor extends javax.swing.JFrame implements IVista
 {
-    private DefaultListModel<Destinatario> modeloDestinatarios; 
-
+    private DefaultListModel<Destinatario> modeloDestinatarios;
+    private ArrayList<JTextComponent> camposDialog; 
+    private ArrayList<JTextComponent> camposMensaje;
+    
     public VistaEmisor()
     {
         this.modeloDestinatarios = new DefaultListModel<Destinatario>();
+        this.camposDialog = new ArrayList<JTextComponent>();
+        this.camposMensaje = new ArrayList<JTextComponent>();
         
         initComponents();
         
         this.BotonEnviar.setActionCommand(IVista.COMANDO_ENVIAR);
+        this.BotonEnviar.setEnabled(false);
+        
         this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        this.DialogBotonEntrar.setEnabled(false);
+        
+        camposDialog.add(this.DialogTFNombre);
+        camposDialog.add(this.DialogTFPuerto);
+        
+        camposMensaje.add(JTFAsunto);
+        camposMensaje.add(JECuerpo);
         
         this.DialogIniciarSesion.addWindowListener(
             new WindowAdapter() 
@@ -37,6 +62,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
                     System.exit(0);
                 }
             });
+        
+        this.agregarVerificadorDialog();
+        this.agregarVerificadorNuevoMensaje();
     }
 
     /** This method is called from within the constructor to
@@ -242,16 +270,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         LabelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
         LabelDialogPuerto.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
         LabelDialogPuerto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelDialogPuerto.setText("Puerto");
+        LabelDialogPuerto.setText("Puerto (0-65535)");
 
         javax.swing.GroupLayout PanelDialogPuertoLayout = new javax.swing.GroupLayout(PanelDialogPuerto);
         PanelDialogPuerto.setLayout(PanelDialogPuertoLayout);
         PanelDialogPuertoLayout.setHorizontalGroup(
             PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelDialogPuertoLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(64, Short.MAX_VALUE))
+            .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
         );
         PanelDialogPuertoLayout.setVerticalGroup(
             PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -383,7 +408,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         jPanel4.setBackground(new java.awt.Color(51, 204, 255));
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         LabelDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
         LabelDestinatarios.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 30)); // NOI18N
@@ -651,6 +676,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         BotonEnviar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         BotonEnviar.setText("Enviar");
         BotonEnviar.setBorderPainted(false);
+        BotonEnviar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                BotonEnviarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout PanelCancelarLayout = new javax.swing.GroupLayout(PanelCancelar);
         PanelCancelar.setLayout(PanelCancelarLayout);
@@ -788,10 +820,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
     private void BotonCancelarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_BotonCancelarActionPerformed
     {//GEN-HEADEREND:event_BotonCancelarActionPerformed
-        this.JTFAsunto.setText("");
-        this.JECuerpo.setText("");
-        this.jListDestinatarios.clearSelection();
-        this.JRBSimple.setSelected(true);
+        this.limpiarVista();
     }//GEN-LAST:event_BotonCancelarActionPerformed
 
     private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DialogBotonEntrarActionPerformed
@@ -803,6 +832,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     {//GEN-HEADEREND:event_DialogTFNombreActionPerformed
 
     }//GEN-LAST:event_DialogTFNombreActionPerformed
+
+    private void BotonEnviarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_BotonEnviarActionPerformed
+    {//GEN-HEADEREND:event_BotonEnviarActionPerformed
+        this.limpiarVista();
+    }//GEN-LAST:event_BotonEnviarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BGTipoMsj;
@@ -928,7 +962,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     @Override
     public void informarEmisor(String mensaje)
     {
-        this.JTANotificaciones.append(mensaje + "\n");
+        this.JTANotificaciones.append("- " + mensaje + "\n");
         this.repaint();
     }
 
@@ -948,5 +982,88 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         
         this.DialogIniciarSesion.setSize(614, 340);
         this.DialogIniciarSesion.setVisible(b);
+    }
+    
+    private void limpiarVista()
+    {
+        this.JTFAsunto.setText("");
+        this.JECuerpo.setText("");
+        this.jListDestinatarios.clearSelection();
+        this.JRBSimple.setSelected(true);
+    }
+    
+    private void agregarVerificadorDialog()
+    {
+        DocumentListener listenerDialog = new DocumentListener() 
+            {
+                @Override
+                public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
+        
+                @Override
+                public void changedUpdate(DocumentEvent e) 
+                {
+                    boolean habilitar = true;
+                    Iterator<JTextComponent> iter = camposDialog.iterator();
+                    
+                    while (iter.hasNext() && habilitar)                              /* controla campos no vacios */
+                        habilitar = !iter.next().getText().matches("^( |    |\n|\r)*$");
+                    
+                    if (habilitar && DialogTFPuerto.getText().matches("^[0-9]+$"))   /* controla 0 <= puerto <= 65535 */
+                        habilitar = Integer.parseInt(DialogTFPuerto.getText()) <= 65535;
+                    else
+                        habilitar = false;
+
+                    DialogBotonEntrar.setEnabled(habilitar);
+                }
+            };
+        
+        Iterator<JTextComponent> iter = this.camposDialog.iterator();
+        
+        while (iter.hasNext())
+            iter.next().getDocument().addDocumentListener(listenerDialog);
+    }
+    
+    private void agregarVerificadorNuevoMensaje()
+    {
+        ListSelectionListener listListener = new ListSelectionListener()
+            {
+                @Override
+                public void valueChanged(ListSelectionEvent e){ verificarNuevoMensaje(); }
+            };
+        
+        DocumentListener listener = new DocumentListener() 
+            {
+                @Override
+                public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
+        
+                @Override
+                public void changedUpdate(DocumentEvent e) { verificarNuevoMensaje(); }
+            };
+        
+        Iterator<JTextComponent> iter = this.camposMensaje.iterator();
+        
+        while (iter.hasNext())
+            iter.next().getDocument().addDocumentListener(listener);
+        
+        jListDestinatarios.addListSelectionListener(listListener);
+    }
+    
+    private void verificarNuevoMensaje()
+    {
+        boolean habilitar = true;
+        Iterator<JTextComponent> iter = camposMensaje.iterator();
+        
+        while (iter.hasNext() && habilitar)                    /* controla campos no vacios */
+            habilitar = !iter.next().getText().matches("^( |	|\n|\r)*$");
+
+        habilitar &=  !jListDestinatarios.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
+
+        BotonEnviar.setEnabled(habilitar);
     }
 }

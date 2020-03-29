@@ -32,7 +32,7 @@ public class Emisor extends Usuario
         BufferedReader lector;
         String ruta = System.getProperty("user.dir") + File.separator + NOMBRE_ARCHIVO, linea;
         String[] datos;
-        
+
         try
         {
             lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
@@ -40,8 +40,8 @@ public class Emisor extends Usuario
             while (linea != null)
             {
                 datos = linea.split(SEPARADOR);
-                if (datos.length == CANT_DATOS)
-                    this.agenda.add(new Destinatario(datos[0], datos[1], datos[2]));
+                if ((datos.length == CANT_DATOS))
+                    this.agenda.add(new Destinatario(datos[0], datos[1], datos[2]));   
                 linea = lector.readLine();
             }
             lector.close();

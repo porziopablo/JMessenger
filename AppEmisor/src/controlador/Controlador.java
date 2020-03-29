@@ -5,10 +5,17 @@ import emisora.Emisora;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.io.BufferedReader;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import java.net.InetAddress;
 
+import java.net.URL;
 import java.net.UnknownHostException;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -54,7 +61,12 @@ public class Controlador implements Observer, ActionListener
     {
         try
         {
-            String ip = InetAddress.getLocalHost().getHostAddress();
+//            URL averiguarIP = new URL("http://checkip.amazonaws.com");
+//            BufferedReader lector = new BufferedReader(new InputStreamReader(averiguarIP.openStream()));
+//            String ip = lector.readLine(); /* IP publica */
+//            lector.close();
+            
+            String ip = InetAddress.getLocalHost().getHostAddress(); /* IP local */
             String nombre = this.vista.getNombre();
             String puerto = this.vista.getPuerto();
             
@@ -63,10 +75,8 @@ public class Controlador implements Observer, ActionListener
             this.emisora.recibirConfirmacion();
             
             this.vista.actualizarAgenda(this.emisora.getEmisor().getAgendaIterator());
-            
-            System.out.println("INICIO SESION");
         }
-        catch (UnknownHostException e)
+        catch (IOException e)
         {
             this.vista.informarEmisor("NO SE PUDO OBTENER IP, REVISAR CONEXION Y REINICIAR.");       
         }
@@ -78,7 +88,15 @@ public class Controlador implements Observer, ActionListener
         String cuerpo = this.vista.getCuerpo();
         int tipo = this.vista.getTipoMensaje();
         List<Destinatario> destinatarios = this.vista.getDestinatarios();
+        Iterator<Destinatario> iter;
+        String nombres = "";
         
         this.emisora.emitirMensaje(new Mensaje(asunto, cuerpo, tipo, destinatarios));
+        
+        iter = destinatarios.iterator();
+        nombres = iter.next().getNombre();
+        while (iter.hasNext())
+            nombres = nombres + ", " + iter.next().getNombre();
+        this.vista.informarEmisor("Enviando mensaje a " + nombres + ".");
     }
 }
