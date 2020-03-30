@@ -3,7 +3,6 @@ package mensaje;
 import java.util.List;
 
 import usuarios.Destinatario;
-import usuarios.Emisor;
 
 public class Mensaje
 {

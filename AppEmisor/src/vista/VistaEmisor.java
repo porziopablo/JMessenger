@@ -1,7 +1,6 @@
 
 package vista;
 
-import java.awt.TextField;
 import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
@@ -13,9 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
-
-import javax.swing.JTextField;
-import javax.swing.event.ChangeListener;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
