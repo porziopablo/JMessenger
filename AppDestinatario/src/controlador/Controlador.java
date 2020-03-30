@@ -41,7 +41,6 @@ public class Controlador implements ActionListener, Observer{
             this.receptora.recibirMensaje();
             
         } catch (UnknownHostException e) {
-            //this.vista.informarDestinatario("No se pudo obtener IP, revisar conexion y reiniciar");
             System.out.println("Error en la obtencion de la IP");
         }
 

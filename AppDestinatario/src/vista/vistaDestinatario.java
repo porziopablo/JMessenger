@@ -43,6 +43,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         
         initComponents();
         
+        this.mensajesRecibidos.setLineWrap(true);
         this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
         this.DialogBotonEntrar.setEnabled(false);
         
@@ -102,7 +103,6 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
         DialogIniciarSesion.setAlwaysOnTop(true);
         DialogIniciarSesion.setModal(true);
-        DialogIniciarSesion.setPreferredSize(new java.awt.Dimension(614, 260));
 
         PanelDialogFondo.setBackground(new java.awt.Color(51, 204, 255));
         PanelDialogFondo.setMinimumSize(new java.awt.Dimension(0, 0));
@@ -321,7 +321,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
         DialogBotonAlerta.setBackground(new java.awt.Color(0, 153, 204));
         DialogBotonAlerta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        DialogBotonAlerta.setText("SONIDO");
+        DialogBotonAlerta.setText("SILENCIAR");
         DialogBotonAlerta.setBorderPainted(false);
         DialogBotonAlerta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -391,7 +391,9 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         ScrollMensajes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 204, 255), 20));
         ScrollMensajes.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
+        mensajesRecibidos.setEditable(false);
         mensajesRecibidos.setColumns(20);
+        mensajesRecibidos.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         mensajesRecibidos.setRows(5);
         ScrollMensajes.setViewportView(mensajesRecibidos);
 
@@ -585,9 +587,9 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         builder += "De: " + recibido.getNombreEmisor() + "\n";
         builder += "Asunto: " + recibido.getAsunto() + "\n";
         builder += recibido.getCuerpo() + "\n";
+        builder += "\n";
        
-        if(recibido.getTipo() == 1){ //mensaje de alerta
-            
+        if(recibido.getTipo() == Mensaje.MENSAJE_ALERTA){    
             this.sonido.loop();
         }
             this.mensajesRecibidos.append(builder);

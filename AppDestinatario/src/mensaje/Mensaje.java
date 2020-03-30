@@ -2,9 +2,9 @@ package mensaje;
 
 public class Mensaje {
     
-    final static int MENSAJE_SIMPLE = 0;
-    final static int MENSAJE_ALERTA = 1;
-    final static int MENSAJE_RECEPCION = 2;
+    public final static int MENSAJE_SIMPLE = 0;
+    public final static int MENSAJE_ALERTA = 1;
+    public final static int MENSAJE_RECEPCION = 2;
     
     private String asunto, cuerpo, nombreEmisor;
     private int tipo;

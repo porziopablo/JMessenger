@@ -43,17 +43,20 @@ public class Receptora extends Observable{
                         aux = in.readLine();
                         while (aux != null) {
                             builder.append(aux);
+                            builder.append("\n");
                             aux = in.readLine();
                         }
+                        if( builder.length() > 0 )
+                            builder.setLength(builder.length()-1);
                         socket.close();
                         
                         aux = builder.toString();
                         String text[];
                         text = aux.split(SEPARADOR);
-                        
+                        System.out.println(text[3]);
                         mensaje = new Mensaje(text[0], text[1], text[2], Integer.parseInt(text[3]));
                         
-                        if(mensaje.getTipo() == 2){
+                        if(mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION){
                             enviarConfirmacion(text[4], text[5]);
                         }
                         setChanged();
