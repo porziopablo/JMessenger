@@ -24,7 +24,7 @@ public class Receptora extends Observable{
         this.dest = destinatario;
     }
     
-    private void recibirMensaje(){
+    public void recibirMensaje(){
         
         new Thread(){
             public void run(){
@@ -50,10 +50,11 @@ public class Receptora extends Observable{
                         aux = builder.toString();
                         String text[];
                         text = aux.split(SEPARADOR);
-                        mensaje = new Mensaje(text[1], text[2], Integer.parseInt(text[3]), text[0]);
+                        
+                        mensaje = new Mensaje(text[0], text[1], text[2], Integer.parseInt(text[3]));
                         
                         if(mensaje.getTipo() == 2){
-                            enviarConfirmacion(dest.getIp(), dest.getPuerto());
+                            enviarConfirmacion(text[4], text[5]);
                         }
                         setChanged();
                         notifyObservers(mensaje); 

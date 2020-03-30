@@ -1,4 +1,3 @@
-
 package vista;
 
 import java.awt.event.ActionListener;
@@ -18,8 +17,10 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
@@ -33,19 +34,21 @@ import mensaje.Mensaje;
 public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
     private ArrayList<JTextComponent> camposDialog; 
+    private Sonido sonido;
     
     public vistaDestinatario() {
         
         this.camposDialog = new ArrayList<JTextComponent>();
+        this.sonido = new Sonido(System.getProperty("user.dir") + File.separator + "alerta.wav");
         
         initComponents();
         
         this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
         this.DialogBotonEntrar.setEnabled(false);
-        this.botonAlerta.setEnabled(false);
         
         camposDialog.add(this.DialogTFNombre);
         camposDialog.add(this.DialogTFPuerto);
+        
         this.DialogIniciarSesion.addWindowListener(
             new WindowAdapter() 
             { 
@@ -90,7 +93,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         PanelArriba = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        botonAlerta = new javax.swing.JButton();
+        DialogBotonAlerta = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         PanelMensajes = new javax.swing.JPanel();
@@ -109,7 +112,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         titulo.setBackground(new java.awt.Color(51, 204, 255));
         titulo.setMinimumSize(new java.awt.Dimension(0, 0));
         titulo.setPreferredSize(new java.awt.Dimension(614, 65));
-        titulo.setLayout(new java.awt.GridLayout());
+        titulo.setLayout(new java.awt.GridLayout(1, 0));
 
         nombreApp.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
         nombreApp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -316,13 +319,13 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
         jPanel3.setBackground(new java.awt.Color(51, 204, 255));
 
-        botonAlerta.setBackground(new java.awt.Color(0, 153, 204));
-        botonAlerta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        botonAlerta.setText("SONIDO");
-        botonAlerta.setBorderPainted(false);
-        botonAlerta.addActionListener(new java.awt.event.ActionListener() {
+        DialogBotonAlerta.setBackground(new java.awt.Color(0, 153, 204));
+        DialogBotonAlerta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        DialogBotonAlerta.setText("SONIDO");
+        DialogBotonAlerta.setBorderPainted(false);
+        DialogBotonAlerta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botonAlertaActionPerformed(evt);
+                DialogBotonAlertaActionPerformed(evt);
             }
         });
 
@@ -332,14 +335,14 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(botonAlerta)
+                .addComponent(DialogBotonAlerta)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(botonAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(DialogBotonAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -410,9 +413,9 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         pack();
     }//GEN-END:initComponents
 
-    private void botonAlertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAlertaActionPerformed
-              
-    }//GEN-LAST:event_botonAlertaActionPerformed
+    private void DialogBotonAlertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DialogBotonAlertaActionPerformed
+        this.sonido.stop();              
+    }//GEN-LAST:event_DialogBotonAlertaActionPerformed
 
     private void DialogTFNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DialogTFNombreActionPerformed
 
@@ -493,6 +496,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BGTipoMsj;
+    private javax.swing.JButton DialogBotonAlerta;
     private javax.swing.JButton DialogBotonEntrar;
     private javax.swing.JDialog DialogIniciarSesion;
     private javax.swing.JTextField DialogTFNombre;
@@ -509,7 +513,6 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelMensajes;
     private javax.swing.JScrollPane ScrollMensajes;
-    private javax.swing.JButton botonAlerta;
     private javax.swing.JPanel entrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
@@ -570,6 +573,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
     @Override
     public void addActionListener(ActionListener listener) {
         this.DialogBotonEntrar.addActionListener(listener);
+        this.DialogBotonAlerta.addActionListener(listener);
     }
 
     @Override
@@ -583,27 +587,12 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         builder += recibido.getCuerpo() + "\n";
        
         if(recibido.getTipo() == 1){ //mensaje de alerta
-     /*       this.botonAlerta.setEnabled(true);
-            while (this.botonAlerta.isEnabled()){
-                try{
-                    File sonidoAlerta = new File("musicLocation"); 
-                    if(sonidoAlerta.exists()){
-                        AudioInputStream audioInput = AudioSystem.getAudioInputStream(sonidoAlerta);
-                    
-
-                    }
-                }
-                catch (IOException | UnsupportedAudioFileException e) {
-                
-                }
-                
-            }
- */
+            
+            this.sonido.loop();
         }
-
-        this.mensajesRecibidos.append(builder);
-        this.repaint();
-    }
+            this.mensajesRecibidos.append(builder);
+            this.repaint();
+        }
 
     @Override
     public String getNombre() {

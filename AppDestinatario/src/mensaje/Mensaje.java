@@ -9,7 +9,7 @@ public class Mensaje {
     private String asunto, cuerpo, nombreEmisor;
     private int tipo;
     
-    public Mensaje(String asunto, String cuerpo, int tipo, String nombreEmisor) {
+    public Mensaje(String nombreEmisor, String asunto, String cuerpo, int tipo) {
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         this.tipo = tipo;
