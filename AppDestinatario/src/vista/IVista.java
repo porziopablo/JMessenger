@@ -12,5 +12,4 @@ public interface IVista {
     public void agregarNuevoMensaje(Mensaje mensaje);
     public String getNombre();
     public String getPuerto();
-    public void informarDestinatario(String error);
 }

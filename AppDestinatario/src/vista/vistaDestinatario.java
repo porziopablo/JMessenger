@@ -1,15 +1,61 @@
 
 package vista;
 
+import java.awt.event.ActionListener;
+
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import java.io.File;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+
+import java.util.Iterator;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.JTextComponent;
+
+import mensaje.Mensaje;
+
 /**
  *
- * @author Daniel
+ * @author Mariquena Gros
  */
-public class vistaDestinatario extends javax.swing.JFrame {
+public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
-    /** Creates new form vistaDestinatario */
+    private ArrayList<JTextComponent> camposDialog; 
+    
     public vistaDestinatario() {
+        
+        this.camposDialog = new ArrayList<JTextComponent>();
+        
         initComponents();
+        
+        this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        this.DialogBotonEntrar.setEnabled(false);
+        this.botonAlerta.setEnabled(false);
+        
+        camposDialog.add(this.DialogTFNombre);
+        camposDialog.add(this.DialogTFPuerto);
+        this.DialogIniciarSesion.addWindowListener(
+            new WindowAdapter() 
+            { 
+                @Override public void windowClosing(WindowEvent e) 
+                { 
+                    System.exit(0);
+                }
+            });
+        this.agregarVerificadorDialog();
+        
     }
 
     /** This method is called from within the constructor to
@@ -20,16 +66,239 @@ public class vistaDestinatario extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {//GEN-BEGIN:initComponents
 
+        BGTipoMsj = new javax.swing.ButtonGroup();
+        DialogIniciarSesion = new javax.swing.JDialog();
+        PanelDialogFondo = new javax.swing.JPanel();
+        titulo = new javax.swing.JPanel();
+        nombreApp = new javax.swing.JLabel();
+        nombre = new javax.swing.JPanel();
+        PanelDialogNombre = new javax.swing.JPanel();
+        LabelDialogNombre = new javax.swing.JLabel();
+        PanelDialogTFNombre = new javax.swing.JPanel();
+        DialogTFNombre = new javax.swing.JTextField();
+        puerto = new javax.swing.JPanel();
+        PanelDialogPuerto = new javax.swing.JPanel();
+        LabelDialogPuerto = new javax.swing.JLabel();
+        PanelDialogTFPuerto = new javax.swing.JPanel();
+        DialogTFPuerto = new javax.swing.JTextField();
+        entrar = new javax.swing.JPanel();
+        jPanel24 = new javax.swing.JPanel();
+        PanelDialogEntrar = new javax.swing.JPanel();
+        DialogBotonEntrar = new javax.swing.JButton();
+        jPanel21 = new javax.swing.JPanel();
         PanelFondo = new javax.swing.JPanel();
         PanelArriba = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        botonAlerta = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         PanelMensajes = new javax.swing.JPanel();
         ScrollMensajes = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        mensajesRecibidos = new javax.swing.JTextArea();
+
+        DialogIniciarSesion.setAlwaysOnTop(true);
+        DialogIniciarSesion.setModal(true);
+        DialogIniciarSesion.setPreferredSize(new java.awt.Dimension(614, 260));
+
+        PanelDialogFondo.setBackground(new java.awt.Color(51, 204, 255));
+        PanelDialogFondo.setMinimumSize(new java.awt.Dimension(0, 0));
+        PanelDialogFondo.setPreferredSize(new java.awt.Dimension(614, 260));
+        PanelDialogFondo.setLayout(new java.awt.GridLayout(4, 0));
+
+        titulo.setBackground(new java.awt.Color(51, 204, 255));
+        titulo.setMinimumSize(new java.awt.Dimension(0, 0));
+        titulo.setPreferredSize(new java.awt.Dimension(614, 65));
+        titulo.setLayout(new java.awt.GridLayout());
+
+        nombreApp.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
+        nombreApp.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nombreApp.setText("JMessenger");
+        titulo.add(nombreApp);
+
+        PanelDialogFondo.add(titulo);
+
+        nombre.setBackground(new java.awt.Color(51, 204, 255));
+        nombre.setLayout(new java.awt.GridLayout(1, 2));
+
+        PanelDialogNombre.setBackground(new java.awt.Color(51, 204, 255));
+
+        LabelDialogNombre.setBackground(new java.awt.Color(51, 204, 255));
+        LabelDialogNombre.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
+        LabelDialogNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LabelDialogNombre.setText("Nombre");
+
+        javax.swing.GroupLayout PanelDialogNombreLayout = new javax.swing.GroupLayout(PanelDialogNombre);
+        PanelDialogNombre.setLayout(PanelDialogNombreLayout);
+        PanelDialogNombreLayout.setHorizontalGroup(
+            PanelDialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogNombreLayout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addComponent(LabelDialogNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        PanelDialogNombreLayout.setVerticalGroup(
+            PanelDialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(LabelDialogNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+        );
+
+        nombre.add(PanelDialogNombre);
+
+        PanelDialogTFNombre.setBackground(new java.awt.Color(51, 204, 255));
+
+        DialogTFNombre.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        DialogTFNombre.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        DialogTFNombre.setToolTipText("");
+        DialogTFNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DialogTFNombreActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelDialogTFNombreLayout = new javax.swing.GroupLayout(PanelDialogTFNombre);
+        PanelDialogTFNombre.setLayout(PanelDialogTFNombreLayout);
+        PanelDialogTFNombreLayout.setHorizontalGroup(
+            PanelDialogTFNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogTFNombreLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(DialogTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        PanelDialogTFNombreLayout.setVerticalGroup(
+            PanelDialogTFNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDialogTFNombreLayout.createSequentialGroup()
+                .addComponent(DialogTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        nombre.add(PanelDialogTFNombre);
+
+        PanelDialogFondo.add(nombre);
+
+        puerto.setBackground(new java.awt.Color(51, 204, 255));
+        puerto.setLayout(new java.awt.GridLayout(1, 2));
+
+        PanelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
+
+        LabelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
+        LabelDialogPuerto.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
+        LabelDialogPuerto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        LabelDialogPuerto.setText("Puerto (0-65535)");
+
+        javax.swing.GroupLayout PanelDialogPuertoLayout = new javax.swing.GroupLayout(PanelDialogPuerto);
+        PanelDialogPuerto.setLayout(PanelDialogPuertoLayout);
+        PanelDialogPuertoLayout.setHorizontalGroup(
+            PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        PanelDialogPuertoLayout.setVerticalGroup(
+            PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+        );
+
+        puerto.add(PanelDialogPuerto);
+
+        PanelDialogTFPuerto.setBackground(new java.awt.Color(51, 204, 255));
+
+        DialogTFPuerto.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        DialogTFPuerto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
+        javax.swing.GroupLayout PanelDialogTFPuertoLayout = new javax.swing.GroupLayout(PanelDialogTFPuerto);
+        PanelDialogTFPuerto.setLayout(PanelDialogTFPuertoLayout);
+        PanelDialogTFPuertoLayout.setHorizontalGroup(
+            PanelDialogTFPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogTFPuertoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(DialogTFPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        PanelDialogTFPuertoLayout.setVerticalGroup(
+            PanelDialogTFPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogTFPuertoLayout.createSequentialGroup()
+                .addComponent(DialogTFPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        puerto.add(PanelDialogTFPuerto);
+
+        PanelDialogFondo.add(puerto);
+
+        entrar.setBackground(new java.awt.Color(51, 204, 255));
+        entrar.setLayout(new java.awt.GridLayout(1, 3));
+
+        jPanel24.setBackground(new java.awt.Color(51, 204, 255));
+
+        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
+        jPanel24.setLayout(jPanel24Layout);
+        jPanel24Layout.setHorizontalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+        jPanel24Layout.setVerticalGroup(
+            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 65, Short.MAX_VALUE)
+        );
+
+        entrar.add(jPanel24);
+
+        PanelDialogEntrar.setBackground(new java.awt.Color(51, 204, 255));
+
+        DialogBotonEntrar.setBackground(new java.awt.Color(0, 102, 255));
+        DialogBotonEntrar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
+        DialogBotonEntrar.setText("Entrar");
+        DialogBotonEntrar.setBorderPainted(false);
+        DialogBotonEntrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DialogBotonEntrarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout PanelDialogEntrarLayout = new javax.swing.GroupLayout(PanelDialogEntrar);
+        PanelDialogEntrar.setLayout(PanelDialogEntrarLayout);
+        PanelDialogEntrarLayout.setHorizontalGroup(
+            PanelDialogEntrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogEntrarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        PanelDialogEntrarLayout.setVerticalGroup(
+            PanelDialogEntrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PanelDialogEntrarLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        entrar.add(PanelDialogEntrar);
+
+        jPanel21.setBackground(new java.awt.Color(51, 204, 255));
+
+        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
+        jPanel21.setLayout(jPanel21Layout);
+        jPanel21Layout.setHorizontalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 204, Short.MAX_VALUE)
+        );
+        jPanel21Layout.setVerticalGroup(
+            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 65, Short.MAX_VALUE)
+        );
+
+        entrar.add(jPanel21);
+
+        PanelDialogFondo.add(entrar);
+
+        javax.swing.GroupLayout DialogIniciarSesionLayout = new javax.swing.GroupLayout(DialogIniciarSesion.getContentPane());
+        DialogIniciarSesion.getContentPane().setLayout(DialogIniciarSesionLayout);
+        DialogIniciarSesionLayout.setHorizontalGroup(
+            DialogIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(PanelDialogFondo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        DialogIniciarSesionLayout.setVerticalGroup(
+            DialogIniciarSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(PanelDialogFondo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,11 +316,13 @@ public class vistaDestinatario extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(51, 204, 255));
 
-        jButton1.setBackground(new java.awt.Color(0, 153, 204));
-        jButton1.setText("SONIDO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        botonAlerta.setBackground(new java.awt.Color(0, 153, 204));
+        botonAlerta.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        botonAlerta.setText("SONIDO");
+        botonAlerta.setBorderPainted(false);
+        botonAlerta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                botonAlertaActionPerformed(evt);
             }
         });
 
@@ -61,14 +332,14 @@ public class vistaDestinatario extends javax.swing.JFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jButton1)
+                .addComponent(botonAlerta)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(botonAlerta, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -87,12 +358,12 @@ public class vistaDestinatario extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 493, Short.MAX_VALUE)
+            .addGap(0, 590, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                    .addContainerGap(81, Short.MAX_VALUE)
+                    .addContainerGap(129, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(71, Short.MAX_VALUE)))
+                    .addContainerGap(120, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,9 +388,9 @@ public class vistaDestinatario extends javax.swing.JFrame {
         ScrollMensajes.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 204, 255), 20));
         ScrollMensajes.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        ScrollMensajes.setViewportView(jTextArea1);
+        mensajesRecibidos.setColumns(20);
+        mensajesRecibidos.setRows(5);
+        ScrollMensajes.setViewportView(mensajesRecibidos);
 
         PanelMensajes.add(ScrollMensajes, java.awt.BorderLayout.CENTER);
 
@@ -139,11 +410,17 @@ public class vistaDestinatario extends javax.swing.JFrame {
         pack();
     }//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
-        
-        
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void botonAlertaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAlertaActionPerformed
+              
+    }//GEN-LAST:event_botonAlertaActionPerformed
+
+    private void DialogTFNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DialogTFNombreActionPerformed
+
+    }//GEN-LAST:event_DialogTFNombreActionPerformed
+
+    private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DialogBotonEntrarActionPerformed
+        this.DialogIniciarSesion.dispose();
+    }//GEN-LAST:event_DialogBotonEntrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,55 +492,127 @@ public class vistaDestinatario extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup BGTipoMsj;
+    private javax.swing.JButton DialogBotonEntrar;
+    private javax.swing.JDialog DialogIniciarSesion;
+    private javax.swing.JTextField DialogTFNombre;
+    private javax.swing.JTextField DialogTFPuerto;
+    private javax.swing.JLabel LabelDialogNombre;
+    private javax.swing.JLabel LabelDialogPuerto;
     private javax.swing.JPanel PanelArriba;
+    private javax.swing.JPanel PanelDialogEntrar;
+    private javax.swing.JPanel PanelDialogFondo;
+    private javax.swing.JPanel PanelDialogNombre;
+    private javax.swing.JPanel PanelDialogPuerto;
+    private javax.swing.JPanel PanelDialogTFNombre;
+    private javax.swing.JPanel PanelDialogTFPuerto;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelMensajes;
     private javax.swing.JScrollPane ScrollMensajes;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton botonAlerta;
+    private javax.swing.JPanel entrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea mensajesRecibidos;
+    private javax.swing.JPanel nombre;
+    private javax.swing.JLabel nombreApp;
+    private javax.swing.JPanel puerto;
+    private javax.swing.JPanel titulo;
     // End of variables declaration//GEN-END:variables
 
-
-
-    /*
-     * LO QUE TENIA EN VISTA.java
-     *     @Override
-    public void addActionListener(ActionListener listener) {
+    private void agregarVerificadorDialog()
+    {
+        DocumentListener listenerDialog = new DocumentListener() 
+            {
+                @Override
+                public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+                
+                @Override
+                public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
         
+                @Override
+                public void changedUpdate(DocumentEvent e) 
+                {
+                    boolean habilitar = true;
+                    Iterator<JTextComponent> iter = camposDialog.iterator();
+                    
+                    while (iter.hasNext() && habilitar)                              /* controla campos no vacios */
+                        habilitar = !iter.next().getText().matches("^( |    |\n|\r)*$");
+                    
+                    if (habilitar && DialogTFPuerto.getText().matches("^[0-9]+$"))   /* controla 0 <= puerto <= 65535 */
+                        habilitar = Integer.parseInt(DialogTFPuerto.getText()) <= 65535;
+                    else
+                        habilitar = false;
+
+                    DialogBotonEntrar.setEnabled(habilitar);
+                }
+            };
+        
+        Iterator<JTextComponent> iter = this.camposDialog.iterator();
+        
+        while (iter.hasNext())
+            iter.next().getDocument().addDocumentListener(listenerDialog);
+    }
+    
+    @Override
+    public void setVisible(boolean b)
+    {
+        super.setVisible(b);
+        
+        this.DialogIniciarSesion.setSize(614, 340);
+        this.DialogIniciarSesion.setVisible(b);
+    }
+    
+    @Override
+    public void addActionListener(ActionListener listener) {
+        this.DialogBotonEntrar.addActionListener(listener);
     }
 
     @Override
     public void agregarNuevoMensaje(Mensaje mensaje) {
-       
-        Mensaje recibido = (Mensaje) mensaje; 
-        StringBuilder builder = new StringBuilder();
-        builder.append("De: " + recibido.getNombreEmisor() + "\n");
-        builder.append("Asunto: " + recibido.getAsunto() + "\n");
-        builder.append(recibido.getCuerpo() + "\n");
         
-        //VER COMO AGREGARLO A LA VISTA
+        Mensaje recibido = (Mensaje) mensaje;
+        
+        String builder = "";
+        builder += "De: " + recibido.getNombreEmisor() + "\n";
+        builder += "Asunto: " + recibido.getAsunto() + "\n";
+        builder += recibido.getCuerpo() + "\n";
+       
+        if(recibido.getTipo() == 1){ //mensaje de alerta
+     /*       this.botonAlerta.setEnabled(true);
+            while (this.botonAlerta.isEnabled()){
+                try{
+                    File sonidoAlerta = new File("musicLocation"); 
+                    if(sonidoAlerta.exists()){
+                        AudioInputStream audioInput = AudioSystem.getAudioInputStream(sonidoAlerta);
+                    
+
+                    }
+                }
+                catch (IOException | UnsupportedAudioFileException e) {
+                
+                }
+                
+            }
+ */
+        }
+
+        this.mensajesRecibidos.append(builder);
+        this.repaint();
     }
 
     @Override
     public String getNombre() {
-        
-        return null;
+        return this.DialogTFNombre.getText();
     }
 
     @Override
     public String getPuerto() {
-        
-        return null;
+        return this.DialogTFPuerto.getText();
     }
 
-    @Override
-    public void informarDestinatario(String error) {
-        // TODO Implement this method
-    }
-     * 
-     * */
 }
