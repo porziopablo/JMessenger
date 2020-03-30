@@ -1,16 +1,15 @@
 package main;
 
-import java.io.IOException;
-import java.io.PrintWriter;
+import controlador.Controlador;
+import vista.vistaDestinatario;
 
-import java.net.Socket;
-
-import usuarios.Destinatario;
 
 public class Main
 {
     public static void main(String[] args)
     {
-        System.out.println("COMIT ALL CAMBIAR MAIL DANI !!!!!!!");
+        vistaDestinatario ventana = new vistaDestinatario();  
+        Controlador controlador = new Controlador(ventana);
+        ventana.setVisible(true);
     }
 }
