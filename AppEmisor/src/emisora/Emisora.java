@@ -84,7 +84,6 @@ public class Emisora extends Observable
                 salida.print(msj);
                 
                 salida.close();
-                socket.close();
             }
             catch (IOException e)
             {
@@ -100,18 +99,31 @@ public class Emisora extends Observable
             public void run() 
             {
                 String confirmacion = "";
+                ServerSocket serverSocket;
+                Socket socket;
+                BufferedReader lector;
                 
                 try 
                 {
-                    ServerSocket serverSocket = new ServerSocket(Integer.parseInt(emisor.getPuerto()));
+                    serverSocket = new ServerSocket(Integer.parseInt(emisor.getPuerto()));
                     while (true) 
                     {
-                        Socket socket = serverSocket.accept();
-                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
-                        confirmacion = in.readLine();
-                        setChanged();
-                        notifyObservers(confirmacion);
+                        try
+                        {
+                            socket = serverSocket.accept();
+                            lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    
+                            confirmacion = lector.readLine();
+                            
+                            setChanged();
+                            notifyObservers(confirmacion);
+                            
+                            lector.close();
+                        }
+                        catch (IOException e) 
+                        {
+                            System.out.println("Error al recibir confirmación: " + e.getMessage());
+                        }
                     }
                 } 
                 catch (IOException e) 

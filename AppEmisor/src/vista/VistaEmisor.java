@@ -80,10 +80,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         DialogIniciarSesion = new javax.swing.JDialog();
         PanelDialogFondo = new javax.swing.JPanel();
         PanelDialog1 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
         PanelDialogJMessenger = new javax.swing.JPanel();
         LabelDialogJMessenger = new javax.swing.JLabel();
-        jPanel12 = new javax.swing.JPanel();
         PanelDialog2 = new javax.swing.JPanel();
         PanelDialogNombre = new javax.swing.JPanel();
         LabelDialogNombre = new javax.swing.JLabel();
@@ -95,10 +93,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogTFPuerto = new javax.swing.JPanel();
         DialogTFPuerto = new javax.swing.JTextField();
         PanelDialog4 = new javax.swing.JPanel();
-        jPanel24 = new javax.swing.JPanel();
         PanelDialogEntrar = new javax.swing.JPanel();
         DialogBotonEntrar = new javax.swing.JButton();
-        jPanel21 = new javax.swing.JPanel();
         PanelFondo = new javax.swing.JPanel();
         PanelDestinatarios = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -151,25 +147,10 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialog1.setBackground(new java.awt.Color(51, 204, 255));
         PanelDialog1.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel8.setBackground(new java.awt.Color(51, 204, 255));
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
-        );
-
-        PanelDialog1.add(jPanel8);
-
         PanelDialogJMessenger.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelDialogJMessenger.setBackground(new java.awt.Color(51, 204, 255));
-        LabelDialogJMessenger.setFont(new java.awt.Font("Yu Gothic UI Semibold", 2, 36)); // NOI18N
+        LabelDialogJMessenger.setFont(new java.awt.Font("Tahoma", 2, 36)); // NOI18N
         LabelDialogJMessenger.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelDialogJMessenger.setText("JMessenger");
 
@@ -177,7 +158,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogJMessenger.setLayout(PanelDialogJMessengerLayout);
         PanelDialogJMessengerLayout.setHorizontalGroup(
             PanelDialogJMessengerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelDialogJMessenger, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
+            .addComponent(LabelDialogJMessenger, javax.swing.GroupLayout.DEFAULT_SIZE, 614, Short.MAX_VALUE)
         );
         PanelDialogJMessengerLayout.setVerticalGroup(
             PanelDialogJMessengerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,21 +166,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
 
         PanelDialog1.add(PanelDialogJMessenger);
-
-        jPanel12.setBackground(new java.awt.Color(51, 204, 255));
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
-        );
-
-        PanelDialog1.add(jPanel12);
 
         PanelDialogFondo.add(PanelDialog1);
 
@@ -209,7 +175,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogNombre.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelDialogNombre.setBackground(new java.awt.Color(51, 204, 255));
-        LabelDialogNombre.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
+        LabelDialogNombre.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         LabelDialogNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelDialogNombre.setText("Nombre");
 
@@ -268,7 +234,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
-        LabelDialogPuerto.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 36)); // NOI18N
+        LabelDialogPuerto.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         LabelDialogPuerto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelDialogPuerto.setText("Puerto (0-65535)");
 
@@ -313,25 +279,10 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialog4.setBackground(new java.awt.Color(51, 204, 255));
         PanelDialog4.setLayout(new java.awt.GridLayout(1, 3));
 
-        jPanel24.setBackground(new java.awt.Color(51, 204, 255));
-
-        javax.swing.GroupLayout jPanel24Layout = new javax.swing.GroupLayout(jPanel24);
-        jPanel24.setLayout(jPanel24Layout);
-        jPanel24Layout.setHorizontalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
-        );
-        jPanel24Layout.setVerticalGroup(
-            jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
-        );
-
-        PanelDialog4.add(jPanel24);
-
         PanelDialogEntrar.setBackground(new java.awt.Color(51, 204, 255));
 
         DialogBotonEntrar.setBackground(new java.awt.Color(0, 102, 255));
-        DialogBotonEntrar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
+        DialogBotonEntrar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         DialogBotonEntrar.setText("Entrar");
         DialogBotonEntrar.setBorderPainted(false);
         DialogBotonEntrar.addActionListener(new java.awt.event.ActionListener()
@@ -347,9 +298,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogEntrarLayout.setHorizontalGroup(
             PanelDialogEntrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelDialogEntrarLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(216, 216, 216)
+                .addComponent(DialogBotonEntrar, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(216, Short.MAX_VALUE))
         );
         PanelDialogEntrarLayout.setVerticalGroup(
             PanelDialogEntrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -360,21 +311,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
 
         PanelDialog4.add(PanelDialogEntrar);
-
-        jPanel21.setBackground(new java.awt.Color(51, 204, 255));
-
-        javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
-        jPanel21.setLayout(jPanel21Layout);
-        jPanel21Layout.setHorizontalGroup(
-            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 204, Short.MAX_VALUE)
-        );
-        jPanel21Layout.setVerticalGroup(
-            jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 65, Short.MAX_VALUE)
-        );
-
-        PanelDialog4.add(jPanel21);
 
         PanelDialogFondo.add(PanelDialog4);
 
@@ -399,7 +335,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDestinatarios.setPreferredSize(new java.awt.Dimension(300, 798));
         PanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
-        jListDestinatarios.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
+        jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jListDestinatarios.setModel(this.modeloDestinatarios);
         jListDestinatarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jListDestinatarios.setSelectionBackground(new java.awt.Color(204, 204, 204));
@@ -411,7 +347,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         LabelDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
-        LabelDestinatarios.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 30)); // NOI18N
+        LabelDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
         LabelDestinatarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelDestinatarios.setText("Destinatarios");
         jPanel4.add(LabelDestinatarios);
@@ -435,7 +371,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel11.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelAsunto.setBackground(new java.awt.Color(51, 204, 255));
-        LabelAsunto.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 30)); // NOI18N
+        LabelAsunto.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
         LabelAsunto.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LabelAsunto.setText("Asunto");
 
@@ -460,7 +396,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel10.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelJMessenger.setBackground(new java.awt.Color(51, 204, 255));
-        LabelJMessenger.setFont(new java.awt.Font("Yu Gothic UI Semibold", 2, 30)); // NOI18N
+        LabelJMessenger.setFont(new java.awt.Font("Tahoma", 2, 30)); // NOI18N
         LabelJMessenger.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
         LabelJMessenger.setText("JMessenger  ");
 
@@ -577,7 +513,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         JRBSimple.setBackground(new java.awt.Color(51, 204, 255));
         BGTipoMsj.add(JRBSimple);
-        JRBSimple.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        JRBSimple.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         JRBSimple.setSelected(true);
         JRBSimple.setText("Simple");
         JRBSimple.addActionListener(new java.awt.event.ActionListener()
@@ -591,7 +527,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         JRBAviso.setBackground(new java.awt.Color(51, 204, 255));
         BGTipoMsj.add(JRBAviso);
-        JRBAviso.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        JRBAviso.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         JRBAviso.setText("Con Aviso");
         JRBAviso.addActionListener(new java.awt.event.ActionListener()
         {
@@ -604,7 +540,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         JRBRecepcion.setBackground(new java.awt.Color(51, 204, 255));
         BGTipoMsj.add(JRBRecepcion);
-        JRBRecepcion.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        JRBRecepcion.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         JRBRecepcion.setText("Con Recepción");
         PanelTipoMsj.add(JRBRecepcion);
 
@@ -640,7 +576,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelEnviar.setBackground(new java.awt.Color(51, 204, 255));
 
         BotonCancelar.setBackground(new java.awt.Color(0, 102, 255));
-        BotonCancelar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        BotonCancelar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BotonCancelar.setText("Cancelar");
         BotonCancelar.setBorderPainted(false);
         BotonCancelar.addActionListener(new java.awt.event.ActionListener()
@@ -673,7 +609,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelCancelar.setBackground(new java.awt.Color(51, 204, 255));
 
         BotonEnviar.setBackground(new java.awt.Color(0, 102, 255));
-        BotonEnviar.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        BotonEnviar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BotonEnviar.setText("Enviar");
         BotonEnviar.setBorderPainted(false);
         BotonEnviar.addActionListener(new java.awt.event.ActionListener()
@@ -720,7 +656,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel17.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelCuerpo.setBackground(new java.awt.Color(51, 204, 255));
-        LabelCuerpo.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 30)); // NOI18N
+        LabelCuerpo.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
         LabelCuerpo.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         LabelCuerpo.setText("Cuerpo");
 
@@ -889,17 +825,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JList<Destinatario> jListDestinatarios;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
-    private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
