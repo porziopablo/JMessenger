@@ -31,7 +31,7 @@ public class Emisora extends Observable
         return emisor;
     }
     
-    public String mensajeAString(Mensaje mensaje)
+    private String mensajeAString(Mensaje mensaje)
     {
         final String SEPARADOR = "_###_";
         
