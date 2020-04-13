@@ -11,5 +11,7 @@ public class Main
         VistaEmisor ventana = new VistaEmisor();
         Controlador controlador = new Controlador(ventana);
         ventana.setVisible(true);
+        
+        //ITER 2
     }
 }
