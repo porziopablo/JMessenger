@@ -2,9 +2,27 @@ package usuarios;
 
 public class Destinatario extends Usuario implements Comparable
 {
-    public Destinatario(String nombre, String ip, String puerto)
+    private boolean online;
+    
+    public Destinatario(String nombre, String ip, String puerto, boolean online)
     {
         super(nombre, ip, puerto);
+        this.online = online;
+    }
+    
+    public Destinatario()
+    {
+        super("", "", "");
+    }
+
+    public void setOnline(boolean online)
+    {
+        this.online = online;
+    }
+
+    public boolean isOnline()
+    {
+        return online;
     }
 
     @Override
@@ -19,4 +37,5 @@ public class Destinatario extends Usuario implements Comparable
     {
         return this.getNombre();
     }
+    
 }

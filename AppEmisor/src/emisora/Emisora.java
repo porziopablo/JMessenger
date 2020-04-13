@@ -14,31 +14,26 @@ import java.util.Observable;
 import mensaje.Mensaje;
 
 import usuarios.Destinatario;
-import usuarios.Emisor;
 
 public class Emisora extends Observable
 {
-    private Emisor emisor;
+    private String nombreEmisor;
 
-    public Emisora(Emisor emisor)
+    public Emisora(String nombreEmisor)
     {
         super();
-        this.emisor = emisor;
-    }
-
-    public Emisor getEmisor()
-    {
-        return emisor;
+        this.nombreEmisor = nombreEmisor;
     }
     
     private String mensajeAString(Mensaje mensaje)
     {
         final String SEPARADOR = "_###_";
+        final String FINAL = "##FIN##";
         
         StringBuilder sb = new StringBuilder();
         
         /* nombre emisor */
-        sb.append(this.emisor.getNombre());
+        sb.append(this.nombreEmisor);
         
         /* asunto */
         sb.append(SEPARADOR);
@@ -48,20 +43,13 @@ public class Emisora extends Observable
         sb.append(SEPARADOR);
         sb.append(mensaje.getCuerpo());
         
-        
         /* tipo mensaje */
         sb.append(SEPARADOR);
         sb.append(mensaje.getTipo());
         
-        /* ip y puerto emisor para confirmar recepcion */
-        if (mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION)
-        {
-            sb.append(SEPARADOR);
-            sb.append(this.emisor.getIp());
-            sb.append(SEPARADOR);
-            sb.append(this.emisor.getPuerto());
-        }
-        
+        /* para finalizar mensaje */
+        sb.append("\n" + FINAL);
+                
         return sb.toString();
     }
 
@@ -71,7 +59,8 @@ public class Emisora extends Observable
         Socket socket;
         Destinatario proximo;
         PrintWriter salida;
-        String msj = this.mensajeAString(mensaje);
+        BufferedReader entrada;
+        String msj = this.mensajeAString(mensaje), confirmacion;
 
         while (destinatarios.hasNext())
         {
@@ -80,10 +69,19 @@ public class Emisora extends Observable
             {
                 socket = new Socket(proximo.getIp(), Integer.parseInt(proximo.getPuerto()));
                 salida = new PrintWriter(socket.getOutputStream(), true);
+                entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 
-                salida.print(msj);
+                salida.println(msj);
+                
+                if (mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION) /* espero confirmacion de recepcion */
+                {
+                    confirmacion = entrada.readLine();
+                    setChanged();
+                    notifyObservers(confirmacion);
+                }
                 
                 salida.close();
+                entrada.close();
             }
             catch (IOException e)
             {
@@ -91,46 +89,4 @@ public class Emisora extends Observable
             }
         }             
     }
-    
-    public void recibirConfirmacion()
-    {
-        new Thread() 
-        {
-            public void run() 
-            {
-                String confirmacion = "";
-                ServerSocket serverSocket;
-                Socket socket;
-                BufferedReader lector;
-                
-                try 
-                {
-                    serverSocket = new ServerSocket(Integer.parseInt(emisor.getPuerto()));
-                    while (true) 
-                    {
-                        try
-                        {
-                            socket = serverSocket.accept();
-                            lector = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-    
-                            confirmacion = lector.readLine();
-                            
-                            setChanged();
-                            notifyObservers(confirmacion);
-                            
-                            lector.close();
-                        }
-                        catch (IOException e) 
-                        {
-                            System.out.println("Error al recibir confirmación: " + e.getMessage());
-                        }
-                    }
-                } 
-                catch (IOException e) 
-                {
-                    System.out.println("Error al recibir confirmación: " + e.getMessage());
-                }
-            }
-        }.start();
-    }  
 }
