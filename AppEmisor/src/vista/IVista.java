@@ -11,7 +11,7 @@ public interface IVista
 {
     String COMANDO_ENVIAR = "enviar";
     String COMANDO_INICIAR = "iniciarSesion";
-    String COMANDO_ACTUALIZAR = "actualizarDest";
+    String COMANDO_ACTUALIZAR = "actualizar";
     
     public List<Destinatario> getDestinatarios();
     public String getAsunto();
@@ -21,4 +21,5 @@ public interface IVista
     public void addActionListener(ActionListener listener);
     public void informarEmisor(String mensaje);
     public void actualizarAgenda(Iterator<Destinatario> destinatarios);
+    public void mostrarCarga();
 }

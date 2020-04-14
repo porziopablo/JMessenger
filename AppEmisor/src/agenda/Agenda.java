@@ -75,6 +75,16 @@ public class Agenda
         Socket socket;
         PrintWriter salida;
         
+        /* SOLO PARA TESTEAR UI */
+        
+//        destinatarios.add(new Destinatario("A", "192.168.0.9", "1234", true));
+//        destinatarios.add(new Destinatario("B", "192.168.0.192", "1234", false));
+//        destinatarios.add(new Destinatario("C", "234.168.0.9", "1234", false));
+//        destinatarios.add(new Destinatario("D", "300.168.0.9", "1234", true));
+//        destinatarios.add(new Destinatario("E", "200.168.0.9", "1234", true));
+        
+        /* FIN CODIGO TEST UI */
+        
         try
         {
             socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
