@@ -27,13 +27,13 @@ public class Agenda
     public Agenda()
     {
         this.ipDirectorio = "192.168.0.1";
-        this.puertoDirectorio = 1234; /* valores por defecto */
+        this.puertoDirectorio = 1235; /* valores por defecto */
         this.cargarConfiguracion();
     }
     
     private void cargarConfiguracion()
     {
-        final String NOMBRE_ARCHIVO = "config.txt";
+        final String NOMBRE_ARCHIVO = "config_emisor.txt";
         final String SEPARADOR = ", *"; /* regex */
         final String ENCODING = "UTF-8";
         final int CANT_DATOS = 2;
@@ -46,6 +46,8 @@ public class Agenda
         {
             lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
             linea = lector.readLine();
+            lector.close();
+            
             datos = linea.split(SEPARADOR);
             if ((datos.length == CANT_DATOS))
             {
@@ -53,8 +55,10 @@ public class Agenda
                 this.puertoDirectorio = Integer.parseInt(datos[1]);
             }
             else
-                throw new IOException("faltan datos");
-            lector.close();
+                throw new IOException("faltan o sobran datos.");
+            
+            if (! ((this.puertoDirectorio >= 0) && (this.puertoDirectorio <= 65535)))
+                throw new IOException("el puerto para comunicarse con el Directorio debe ser un entero en el rango [0-65535].");
         }
         catch(IOException e)
         {

@@ -1006,7 +1006,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         while (iter.hasNext() && habilitar)                    /* controla campos no vacios */
             habilitar = !iter.next().getText().matches("^( |	|\n|\r)*$");
 
-        habilitar &=  !jListConectados.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
+        habilitar &= !jListConectados.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
 
         BotonEnviar.setEnabled(habilitar);
     }

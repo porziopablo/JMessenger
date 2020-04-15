@@ -26,5 +26,6 @@
    <list n="listOfChildren">
       <hash><url n="URL" path="AppDestinatario/AppDestinatario.jpr"/></hash>
       <hash><url n="URL" path="AppEmisor/AppEmisor.jpr"/></hash>
+      <hash><url n="URL" path="ServicioDirectorio/ServicioDirectorio.jpr"/></hash>
    </list>
 </jws:workspace>
