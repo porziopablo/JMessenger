@@ -9,14 +9,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import java.io.PrintWriter;
-
 import java.net.ServerSocket;
 
 import java.net.Socket;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.TreeSet;
 
 import usuarios.Destinatario;
@@ -30,23 +29,23 @@ public class Directorio
     public static final int REG_EXITOSO = 1;
     public static final int REG_FALLIDO = 0;
     
-    public static final int MAX_ESPERA = 5; /* SEGUNDOS */ /* probar y ajustar */
+    public static final int MAX_ESPERA = 15000; /* MILISEGUNDOS */ /* probar y ajustar */
     
-    private TreeSet<Destinatario> listado;
+    private TreeSet<Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;
     private int puertoDestinatario, puertoEmisor;
     private Object lock;
     
     public Directorio()
     {
-        this.listado = new TreeSet<Destinatario>();
+        this.destinatarios = new TreeSet<Destinatario>();
         this.fechasConexion = new HashMap<String, Date>();
         this.puertoDestinatario = 1234; /* valores por defecto */
         this.puertoEmisor = 1235;
         this.lock = new Object();
         this.cargarConfiguracion();
     }
-    
+
     private void cargarConfiguracion()
     {
         final String NOMBRE_ARCHIVO = "config_directorio.txt";
@@ -92,7 +91,7 @@ public class Directorio
     
     public void escucharDestinatarios()
     {
-        /* hacer */
+        System.out.println("ESCUCHANDO DESTINATARIOS");
     }
     
     public void atenderEmisores()
@@ -104,7 +103,6 @@ public class Directorio
                 ServerSocket serverSocket;
                 Socket socket;
                 XMLEncoder salida;
-                BufferedReader entrada;
                 
                 try
                 {
@@ -113,15 +111,40 @@ public class Directorio
                     {
                         socket = serverSocket.accept();
                         salida = new XMLEncoder(new BufferedOutputStream(socket.getOutputStream()));
-                        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                         
+                        synchronized(lock)
+                        {
+                            actualizarEstados();
+                            salida.writeObject(destinatarios);
+                        }
+                        salida.close();
                     }
                 } 
                 catch (IOException e)
                 {
-                    System.out.println("Error: " + e.getMessage());
+                    System.out.println("Error al enviar destinararios: " + e.getMessage());
                 }
             }
-        }.run();
+        }.start();
+    }
+    
+    private void actualizarEstados()
+    {
+        Iterator<Destinatario> iter;
+        Destinatario proximo;
+        long fechaActual, fechaProx;
+        
+        synchronized(lock)
+        {
+            iter = this.destinatarios.iterator();
+            while (iter.hasNext())
+            {
+                proximo = iter.next();
+                fechaProx = this.fechasConexion.get(proximo.getNombre()).getTime();
+                fechaActual = new Date().getTime();
+                proximo.setOnline(((fechaActual -  fechaProx) <= MAX_ESPERA));
+                System.out.println("NOMBRE: " + proximo.getNombre() + " - ESTADO: " + proximo.isOnline());
+            }
+        }
     }
 }

@@ -918,9 +918,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
                 this.modeloConectados.addElement(proximo);   
             else
                 this.modeloDesconectados.addElement(proximo);
-        }            
+        }
+        if (this.modeloConectados.isEmpty())
+            this.modeloConectados.addElement(new Destinatario("No hay conectados", "", "", true));
+        else
+            this.jListConectados.setEnabled(true);
+        if (this.modeloDesconectados.isEmpty())
+            this.modeloDesconectados.addElement(new Destinatario("No hay desconectados", "", "", false));
         this.repaint();
-        this.jListConectados.setEnabled(true);
         this.BotonActualizar.setEnabled(true);
     }
 

@@ -1,5 +1,9 @@
 package usuarios;
 
+import java.text.Collator;
+
+import java.util.Locale;
+
 public class Destinatario extends Usuario implements Comparable
 {
     private boolean online;
@@ -28,9 +32,11 @@ public class Destinatario extends Usuario implements Comparable
     @Override
     public int compareTo(Object otro)
     {
-        return this.getNombre().compareTo(((Destinatario)otro).getNombre());
+        String nombreActual = this.getNombre().toLowerCase(Locale.forLanguageTag("es-ES"));
+        String nombreOtro = ((Destinatario)otro).getNombre().toLowerCase(Locale.forLanguageTag("es-ES"));
+        
+        return Collator.getInstance(Locale.forLanguageTag("es-ES")).compare(nombreActual, nombreOtro);
     }
-
 
     @Override
     public String toString()
