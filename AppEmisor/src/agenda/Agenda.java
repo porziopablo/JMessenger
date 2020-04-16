@@ -26,7 +26,7 @@ public class Agenda
     
     public Agenda()
     {
-        this.ipDirectorio = "192.168.0.1";
+        this.ipDirectorio = "192.168.0.192";
         this.puertoDirectorio = 1235; /* valores por defecto */
         this.cargarConfiguracion();
     }
@@ -72,30 +72,15 @@ public class Agenda
     
     public Iterator<Destinatario> actualizarDestinatarios()
     {
-        final String ACTUALIZAR_AGENDA = "actualizar_agenda";
-        
         TreeSet<Destinatario> destinatarios = new TreeSet<Destinatario>();
         XMLDecoder entrada;
         Socket socket;
-        PrintWriter salida;
-        
-        /* SOLO PARA TESTEAR UI */
-        
-//        destinatarios.add(new Destinatario("A", "192.168.0.9", "1234", true));
-//        destinatarios.add(new Destinatario("B", "192.168.0.192", "1234", false));
-//        destinatarios.add(new Destinatario("C", "234.168.0.9", "1234", false));
-//        destinatarios.add(new Destinatario("D", "300.168.0.9", "1234", true));
-//        destinatarios.add(new Destinatario("E", "200.168.0.9", "1234", true));
-        
-        /* FIN CODIGO TEST UI */
-        
+                
         try
         {
             socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
-            salida = new PrintWriter(socket.getOutputStream(), true);
             entrada = new XMLDecoder(new BufferedInputStream(socket.getInputStream()));
             
-            salida.println(ACTUALIZAR_AGENDA);
             destinatarios = (TreeSet<Destinatario>) entrada.readObject();
             entrada.close();
         }  

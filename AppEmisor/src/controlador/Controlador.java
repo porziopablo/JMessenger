@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import java.util.Timer;
 import java.util.TreeSet;
 
 import mensaje.Mensaje;
@@ -58,20 +59,7 @@ public class Controlador implements Observer, ActionListener
     {
         this.emisora = new Emisora(this.vista.getNombre());
         this.emisora.addObserver(this);
-        
-        /* SOLO PARA TESTEAR UI */
-        
-//        TreeSet<Destinatario> destinatarios = new TreeSet<Destinatario>();
-//        
-//        destinatarios.add(new Destinatario("DELL", "192.168.0.9", "1234", true));
-//        destinatarios.add(new Destinatario("TOSHIBA", "192.168.0.192", "1234", false));
-//        destinatarios.add(new Destinatario("Ivan", "234.168.0.9", "1234", false));
-//        destinatarios.add(new Destinatario("Martín", "300.168.0.9", "1234", true));
-//        destinatarios.add(new Destinatario("Mariquena", "200.168.0.9", "1234", true));
-//        
-//        this.vista.actualizarAgenda(destinatarios.iterator());
-        
-        /* FIN CODIGO TEST UI */
+        this.actualizarDestinatarios();
     }
 
     private void enviarMensaje()
@@ -94,7 +82,21 @@ public class Controlador implements Observer, ActionListener
     
     private void actualizarDestinatarios()
     {
+        Timer timer =  new java.util.Timer();
+        
         this.vista.mostrarCarga();
-        this.vista.actualizarAgenda(this.agenda.actualizarDestinatarios());
+        timer.schedule
+        ( 
+            new java.util.TimerTask() 
+            {
+                @Override
+                public void run() 
+                {
+                    vista.actualizarAgenda(agenda.actualizarDestinatarios());
+                    timer.cancel();
+                }
+            }, 
+            500 
+        );
     }
 }
