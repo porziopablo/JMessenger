@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import usuarios.Destinatario;
@@ -31,14 +32,14 @@ public class Directorio
     
     public static final int MAX_ESPERA = 15000; /* MILISEGUNDOS */ /* probar y ajustar */
     
-    private TreeSet<Destinatario> destinatarios;
+    private TreeMap<String, Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;
     private int puertoDestinatario, puertoEmisor;
     private Object lock;
     
     public Directorio()
     {
-        this.destinatarios = new TreeSet<Destinatario>();
+        this.destinatarios = new TreeMap<String, Destinatario>();
         this.fechasConexion = new HashMap<String, Date>();
         this.puertoDestinatario = 1234; /* valores por defecto */
         this.puertoEmisor = 1235;
@@ -92,6 +93,8 @@ public class Directorio
     public void escucharDestinatarios()
     {
         System.out.println("ESCUCHANDO DESTINATARIOS");
+        
+        
     }
     
     public void atenderEmisores()
@@ -115,7 +118,7 @@ public class Directorio
                         synchronized(lock)
                         {
                             actualizarEstados();
-                            salida.writeObject(destinatarios);
+                            salida.writeObject(destinatarios.values().iterator());
                         }
                         salida.close();
                     }
@@ -136,7 +139,7 @@ public class Directorio
         
         synchronized(lock)
         {
-            iter = this.destinatarios.iterator();
+            iter = this.destinatarios.values().iterator();
             while (iter.hasNext())
             {
                 proximo = iter.next();

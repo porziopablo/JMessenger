@@ -4,7 +4,7 @@ import java.text.Collator;
 
 import java.util.Locale;
 
-public class Destinatario extends Usuario implements Comparable
+public class Destinatario extends Usuario
 {
     private boolean online;
     
@@ -27,15 +27,6 @@ public class Destinatario extends Usuario implements Comparable
     public boolean isOnline()
     {
         return online;
-    }
-
-    @Override
-    public int compareTo(Object otro)
-    {
-        String nombreActual = this.getNombre().toLowerCase(Locale.forLanguageTag("es-ES"));
-        String nombreOtro = ((Destinatario)otro).getNombre().toLowerCase(Locale.forLanguageTag("es-ES"));
-        
-        return Collator.getInstance(Locale.forLanguageTag("es-ES")).compare(nombreActual, nombreOtro);
     }
 
     @Override
