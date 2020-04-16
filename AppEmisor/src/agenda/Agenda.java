@@ -15,6 +15,7 @@ import java.net.Socket;
 
 import java.util.Iterator;
 
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import usuarios.Destinatario;
@@ -72,7 +73,7 @@ public class Agenda
     
     public Iterator<Destinatario> actualizarDestinatarios()
     {
-        TreeSet<Destinatario> destinatarios = new TreeSet<Destinatario>();
+        Iterator<Destinatario> destinatarios = new TreeSet<Destinatario>().iterator();
         XMLDecoder entrada;
         Socket socket;
                 
@@ -81,7 +82,7 @@ public class Agenda
             socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
             entrada = new XMLDecoder(new BufferedInputStream(socket.getInputStream()));
             
-            destinatarios = (TreeSet<Destinatario>) entrada.readObject();
+            destinatarios = (Iterator<Destinatario>) entrada.readObject();
             entrada.close();
         }  
         catch (IOException e)
@@ -89,6 +90,6 @@ public class Agenda
             System.out.println("Error al recibir agenda desde el Directorio: " + e.getMessage());
         }
 
-        return destinatarios.iterator();
+        return destinatarios;
     }
 }
