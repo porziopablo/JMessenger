@@ -19,7 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import usuarios.Destinatario;
 
@@ -150,7 +149,6 @@ public class Directorio
                 
             }
         }.start();
-        
     }
     
     public void atenderEmisores()
@@ -175,7 +173,7 @@ public class Directorio
                         synchronized(lock)
                         {
                             actualizarEstados();
-                            salida.writeObject(destinatarios.values().iterator());
+                            salida.writeObject(destinatarios);
                         }
                         salida.close();
                     }
@@ -203,7 +201,6 @@ public class Directorio
                 fechaProx = this.fechasConexion.get(proximo.getNombre()).getTime();
                 fechaActual = new Date().getTime();
                 proximo.setOnline(((fechaActual -  fechaProx) <= MAX_ESPERA));
-                System.out.println("NOMBRE: " + proximo.getNombre() + " - ESTADO: " + proximo.isOnline());
             }
         }
     }

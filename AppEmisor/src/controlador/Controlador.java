@@ -64,6 +64,7 @@ public class Controlador implements Observer, ActionListener
 
     private void enviarMensaje()
     {
+        Timer timer =  new java.util.Timer();
         String asunto = this.vista.getAsunto();
         String cuerpo = this.vista.getCuerpo();
         int tipo = this.vista.getTipoMensaje();
@@ -77,7 +78,19 @@ public class Controlador implements Observer, ActionListener
             nombres = nombres + ", " + iter.next().getNombre();
         this.vista.informarEmisor("Enviando mensaje a " + nombres + ".");
         
-        this.emisora.emitirMensaje(new Mensaje(asunto, cuerpo, tipo, destinatarios));
+        timer.schedule
+        ( 
+            new java.util.TimerTask() 
+            {
+                @Override
+                public void run() 
+                {
+                    emisora.emitirMensaje(new Mensaje(asunto, cuerpo, tipo, destinatarios));
+                    timer.cancel();
+                }
+            }, 
+            500 
+        );
     }
     
     private void actualizarDestinatarios()
