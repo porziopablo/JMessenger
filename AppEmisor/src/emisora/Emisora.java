@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -55,19 +56,23 @@ public class Emisora extends Observable
 
     public void emitirMensaje(Mensaje mensaje)
     {
+        final int TIMEOUT = 5000;
+        
         Iterator<Destinatario> destinatarios = mensaje.getDestinatarios().iterator();
         Socket socket;
         Destinatario proximo;
-        PrintWriter salida;
-        BufferedReader entrada;
+        PrintWriter salida = null;
+        BufferedReader entrada = null;
         String msj = this.mensajeAString(mensaje), confirmacion;
-
+        
         while (destinatarios.hasNext())
         {
             proximo = destinatarios.next();
             try
             {
-                socket = new Socket(proximo.getIp(), Integer.parseInt(proximo.getPuerto()));
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(proximo.getIp(), Integer.parseInt(proximo.getPuerto())), TIMEOUT);
+                socket.setSoTimeout(TIMEOUT);
                 salida = new PrintWriter(socket.getOutputStream(), true);
                 entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 
@@ -76,16 +81,32 @@ public class Emisora extends Observable
                 if (mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION) /* espero confirmacion de recepcion */
                 {
                     confirmacion = entrada.readLine();
-                    setChanged();
-                    notifyObservers(confirmacion);
+                    if (confirmacion != null)
+                    {
+                        setChanged();
+                        notifyObservers(confirmacion);
+                    }
                 }
-                
-                salida.close();
-                entrada.close();
+                salida.flush();
             }
             catch (IOException e)
             {
                 System.out.println("Error al enviar mensaje a " + proximo.getNombre() + " : " + e.getMessage());
+            }
+            finally
+            {
+                try
+                {
+                    if (salida != null)
+                        salida.close();
+                    if (entrada != null)
+                        entrada.close(); 
+                }
+                catch (IOException e) /* errores importantes fueron atrapados en catch anterior */
+                {
+                    System.out.println("Error al enviar mensaje a " + proximo.getNombre() + " : " + e.getMessage());
+                }
+
             }
         }             
     }
