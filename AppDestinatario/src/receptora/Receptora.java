@@ -30,6 +30,7 @@ public class Receptora extends Observable{
             public void run(){
                 Mensaje mensaje;
                 final String SEPARADOR = "_###_"; /* regex */
+                final String FINAL = "##FIN##";
                 
                 try{
                     ServerSocket serverSocket = new ServerSocket(Integer.parseInt(dest.getPuerto()));
@@ -41,14 +42,13 @@ public class Receptora extends Observable{
                         StringBuilder builder = new StringBuilder();
                         String aux = "";
                         aux = in.readLine();
-                        while (aux != null) {
+                        while (aux != FINAL) { //leer mientras no sea fin ! no mientras sea null
                             builder.append(aux);
                             builder.append("\n");
                             aux = in.readLine();
                         }
                         if( builder.length() > 0 )
                             builder.setLength(builder.length()-1);
-                        socket.close();
                         
                         aux = builder.toString();
                         String text[];
@@ -58,7 +58,11 @@ public class Receptora extends Observable{
                         
                         if(mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION){
                             enviarConfirmacion(text[4], text[5]);
+                            
+                            
                         }
+                        socket.close();
+                        
                         setChanged();
                         notifyObservers(mensaje); 
                     }  
@@ -70,7 +74,8 @@ public class Receptora extends Observable{
         }.start();
  
     }
-    
+  
+//ESTE METODO TIENE QUE DESAPARECER !!  
     private void enviarConfirmacion(String ipEmisor, String puertoEmisor){
         
         Socket socket;

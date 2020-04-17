@@ -6,19 +6,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import java.io.File;
-
-import java.io.IOException;
-
 import java.util.ArrayList;
 
 import java.util.Iterator;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
@@ -57,7 +47,8 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
                 { 
                     System.exit(0);
                 }
-            });
+            }
+        );
         this.agregarVerificadorDialog();
         
     }
@@ -424,7 +415,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
     }//GEN-LAST:event_DialogTFNombreActionPerformed
 
     private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DialogBotonEntrarActionPerformed
-        this.DialogIniciarSesion.dispose();
+    
     }//GEN-LAST:event_DialogBotonEntrarActionPerformed
 
     /**
@@ -581,7 +572,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
     @Override
     public void agregarNuevoMensaje(Mensaje mensaje) {
         
-        Mensaje recibido = (Mensaje) mensaje;
+        Mensaje recibido = mensaje;
         
         String builder = "";
         builder += "De: " + recibido.getNombreEmisor() + "\n";
@@ -606,4 +597,19 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         return this.DialogTFPuerto.getText();
     }
 
+    @Override
+    public void informarResultadoInicioSesion(int resultado) {
+        if(resultado == 1){ // ingreso exitoso
+            this.DialogIniciarSesion.dispose();
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "El nombre de usuario ya se encuentra registrado.");
+            this.limpiarVista();
+        }
+    }
+    
+    private void limpiarVista(){
+        this.DialogTFNombre.setText("");
+        this.DialogBotonEntrar.setEnabled(false);
+    }
 }
