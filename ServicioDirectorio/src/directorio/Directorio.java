@@ -9,6 +9,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import java.io.PrintWriter;
+
 import java.net.ServerSocket;
 
 import java.net.Socket;
@@ -34,7 +36,7 @@ public class Directorio
     
     private TreeMap<String, Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;
-    private int puertoDestinatario, puertoEmisor;
+    private int puertoDestinatario, puertoEmisor; // puertos por los 
     private Object lock;
     
     public Directorio()
@@ -90,15 +92,70 @@ public class Directorio
         }
     }
     
+    private boolean agregarNuevoDest(String data){
+        
+        boolean res = false;
+        final String SEPARADOR = "_###_";
+        
+        String text[];
+        text = data.split(SEPARADOR); // nombre - ip - puerto
+        
+        Destinatario nuevo = new Destinatario(text[0], text[1], text[2], true);
+        if(!this.destinatarios.containsKey(text[0])){
+            this.destinatarios.put(text[0], nuevo);
+            this.fechasConexion.put(text[0], new Date());
+            res =true;
+        }
+        return res;
+    }
+    
     public void escucharDestinatarios()
     {
         System.out.println("ESCUCHANDO DESTINATARIOS");
-        
+        new Thread()
+        {
+            public void run()
+            {
+                ServerSocket serverSocket;
+                Socket socket;
+                try{
+                    serverSocket = new ServerSocket(puertoDestinatario);
+                    while(true){
+                        
+                        socket = serverSocket.accept();
+                        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                              
+                        String comando = in.readLine();
+                        String data = in.readLine();
+                    
+                        if(comando.equals(DESTINATARIO_LOG_UP)){
+                            if(agregarNuevoDest(data))
+                                out.println(1);
+                            else
+                                out.println(0);
+                        }
+                        else if(comando == DESTINATARIO_ONLINE){
+                            //hacer
+                        }
+                        else if(comando == DESTINATARIO_OFFLINE){
+                            //hacer
+                        }
+            
+                    }
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                }
+                
+            }
+        }.start();
         
     }
     
     public void atenderEmisores()
     {
+        System.out.println("ATENDIENDO EMISORES");
         new Thread()
         {
             public void run()

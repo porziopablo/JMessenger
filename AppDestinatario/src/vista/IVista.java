@@ -10,6 +10,7 @@ public interface IVista {
     
     public void addActionListener(ActionListener listener);
     public void agregarNuevoMensaje(Mensaje mensaje);
+    public void informarResultadoInicioSesion(int resultado);
     public String getNombre();
     public String getPuerto();
 }
