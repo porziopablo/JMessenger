@@ -79,9 +79,29 @@ public class Notificadora {
         return rta;
     }
    
-//Tanto en el metodo apagar como avisar mandamos el nombre del destinatario 
     public void apagar(){
         
+        Socket socket;
+        PrintWriter salida;
+        BufferedReader entrada;
+        
+        try
+        {
+            socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
+            salida = new PrintWriter(socket.getOutputStream(), true);
+            entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            
+            StringBuilder sb = new StringBuilder();
+            sb.append(DESTINATARIO_OFFLINE + "\n");
+            sb.append(this.nombreDestinatario);
+            salida.println(sb.toString()); 
+            
+            socket.close();
+        }
+        catch (IOException e)
+        {
+            System.out.println("Problema en conexion" + e.getMessage());
+        }
     }
     
     private void avisar(){
@@ -108,8 +128,7 @@ public class Notificadora {
                         StringBuilder sb = new StringBuilder();
                         sb.append(DESTINATARIO_ONLINE + "\n");
                         sb.append(nombreDestinatario);
-                        salida.println(sb.toString());
-                        
+                        salida.println(sb.toString());                  
                         
                         socket.close();
                     }     

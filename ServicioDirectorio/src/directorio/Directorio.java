@@ -16,6 +16,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -127,9 +128,11 @@ public class Directorio
     
     private void offline(String data){
         synchronized(lock){
-            this.fechasConexion.put(data, new Date()/*y que mas*/);
+            GregorianCalendar fecha = new GregorianCalendar(2010, 12, 3);
+            Date cambio = fecha.getTime();
+            this.fechasConexion.put(data, cambio);
+            this.destinatarios.get(data).setOnline(false);
         }
-        
     }
     
     public void escucharDestinatarios()
