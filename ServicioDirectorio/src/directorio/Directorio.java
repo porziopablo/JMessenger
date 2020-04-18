@@ -36,7 +36,7 @@ public class Directorio
     
     private TreeMap<String, Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;
-    private int puertoDestinatario, puertoEmisor; // puertos por los 
+    private int puertoDestinatario, puertoEmisor; 
     private Object lock;
     
     public Directorio()

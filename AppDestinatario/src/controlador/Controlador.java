@@ -11,7 +11,6 @@ import java.net.InetAddress;
 
 import java.net.UnknownHostException;
 
-import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
 

@@ -34,8 +34,7 @@ public class Notificadora {
         this.puertoDirectorio = 1234; /* valores por defecto */
         this.cargarConfiguracion();
     }
- 
-// El retorno sera 0 si el registro fue fallido y 1 si fue exitoso.   
+  
     public int registrarDestinatario(String nombreDest, String ipDest, String puertoDest){
         
         Socket socket;

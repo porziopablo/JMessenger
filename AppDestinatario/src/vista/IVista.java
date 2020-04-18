@@ -13,7 +13,7 @@ public interface IVista {
     String COMANDO_INICIAR = "iniciarSesion";
     
     public void addActionListener(ActionListener listener);
-    public void addWindowListener(WindowListener wl);
+    public void addWindowListener(WindowListener w);
     public void agregarNuevoMensaje(Mensaje mensaje);
     public void informarResultadoInicioSesion(int resultado);
     public String getNombre();
