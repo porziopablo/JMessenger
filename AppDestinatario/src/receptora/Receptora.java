@@ -3,17 +3,10 @@ package receptora;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 import java.net.ServerSocket;
-
 import java.net.Socket;
-
 import java.util.Observable;
-
-import java.util.stream.Stream;
-
 import mensaje.Mensaje;
-
 import usuarios.Destinatario;
 
 public class Receptora extends Observable{
@@ -29,7 +22,7 @@ public class Receptora extends Observable{
         new Thread(){
             public void run(){
                 Mensaje mensaje;
-                final String SEPARADOR = "_###_"; /* regex */
+                final String SEPARADOR = "_###_"; 
                 final String FINAL = "##FIN##";
                 
                 try{
@@ -42,7 +35,7 @@ public class Receptora extends Observable{
                         StringBuilder builder = new StringBuilder();
                         String aux = "";
                         aux = in.readLine();
-                        while (!aux.equals(FINAL)) { //leer mientras no sea fin ! no mientras sea null
+                        while (!aux.equals(FINAL)) { 
                             builder.append(aux);
                             builder.append("\n");
                             aux = in.readLine();

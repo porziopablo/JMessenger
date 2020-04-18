@@ -4,12 +4,9 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import java.io.File;
 import java.util.ArrayList;
-
 import java.util.Iterator;
-
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -599,7 +596,7 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
 
     @Override
     public void informarResultadoInicioSesion(int resultado) {
-        if(resultado == 1){ // ingreso exitoso
+        if(resultado == 1){ 
             this.DialogIniciarSesion.dispose();
         }
         else{
