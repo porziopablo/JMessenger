@@ -612,4 +612,5 @@ public class vistaDestinatario extends javax.swing.JFrame implements IVista {
         this.DialogTFNombre.setText("");
         this.DialogBotonEntrar.setEnabled(false);
     }
+
 }

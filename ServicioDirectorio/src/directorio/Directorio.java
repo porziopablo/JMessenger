@@ -98,14 +98,38 @@ public class Directorio
         
         String text[];
         text = data.split(SEPARADOR); // nombre - ip - puerto
-        
         Destinatario nuevo = new Destinatario(text[0], text[1], text[2], true);
-        if(!this.destinatarios.containsKey(text[0])){
-            this.destinatarios.put(text[0], nuevo);
-            this.fechasConexion.put(text[0], new Date());
-            res =true;
+        
+        synchronized(lock){
+            if(!this.destinatarios.containsKey(text[0])){
+                this.destinatarios.put(text[0], nuevo);
+                this.fechasConexion.put(text[0], new Date());
+                res =true;
+            }
+            else{
+                if(text[1].equals(this.destinatarios.get(text[0]).getIp()) && !this.destinatarios.get(text[0]).isOnline()){
+                    this.destinatarios.get(text[0]).setOnline(true);
+                    this.fechasConexion.put(text[0], new Date());
+                    res = true;
+                }
+            }
         }
+            
         return res;
+    }
+    
+    
+    private void online(String data){
+        synchronized(lock){
+            this.fechasConexion.put(data, new Date());
+        }
+    }
+    
+    private void offline(String data){
+        synchronized(lock){
+            this.fechasConexion.put(data, new Date()/*y que mas*/);
+        }
+        
     }
     
     public void escucharDestinatarios()
@@ -128,19 +152,21 @@ public class Directorio
                         String comando = in.readLine();
                         String data = in.readLine();
                     
-                        if(comando.equals(DESTINATARIO_LOG_UP)){
-                            if(agregarNuevoDest(data))
-                                out.println(1);
-                            else
-                                out.println(0);
+                        synchronized(lock){
+                            if(comando.equals(DESTINATARIO_LOG_UP)){
+                                if(agregarNuevoDest(data))
+                                    out.println(1);
+                                else
+                                    out.println(0);
+                            }
+                            else if(comando.equals(DESTINATARIO_ONLINE)){
+                                System.out.println("ACTUALIZANDO INFO DE: " + data);
+                                online(data);
+                            }
+                            else if(comando.equals(DESTINATARIO_OFFLINE)){
+                                offline(data);
+                            } 
                         }
-                        else if(comando == DESTINATARIO_ONLINE){
-                            //hacer
-                        }
-                        else if(comando == DESTINATARIO_OFFLINE){
-                            //hacer
-                        }
-            
                     }
                 }
                 catch(Exception e){

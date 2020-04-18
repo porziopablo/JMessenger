@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import java.awt.event.WindowEvent;
 
+
 import java.net.InetAddress;
 
 import java.net.UnknownHostException;
@@ -31,10 +32,11 @@ public class Controlador implements ActionListener, Observer{
     public Controlador(IVista vista) {
         this.vista = vista;
         vista.addActionListener(this);
+        
     }
 
     private int iniciarSesion(){
-        
+       
         int correcto = 0;
         try{
             String ip = InetAddress.getLocalHost().getHostAddress();
@@ -73,7 +75,7 @@ public class Controlador implements ActionListener, Observer{
         }
     }
     
-// Para cuando cierro la app avisar al directorio que me fui y no que espere al heartbeat 
+   
     public void windowClosing( WindowEvent evento){
         
     }
