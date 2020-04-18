@@ -12,8 +12,6 @@ import java.io.PrintWriter;
 
 import java.net.Socket;
 
-import java.util.TreeSet;
-
 import usuarios.Destinatario;
 
 public class Notificadora {
@@ -66,6 +64,7 @@ public class Notificadora {
             if( rta == 1){ //registro exitoso
                 this.nombreDestinatario = nombreDest;
                 this.encendido = true;
+                this.avisar();
             }
             
             salida.close();
@@ -87,6 +86,41 @@ public class Notificadora {
     
     private void avisar(){
         
+        Thread hilo = new Thread(){
+            public void run(){
+                Socket socket;
+                PrintWriter salida;
+                BufferedReader entrada;  
+                
+                
+                try
+                {
+                    while(true){
+                        try {
+                            Thread.sleep(FREC_AVISO * 1000);
+                        } catch (InterruptedException e) {}
+                        
+                        System.out.println("HILO VIVO");
+                        socket = new Socket(ipDirectorio, puertoDirectorio);
+                        salida = new PrintWriter(socket.getOutputStream(), true);
+                        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                        
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(DESTINATARIO_ONLINE + "\n");
+                        sb.append(nombreDestinatario);
+                        salida.println(sb.toString());
+                        
+                        
+                        socket.close();
+                    }     
+                }  
+                catch (IOException e)
+                {
+                    System.out.println("Problema en conexion" + e.getMessage());
+                }
+            }
+        };
+        hilo.start();
     }
     
     private void cargarConfiguracion()

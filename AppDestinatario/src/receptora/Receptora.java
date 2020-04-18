@@ -42,7 +42,7 @@ public class Receptora extends Observable{
                         StringBuilder builder = new StringBuilder();
                         String aux = "";
                         aux = in.readLine();
-                        while (aux != FINAL) { //leer mientras no sea fin ! no mientras sea null
+                        while (!aux.equals(FINAL)) { //leer mientras no sea fin ! no mientras sea null
                             builder.append(aux);
                             builder.append("\n");
                             aux = in.readLine();
@@ -57,8 +57,7 @@ public class Receptora extends Observable{
                         mensaje = new Mensaje(text[0], text[1], text[2], Integer.parseInt(text[3]));
                         
                         if(mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION){
-                            enviarConfirmacion(text[4], text[5]);
-                            
+                            out.println(dest.getNombre());
                             
                         }
                         socket.close();
@@ -73,23 +72,5 @@ public class Receptora extends Observable{
             }
         }.start();
  
-    }
-  
-//ESTE METODO TIENE QUE DESAPARECER !!  
-    private void enviarConfirmacion(String ipEmisor, String puertoEmisor){
-        
-        Socket socket;
-        PrintWriter confirmacion;
-        
-        try{
-            socket = new Socket(ipEmisor, Integer.parseInt(puertoEmisor));
-            confirmacion = new PrintWriter(socket.getOutputStream(), true);
-            confirmacion.println(this.dest.getNombre());
-            confirmacion.close();
-            socket.close();
-        }
-        catch(Exception e){
-            System.out.println("Error al enviar la confirmacion de llegada: " + e.getMessage());
-        }
     }
 }
