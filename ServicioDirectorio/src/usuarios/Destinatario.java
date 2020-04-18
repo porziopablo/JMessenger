@@ -1,9 +1,5 @@
 package usuarios;
 
-import java.text.Collator;
-
-import java.util.Locale;
-
 public class Destinatario extends Usuario
 {
     private boolean online;

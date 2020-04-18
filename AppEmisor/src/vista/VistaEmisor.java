@@ -1,7 +1,6 @@
 
 package vista;
 
-import java.awt.Component;
 import java.awt.event.ActionListener;
 
 import java.awt.event.WindowAdapter;
