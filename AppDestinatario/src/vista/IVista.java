@@ -1,11 +1,7 @@
 package vista;
 
 import java.awt.event.ActionListener;
-
-import java.awt.event.WindowAdapter;
-
 import java.awt.event.WindowListener;
-
 import mensaje.Mensaje;
 
 public interface IVista {

@@ -1,25 +1,20 @@
 package notificadora;
 
-import java.beans.XMLDecoder;
-
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-
 import java.net.Socket;
 
-import usuarios.Destinatario;
 
 public class Notificadora {
     
     public final static String DESTINATARIO_LOG_UP = "Log Up";
     public final static String DESTINATARIO_ONLINE = "Online";
     public final static String DESTINATARIO_OFFLINE = "Offline";
-    public final static int FREC_AVISO = 5; //CHEQUEAR TIEMPO
+    public final static int FREC_AVISO = 5; 
     public final static int REG_EXITOSO = 1;
     public final static int REG_FALLIDO = 0;
 
@@ -31,7 +26,7 @@ public class Notificadora {
     
     public Notificadora() {
         this.ipDirectorio = "192.168.0.189";
-        this.puertoDirectorio = 1234; /* valores por defecto */
+        this.puertoDirectorio = 1234; 
         this.cargarConfiguracion();
     }
   
@@ -56,11 +51,11 @@ public class Notificadora {
             sb.append(ipDest);
             sb.append(SEPARADOR);
             sb.append(puertoDest);
-            salida.println(sb.toString()); //Mando datos del destinatario
+            salida.println(sb.toString()); 
             
             
             rta = Integer.parseInt(entrada.readLine());           
-            if( rta == 1){ //registro exitoso
+            if( rta == 1){ 
                 this.nombreDestinatario = nombreDest;
                 this.encendido = true;
                 this.avisar();
@@ -117,7 +112,9 @@ public class Notificadora {
                     while(true){
                         try {
                             Thread.sleep(FREC_AVISO * 1000);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException e) {
+                            System.out.println("Problema con sleep del hilo " + e.getMessage());
+                        }
                         
                         System.out.println("HILO VIVO");
                         socket = new Socket(ipDirectorio, puertoDirectorio);
