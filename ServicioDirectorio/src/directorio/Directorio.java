@@ -110,6 +110,7 @@ public class Directorio
             else{
                 if(text[1].equals(this.destinatarios.get(text[0]).getIp()) && !this.destinatarios.get(text[0]).isOnline()){
                     this.destinatarios.get(text[0]).setOnline(true);
+                    this.destinatarios.get(text[0]).setPuerto(text[2]);
                     this.fechasConexion.put(text[0], new Date());
                     res = true;
                 }
@@ -163,7 +164,7 @@ public class Directorio
                                     out.println(0);
                             }
                             else if(comando.equals(DESTINATARIO_ONLINE)){
-                                System.out.println("ACTUALIZANDO INFO DE: " + data);
+                                System.out.println("heartbeat de: " + data);
                                 online(data);
                             }
                             else if(comando.equals(DESTINATARIO_OFFLINE)){
