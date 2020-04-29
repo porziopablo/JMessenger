@@ -104,6 +104,8 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         LabelAsunto = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        labelUsuario = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         LabelJMessenger = new javax.swing.JLabel();
         PanelAsunto = new javax.swing.JPanel();
@@ -370,7 +372,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         jPanel9.setBackground(new java.awt.Color(51, 204, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(881, 70));
-        jPanel9.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel9.setLayout(new java.awt.GridLayout(1, 3));
 
         jPanel11.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -386,7 +388,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(LabelAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(177, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -396,6 +398,29 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
 
         jPanel9.add(jPanel11);
+
+        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
+
+        labelUsuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelUsuario.setText("Usuario:");
+        labelUsuario.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+        );
+
+        jPanel9.add(jPanel1);
 
         jPanel10.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -409,14 +434,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addGap(0, 189, Short.MAX_VALUE)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addComponent(LabelJMessenger, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(LabelJMessenger, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(41, 41, 41))
         );
 
         jPanel9.add(jPanel10);
@@ -766,6 +791,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
     private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DialogBotonEntrarActionPerformed
     {//GEN-HEADEREND:event_DialogBotonEntrarActionPerformed
+        this.labelUsuario.setText("Usuario: " + this.DialogTFNombre.getText());
         this.DialogIniciarSesion.dispose();
     }//GEN-LAST:event_DialogBotonEntrarActionPerformed
 
@@ -834,6 +860,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JTabbedPane TabsDestinatarios;
     private javax.swing.JList<Destinatario> jListConectados;
     private javax.swing.JList<Destinatario> jListDesconectados;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel14;
@@ -847,6 +874,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel labelUsuario;
     // End of variables declaration//GEN-END:variables
 
     @Override
