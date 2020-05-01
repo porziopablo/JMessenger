@@ -7,7 +7,7 @@ import java.util.List;
 
 import usuarios.Destinatario;
 
-public interface IVista
+public interface IInteraccionEmisor
 {
     String COMANDO_ENVIAR = "enviar";
     String COMANDO_INICIAR = "iniciarSesion";

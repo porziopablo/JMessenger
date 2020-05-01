@@ -226,7 +226,7 @@
                         </Property>
                         <Property name="text" type="java.lang.String" value="Entrar"/>
                         <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                          <Connection code="IVista.COMANDO_INICIAR" type="code"/>
+                          <Connection code="IInteraccionEmisor.COMANDO_INICIAR" type="code"/>
                         </Property>
                         <Property name="borderPainted" type="boolean" value="false"/>
                       </Properties>
@@ -341,7 +341,7 @@
                       <Image iconType="3" name="/vista/actualizar.png"/>
                     </Property>
                     <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                      <Connection code="IVista.COMANDO_ACTUALIZAR" type="code"/>
+                      <Connection code="IInteraccionEmisor.COMANDO_ACTUALIZAR" type="code"/>
                     </Property>
                     <Property name="borderPainted" type="boolean" value="false"/>
                   </Properties>
@@ -1078,7 +1078,7 @@
                                         </Property>
                                         <Property name="text" type="java.lang.String" value="Enviar"/>
                                         <Property name="actionCommand" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-                                          <Connection code="IVista.COMANDO_ENVIAR" type="code"/>
+                                          <Connection code="IInteraccionEmisor.COMANDO_ENVIAR" type="code"/>
                                         </Property>
                                         <Property name="borderPainted" type="boolean" value="false"/>
                                       </Properties>

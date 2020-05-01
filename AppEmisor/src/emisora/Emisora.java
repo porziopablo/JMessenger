@@ -15,7 +15,7 @@ import mensaje.Mensaje;
 
 import usuarios.Destinatario;
 
-public class Emisora extends Observable
+public class Emisora extends Observable implements IEmisionMensaje
 {
     private String nombreEmisor;
 
@@ -53,6 +53,7 @@ public class Emisora extends Observable
         return sb.toString();
     }
 
+    @Override
     public void emitirMensaje(Mensaje mensaje)
     {
         final int TIMEOUT = 5000;

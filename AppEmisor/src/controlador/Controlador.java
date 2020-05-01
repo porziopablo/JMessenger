@@ -1,8 +1,10 @@
 package controlador;
 
-import agenda.Agenda;
+import agenda.IActualizacionDestinatarios;
 
 import emisora.Emisora;
+
+import emisora.IEmisionMensaje;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,17 +20,17 @@ import mensaje.Mensaje;
 
 import usuarios.Destinatario;
 
-import vista.IVista;
+import vista.IInteraccionEmisor;
 
 public class Controlador implements Observer, ActionListener
 {
-    private IVista vista;
-    private Emisora emisora;
-    private Agenda agenda;
+    private IInteraccionEmisor vista;
+    private IEmisionMensaje emisora;
+    private IActualizacionDestinatarios agenda;
     
-    public Controlador(IVista vista)
+    public Controlador(IInteraccionEmisor vista, IActualizacionDestinatarios agenda)
     {
-        this.agenda = new Agenda();
+        this.agenda = agenda;
         this.vista = vista;
         vista.addActionListener(this);
     }
@@ -46,18 +48,18 @@ public class Controlador implements Observer, ActionListener
     @Override
     public void actionPerformed(ActionEvent evento)
     {
-        if (evento.getActionCommand().equals(IVista.COMANDO_INICIAR))
+        if (evento.getActionCommand().equals(IInteraccionEmisor.COMANDO_INICIAR))
             this.iniciarSesion();
-        else if (evento.getActionCommand().equals(IVista.COMANDO_ENVIAR))
+        else if (evento.getActionCommand().equals(IInteraccionEmisor.COMANDO_ENVIAR))
             this.enviarMensaje();
-        else if (evento.getActionCommand().equals(IVista.COMANDO_ACTUALIZAR))
+        else if (evento.getActionCommand().equals(IInteraccionEmisor.COMANDO_ACTUALIZAR))
             this.actualizarDestinatarios();
     }
 
     private void iniciarSesion()
     {
-        this.emisora = new Emisora(this.vista.getNombre());
-        this.emisora.addObserver(this);
+        this.emisora = new Emisora(this.vista.getNombre()); /* en ITER 3 ya no se necesita el nombre dentro de emisora */
+        this.emisora.addObserver(this);                     /* new emisora no se hará dentro del controlador */
         this.actualizarDestinatarios();
     }
 

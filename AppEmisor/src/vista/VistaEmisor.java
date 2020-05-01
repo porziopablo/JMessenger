@@ -24,7 +24,7 @@ import mensaje.Mensaje;
 
 import usuarios.Destinatario;
 
-public class VistaEmisor extends javax.swing.JFrame implements IVista
+public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmisor
 {
     private DefaultListModel<Destinatario> modeloConectados;
     private DefaultListModel<Destinatario> modeloDesconectados;
@@ -40,10 +40,10 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         
         initComponents();
         
-        this.BotonEnviar.setActionCommand(IVista.COMANDO_ENVIAR);
+        this.BotonEnviar.setActionCommand(IInteraccionEmisor.COMANDO_ENVIAR);
         this.BotonEnviar.setEnabled(false);
         
-        this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        this.DialogBotonEntrar.setActionCommand(IInteraccionEmisor.COMANDO_INICIAR);
         this.DialogBotonEntrar.setEnabled(false);
         
         camposDialog.add(this.DialogTFNombre);
@@ -236,7 +236,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         DialogBotonEntrar.setBackground(new java.awt.Color(0, 102, 255));
         DialogBotonEntrar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         DialogBotonEntrar.setText("Entrar");
-        DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        DialogBotonEntrar.setActionCommand(IInteraccionEmisor.COMANDO_INICIAR);
         DialogBotonEntrar.setBorderPainted(false);
         DialogBotonEntrar.addActionListener(new java.awt.event.ActionListener()
         {
@@ -298,7 +298,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         BotonActualizar.setBackground(new java.awt.Color(0, 102, 255));
         BotonActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/actualizar.png"))); // NOI18N
-        BotonActualizar.setActionCommand(IVista.COMANDO_ACTUALIZAR);
+        BotonActualizar.setActionCommand(IInteraccionEmisor.COMANDO_ACTUALIZAR);
         BotonActualizar.setBorderPainted(false);
         BotonActualizar.addActionListener(new java.awt.event.ActionListener()
         {
@@ -640,7 +640,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         BotonEnviar.setBackground(new java.awt.Color(0, 102, 255));
         BotonEnviar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BotonEnviar.setText("Enviar");
-        BotonEnviar.setActionCommand(IVista.COMANDO_ENVIAR);
+        BotonEnviar.setActionCommand(IInteraccionEmisor.COMANDO_ENVIAR);
         BotonEnviar.setBorderPainted(false);
         BotonEnviar.addActionListener(new java.awt.event.ActionListener()
         {

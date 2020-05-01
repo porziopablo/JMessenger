@@ -17,7 +17,7 @@ import java.util.TreeMap;
 
 import usuarios.Destinatario;
 
-public class Agenda
+public class Agenda implements IActualizacionDestinatarios
 {
     private String ipDirectorio;
     private int puertoDirectorio;
@@ -68,6 +68,7 @@ public class Agenda
         }
     }
     
+    @Override
     public Iterator<Destinatario> actualizarDestinatarios()
     {
         TreeMap<String, Destinatario> destinatarios = new TreeMap<String, Destinatario>();
