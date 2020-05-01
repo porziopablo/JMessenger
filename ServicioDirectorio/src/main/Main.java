@@ -1,14 +1,13 @@
 package main;
 
-import directorio.Directorio;
+import gestores.GestorDestinatario;
+import gestores.GestorEmisor;
 
 public class Main
 {
     public static void main(String[] args)
-    {
-        Directorio directorio = new Directorio();
-                              
-        directorio.atenderEmisores();
-        directorio.escucharDestinatarios();
+    {                
+        new Thread(new GestorEmisor()).start();
+        new Thread(new GestorDestinatario()).start();
     }
 }
