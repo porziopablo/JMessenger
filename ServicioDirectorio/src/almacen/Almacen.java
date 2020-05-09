@@ -91,8 +91,20 @@ public class Almacen implements IEntrega, IRegistro
     @Override
     public synchronized TreeMap<String, Destinatario> getDestinatariosActualizados()
     {
-        this.actualizarEstados();
+        Destinatario proximo;
+        TreeMap<String, Destinatario> copia = new TreeMap<String, Destinatario>();
+        Iterator<Destinatario> iterDestinatarios;
         
-        return this.destinatarios;
+        this.actualizarEstados();
+        iterDestinatarios = this.destinatarios.values().iterator();
+        
+        while (iterDestinatarios.hasNext())
+        {
+            proximo = iterDestinatarios.next();
+            copia.put(proximo.getNombre(), 
+                      new Destinatario(proximo.getNombre(), proximo.getIp(), proximo.getPuerto(), proximo.isOnline()));
+        }
+        
+        return copia;
     }
 }
