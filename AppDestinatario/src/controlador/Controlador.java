@@ -16,24 +16,26 @@ import java.util.Observer;
 
 import mensaje.Mensaje;
 
+import notificadora.IConexion;
 import notificadora.Notificadora;
 
 import receptora.Receptora;
 
 import usuarios.Destinatario;
 
-import vista.IVista;
+import vista.IInteraccionDestinatario;
 
 public class Controlador extends WindowAdapter implements ActionListener, Observer {
     
-    private IVista vista;
+    private IInteraccionDestinatario vista;
     private Receptora receptora; //observable
-    private Notificadora notificadora;
+    private IConexion notificadora;
     
-    public Controlador(IVista vista) {
+    public Controlador(IInteraccionDestinatario vista, IConexion notificadora) {
         this.vista = vista;
         this.vista.addActionListener(this);
         this.vista.addWindowListener(this);
+        this.notificadora = notificadora;
     }
 
     private int iniciarSesion(){
@@ -44,7 +46,6 @@ public class Controlador extends WindowAdapter implements ActionListener, Observ
             String nombre = this.vista.getNombre();
             String puerto = this.vista.getPuerto();
             
-            this.notificadora = new Notificadora();
             int registro = this.notificadora.registrarDestinatario(nombre, ip, puerto);
             
             if(registro == 1){
@@ -62,7 +63,7 @@ public class Controlador extends WindowAdapter implements ActionListener, Observ
     
     @Override
     public void actionPerformed(ActionEvent evento) {
-        if (evento.getActionCommand().equals(IVista.COMANDO_INICIAR)){
+        if (evento.getActionCommand().equals(IInteraccionDestinatario.COMANDO_INICIAR)){
             int res = this.iniciarSesion();
             this.vista.informarResultadoInicioSesion(res);
         }        

@@ -9,7 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 
-public class Notificadora {
+public class Notificadora implements IConexion{
     
     public final static String DESTINATARIO_LOG_UP = "Log Up";
     public final static String DESTINATARIO_ONLINE = "Online";
@@ -30,6 +30,7 @@ public class Notificadora {
         this.cargarConfiguracion();
     }
   
+    @Override
     public int registrarDestinatario(String nombreDest, String ipDest, String puertoDest){
         
         Socket socket;
@@ -73,6 +74,7 @@ public class Notificadora {
         return rta;
     }
    
+    @Override
     public void apagar(){
         
         Socket socket;

@@ -9,7 +9,7 @@ import java.util.Observable;
 import mensaje.Mensaje;
 import usuarios.Destinatario;
 
-public class Receptora extends Observable{
+public class Receptora extends Observable implements IRecepcionMensaje{
     
     private Destinatario dest;
     
@@ -17,6 +17,7 @@ public class Receptora extends Observable{
         this.dest = destinatario;
     }
     
+    @Override
     public void recibirMensaje(){
         
         new Thread(){
