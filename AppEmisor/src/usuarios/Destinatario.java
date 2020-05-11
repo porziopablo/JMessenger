@@ -1,22 +1,34 @@
 package usuarios;
 
-public class Destinatario extends Usuario implements Comparable
+public class Destinatario extends Usuario
 {
-    public Destinatario(String nombre, String ip, String puerto)
+    private boolean online;
+    
+    public Destinatario(String nombre, String ip, String puerto, boolean online)
     {
         super(nombre, ip, puerto);
+        this.online = online;
     }
-
-    @Override
-    public int compareTo(Object otro)
+    
+    public Destinatario()
     {
-        return this.getNombre().compareTo(((Destinatario)otro).getNombre());
+        super("", "", "");
     }
 
+    public void setOnline(boolean online)
+    {
+        this.online = online;
+    }
+
+    public boolean isOnline()
+    {
+        return online;
+    }
 
     @Override
     public String toString()
     {
         return this.getNombre();
     }
+    
 }

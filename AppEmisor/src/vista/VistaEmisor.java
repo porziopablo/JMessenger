@@ -24,28 +24,29 @@ import mensaje.Mensaje;
 
 import usuarios.Destinatario;
 
-public class VistaEmisor extends javax.swing.JFrame implements IVista
+public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmisor
 {
-    private DefaultListModel<Destinatario> modeloDestinatarios;
+    private DefaultListModel<Destinatario> modeloConectados;
+    private DefaultListModel<Destinatario> modeloDesconectados;
     private ArrayList<JTextComponent> camposDialog; 
     private ArrayList<JTextComponent> camposMensaje;
     
     public VistaEmisor()
     {
-        this.modeloDestinatarios = new DefaultListModel<Destinatario>();
+        this.modeloConectados = new DefaultListModel<Destinatario>();
+        this.modeloDesconectados = new DefaultListModel<Destinatario>();
         this.camposDialog = new ArrayList<JTextComponent>();
         this.camposMensaje = new ArrayList<JTextComponent>();
         
         initComponents();
         
-        this.BotonEnviar.setActionCommand(IVista.COMANDO_ENVIAR);
+        this.BotonEnviar.setActionCommand(IInteraccionEmisor.COMANDO_ENVIAR);
         this.BotonEnviar.setEnabled(false);
         
-        this.DialogBotonEntrar.setActionCommand(IVista.COMANDO_INICIAR);
+        this.DialogBotonEntrar.setActionCommand(IInteraccionEmisor.COMANDO_INICIAR);
         this.DialogBotonEntrar.setEnabled(false);
         
         camposDialog.add(this.DialogTFNombre);
-        camposDialog.add(this.DialogTFPuerto);
         
         camposMensaje.add(JTFAsunto);
         camposMensaje.add(JECuerpo);
@@ -84,24 +85,27 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogTFNombre = new javax.swing.JPanel();
         DialogTFNombre = new javax.swing.JTextField();
         PanelDialog3 = new javax.swing.JPanel();
-        PanelDialogPuerto = new javax.swing.JPanel();
-        LabelDialogPuerto = new javax.swing.JLabel();
-        PanelDialogTFPuerto = new javax.swing.JPanel();
-        DialogTFPuerto = new javax.swing.JTextField();
-        PanelDialog4 = new javax.swing.JPanel();
         PanelDialogEntrar = new javax.swing.JPanel();
         DialogBotonEntrar = new javax.swing.JButton();
         PanelFondo = new javax.swing.JPanel();
         PanelDestinatarios = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListDestinatarios = new javax.swing.JList<>();
-        jPanel4 = new javax.swing.JPanel();
+        PanelDestSuperior = new javax.swing.JPanel();
         LabelDestinatarios = new javax.swing.JLabel();
+        BotonActualizar = new javax.swing.JButton();
+        TabsDestinatarios = new javax.swing.JTabbedPane();
+        PanelConectados = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jListConectados = new javax.swing.JList<>();
+        PanelDesconectados = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jListDesconectados = new javax.swing.JList<>();
         PanelPrincipal = new javax.swing.JPanel();
         PanelSuperior = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         LabelAsunto = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        labelUsuario = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         LabelJMessenger = new javax.swing.JLabel();
         PanelAsunto = new javax.swing.JPanel();
@@ -138,7 +142,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         DialogIniciarSesion.setModal(true);
 
         PanelDialogFondo.setBackground(new java.awt.Color(51, 204, 255));
-        PanelDialogFondo.setLayout(new java.awt.GridLayout(4, 0));
+        PanelDialogFondo.setLayout(new java.awt.GridLayout(3, 0));
 
         PanelDialog1.setBackground(new java.awt.Color(51, 204, 255));
         PanelDialog1.setLayout(new java.awt.GridLayout(1, 3));
@@ -158,7 +162,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
         PanelDialogJMessengerLayout.setVerticalGroup(
             PanelDialogJMessengerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelDialogJMessenger, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+            .addComponent(LabelDialogJMessenger, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
         );
 
         PanelDialog1.add(PanelDialogJMessenger);
@@ -186,7 +190,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
         PanelDialogNombreLayout.setVerticalGroup(
             PanelDialogNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelDialogNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+            .addComponent(LabelDialogNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE)
         );
 
         PanelDialog2.add(PanelDialogNombre);
@@ -216,7 +220,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogTFNombreLayout.setVerticalGroup(
             PanelDialogTFNombreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelDialogTFNombreLayout.createSequentialGroup()
-                .addComponent(DialogTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
+                .addComponent(DialogTFNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -225,61 +229,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelDialogFondo.add(PanelDialog2);
 
         PanelDialog3.setBackground(new java.awt.Color(51, 204, 255));
-        PanelDialog3.setLayout(new java.awt.GridLayout(1, 2));
-
-        PanelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
-
-        LabelDialogPuerto.setBackground(new java.awt.Color(51, 204, 255));
-        LabelDialogPuerto.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        LabelDialogPuerto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelDialogPuerto.setText("Puerto (0-65535)");
-
-        javax.swing.GroupLayout PanelDialogPuertoLayout = new javax.swing.GroupLayout(PanelDialogPuerto);
-        PanelDialogPuerto.setLayout(PanelDialogPuertoLayout);
-        PanelDialogPuertoLayout.setHorizontalGroup(
-            PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
-        );
-        PanelDialogPuertoLayout.setVerticalGroup(
-            PanelDialogPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(LabelDialogPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
-        );
-
-        PanelDialog3.add(PanelDialogPuerto);
-
-        PanelDialogTFPuerto.setBackground(new java.awt.Color(51, 204, 255));
-
-        DialogTFPuerto.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        DialogTFPuerto.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-
-        javax.swing.GroupLayout PanelDialogTFPuertoLayout = new javax.swing.GroupLayout(PanelDialogTFPuerto);
-        PanelDialogTFPuerto.setLayout(PanelDialogTFPuertoLayout);
-        PanelDialogTFPuertoLayout.setHorizontalGroup(
-            PanelDialogTFPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelDialogTFPuertoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(DialogTFPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        PanelDialogTFPuertoLayout.setVerticalGroup(
-            PanelDialogTFPuertoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(PanelDialogTFPuertoLayout.createSequentialGroup()
-                .addComponent(DialogTFPuerto, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        PanelDialog3.add(PanelDialogTFPuerto);
-
-        PanelDialogFondo.add(PanelDialog3);
-
-        PanelDialog4.setBackground(new java.awt.Color(51, 204, 255));
-        PanelDialog4.setLayout(new java.awt.GridLayout(1, 3));
+        PanelDialog3.setLayout(new java.awt.GridLayout(1, 3));
 
         PanelDialogEntrar.setBackground(new java.awt.Color(51, 204, 255));
 
         DialogBotonEntrar.setBackground(new java.awt.Color(0, 102, 255));
         DialogBotonEntrar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         DialogBotonEntrar.setText("Entrar");
+        DialogBotonEntrar.setActionCommand(IInteraccionEmisor.COMANDO_INICIAR);
         DialogBotonEntrar.setBorderPainted(false);
         DialogBotonEntrar.addActionListener(new java.awt.event.ActionListener()
         {
@@ -306,9 +263,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
                 .addContainerGap())
         );
 
-        PanelDialog4.add(PanelDialogEntrar);
+        PanelDialog3.add(PanelDialogEntrar);
 
-        PanelDialogFondo.add(PanelDialog4);
+        PanelDialogFondo.add(PanelDialog3);
 
         javax.swing.GroupLayout DialogIniciarSesionLayout = new javax.swing.GroupLayout(DialogIniciarSesion.getContentPane());
         DialogIniciarSesion.getContentPane().setLayout(DialogIniciarSesionLayout);
@@ -326,29 +283,82 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         PanelFondo.setBackground(new java.awt.Color(51, 204, 255));
         PanelFondo.setLayout(new java.awt.BorderLayout());
 
-        PanelDestinatarios.setBackground(new java.awt.Color(51, 153, 255));
+        PanelDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
         PanelDestinatarios.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         PanelDestinatarios.setPreferredSize(new java.awt.Dimension(300, 798));
         PanelDestinatarios.setLayout(new java.awt.BorderLayout());
 
-        jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jListDestinatarios.setModel(this.modeloDestinatarios);
-        jListDestinatarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jListDestinatarios.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jScrollPane1.setViewportView(jListDestinatarios);
-
-        PanelDestinatarios.add(jScrollPane1, java.awt.BorderLayout.CENTER);
-
-        jPanel4.setBackground(new java.awt.Color(51, 204, 255));
-        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
+        PanelDestSuperior.setBackground(new java.awt.Color(51, 204, 255));
 
         LabelDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
         LabelDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 30)); // NOI18N
         LabelDestinatarios.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelDestinatarios.setText("Destinatarios");
-        jPanel4.add(LabelDestinatarios);
+        PanelDestSuperior.add(LabelDestinatarios);
 
-        PanelDestinatarios.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+        BotonActualizar.setBackground(new java.awt.Color(0, 102, 255));
+        BotonActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vista/actualizar.png"))); // NOI18N
+        BotonActualizar.setActionCommand(IInteraccionEmisor.COMANDO_ACTUALIZAR);
+        BotonActualizar.setBorderPainted(false);
+        BotonActualizar.addActionListener(new java.awt.event.ActionListener()
+        {
+            public void actionPerformed(java.awt.event.ActionEvent evt)
+            {
+                BotonActualizarActionPerformed(evt);
+            }
+        });
+        PanelDestSuperior.add(BotonActualizar);
+
+        PanelDestinatarios.add(PanelDestSuperior, java.awt.BorderLayout.PAGE_START);
+
+        TabsDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
+
+        PanelConectados.setBackground(new java.awt.Color(51, 204, 255));
+        PanelConectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+
+        jScrollPane1.setBackground(new java.awt.Color(51, 204, 255));
+
+        jListConectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListConectados.setModel(this.modeloConectados);
+        jListConectados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jListConectados.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setViewportView(jListConectados);
+
+        javax.swing.GroupLayout PanelConectadosLayout = new javax.swing.GroupLayout(PanelConectados);
+        PanelConectados.setLayout(PanelConectadosLayout);
+        PanelConectadosLayout.setHorizontalGroup(
+            PanelConectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+        );
+        PanelConectadosLayout.setVerticalGroup(
+            PanelConectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+        );
+
+        TabsDestinatarios.addTab("Conectados", PanelConectados);
+
+        PanelDesconectados.setBackground(new java.awt.Color(51, 204, 255));
+        PanelDesconectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+
+        jListDesconectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListDesconectados.setModel(this.modeloDesconectados);
+        jListDesconectados.setEnabled(false);
+        jScrollPane4.setViewportView(jListDesconectados);
+
+        javax.swing.GroupLayout PanelDesconectadosLayout = new javax.swing.GroupLayout(PanelDesconectados);
+        PanelDesconectados.setLayout(PanelDesconectadosLayout);
+        PanelDesconectadosLayout.setHorizontalGroup(
+            PanelDesconectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+        );
+        PanelDesconectadosLayout.setVerticalGroup(
+            PanelDesconectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+        );
+
+        TabsDestinatarios.addTab("Desconectados", PanelDesconectados);
+
+        PanelDestinatarios.add(TabsDestinatarios, java.awt.BorderLayout.CENTER);
 
         PanelFondo.add(PanelDestinatarios, java.awt.BorderLayout.LINE_START);
 
@@ -362,7 +372,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
         jPanel9.setBackground(new java.awt.Color(51, 204, 255));
         jPanel9.setPreferredSize(new java.awt.Dimension(881, 70));
-        jPanel9.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel9.setLayout(new java.awt.GridLayout(1, 3));
 
         jPanel11.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -378,7 +388,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             .addGroup(jPanel11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(LabelAsunto, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,6 +398,29 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         );
 
         jPanel9.add(jPanel11);
+
+        jPanel1.setBackground(new java.awt.Color(51, 204, 255));
+
+        labelUsuario.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labelUsuario.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelUsuario.setText("Usuario:");
+        labelUsuario.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(labelUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE)
+        );
+
+        jPanel9.add(jPanel1);
 
         jPanel10.setBackground(new java.awt.Color(51, 204, 255));
 
@@ -401,14 +434,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
-                .addGap(0, 227, Short.MAX_VALUE)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addComponent(LabelJMessenger, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel10Layout.createSequentialGroup()
                 .addComponent(LabelJMessenger, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(41, 41, 41))
         );
 
         jPanel9.add(jPanel10);
@@ -432,7 +465,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             PanelAsuntoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelAsuntoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(JTFAsunto, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE)
+                .addComponent(JTFAsunto, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
                 .addContainerGap())
         );
         PanelAsuntoLayout.setVerticalGroup(
@@ -464,7 +497,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             PanelInferiorLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelInferiorLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 853, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
                 .addContainerGap())
         );
         PanelInferiorLayout.setVerticalGroup(
@@ -607,6 +640,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         BotonEnviar.setBackground(new java.awt.Color(0, 102, 255));
         BotonEnviar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         BotonEnviar.setText("Enviar");
+        BotonEnviar.setActionCommand(IInteraccionEmisor.COMANDO_ENVIAR);
         BotonEnviar.setBorderPainted(false);
         BotonEnviar.addActionListener(new java.awt.event.ActionListener()
         {
@@ -663,7 +697,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(LabelCuerpo, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addContainerGap(177, Short.MAX_VALUE))
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -680,7 +714,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 440, Short.MAX_VALUE)
+            .addGap(0, 402, Short.MAX_VALUE)
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -702,14 +736,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
             PanelCuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCuerpoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 857, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
                 .addContainerGap())
         );
         PanelCuerpoLayout.setVerticalGroup(
             PanelCuerpoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(PanelCuerpoLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -725,11 +759,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 1109, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(PanelFondo, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
         );
 
         pack();
@@ -757,6 +791,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
     private void DialogBotonEntrarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_DialogBotonEntrarActionPerformed
     {//GEN-HEADEREND:event_DialogBotonEntrarActionPerformed
+        this.labelUsuario.setText("Usuario: " + this.DialogTFNombre.getText());
         this.DialogIniciarSesion.dispose();
     }//GEN-LAST:event_DialogBotonEntrarActionPerformed
 
@@ -770,14 +805,19 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         this.limpiarVista();
     }//GEN-LAST:event_BotonEnviarActionPerformed
 
+    private void BotonActualizarActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_BotonActualizarActionPerformed
+    {//GEN-HEADEREND:event_BotonActualizarActionPerformed
+
+    }//GEN-LAST:event_BotonActualizarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup BGTipoMsj;
+    private javax.swing.JButton BotonActualizar;
     private javax.swing.JButton BotonCancelar;
     private javax.swing.JButton BotonEnviar;
     private javax.swing.JButton DialogBotonEntrar;
     private javax.swing.JDialog DialogIniciarSesion;
     private javax.swing.JTextField DialogTFNombre;
-    private javax.swing.JTextField DialogTFPuerto;
     private javax.swing.JEditorPane JECuerpo;
     private javax.swing.JRadioButton JRBAviso;
     private javax.swing.JRadioButton JRBRecepcion;
@@ -789,7 +829,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JLabel LabelDestinatarios;
     private javax.swing.JLabel LabelDialogJMessenger;
     private javax.swing.JLabel LabelDialogNombre;
-    private javax.swing.JLabel LabelDialogPuerto;
     private javax.swing.JLabel LabelJMessenger;
     private javax.swing.JPanel PanelAsunto;
     private javax.swing.JPanel PanelBotones;
@@ -799,26 +838,29 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JPanel PanelCentralInferior;
     private javax.swing.JPanel PanelCentralInferiorDer;
     private javax.swing.JPanel PanelCentralInferiorIzq;
+    private javax.swing.JPanel PanelConectados;
     private javax.swing.JPanel PanelCuerpo;
+    private javax.swing.JPanel PanelDesconectados;
+    private javax.swing.JPanel PanelDestSuperior;
     private javax.swing.JPanel PanelDestinatarios;
     private javax.swing.JPanel PanelDialog1;
     private javax.swing.JPanel PanelDialog2;
     private javax.swing.JPanel PanelDialog3;
-    private javax.swing.JPanel PanelDialog4;
     private javax.swing.JPanel PanelDialogEntrar;
     private javax.swing.JPanel PanelDialogFondo;
     private javax.swing.JPanel PanelDialogJMessenger;
     private javax.swing.JPanel PanelDialogNombre;
-    private javax.swing.JPanel PanelDialogPuerto;
     private javax.swing.JPanel PanelDialogTFNombre;
-    private javax.swing.JPanel PanelDialogTFPuerto;
     private javax.swing.JPanel PanelEnviar;
     private javax.swing.JPanel PanelFondo;
     private javax.swing.JPanel PanelInferior;
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelSuperior;
     private javax.swing.JPanel PanelTipoMsj;
-    private javax.swing.JList<Destinatario> jListDestinatarios;
+    private javax.swing.JTabbedPane TabsDestinatarios;
+    private javax.swing.JList<Destinatario> jListConectados;
+    private javax.swing.JList<Destinatario> jListDesconectados;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel14;
@@ -827,17 +869,18 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JLabel labelUsuario;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public List<Destinatario> getDestinatarios()
     {
-        return this.jListDestinatarios.getSelectedValuesList();
+        return this.jListConectados.getSelectedValuesList();
     }
 
     @Override
@@ -874,17 +917,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     }
 
     @Override
-    public String getPuerto()
-    {
-        return this.DialogTFPuerto.getText();
-    }
-
-    @Override
     public void addActionListener(ActionListener listener)
     {
-        this.BotonCancelar.addActionListener(listener);
         this.BotonEnviar.addActionListener(listener);
         this.DialogBotonEntrar.addActionListener(listener);
+        this.BotonActualizar.addActionListener(listener);
     }
 
     @Override
@@ -896,11 +933,27 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
 
     @Override
     public void actualizarAgenda(Iterator<Destinatario> destinatarios)
-    {
-        this.modeloDestinatarios.clear();
+    {   
+        Destinatario proximo;
+        
+        this.modeloConectados.clear();
+        this.modeloDesconectados.clear();
         while (destinatarios.hasNext())
-            this.modeloDestinatarios.addElement(destinatarios.next());
+        {
+            proximo = destinatarios.next();
+            if (proximo.isOnline())
+                this.modeloConectados.addElement(proximo);   
+            else
+                this.modeloDesconectados.addElement(proximo);
+        }
+        if (this.modeloConectados.isEmpty())
+            this.modeloConectados.addElement(new Destinatario("No hay conectados", "", "", true));
+        else
+            this.jListConectados.setEnabled(true);
+        if (this.modeloDesconectados.isEmpty())
+            this.modeloDesconectados.addElement(new Destinatario("No hay desconectados", "", "", false));
         this.repaint();
+        this.BotonActualizar.setEnabled(true);
     }
 
     @Override
@@ -916,38 +969,33 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     {
         this.JTFAsunto.setText("");
         this.JECuerpo.setText("");
-        this.jListDestinatarios.clearSelection();
+        this.jListConectados.clearSelection();
         this.JRBSimple.setSelected(true);
     }
     
     private void agregarVerificadorDialog()
     {
         DocumentListener listenerDialog = new DocumentListener() 
+        {
+            @Override
+            public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
+    
+            @Override
+            public void changedUpdate(DocumentEvent e) 
             {
-                @Override
-                public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+                boolean habilitar = true;
+                Iterator<JTextComponent> iter = camposDialog.iterator();
                 
-                @Override
-                public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
-        
-                @Override
-                public void changedUpdate(DocumentEvent e) 
-                {
-                    boolean habilitar = true;
-                    Iterator<JTextComponent> iter = camposDialog.iterator();
-                    
-                    while (iter.hasNext() && habilitar)                              /* controla campos no vacios */
-                        habilitar = !iter.next().getText().matches("^( |    |\n|\r)*$");
-                    
-                    if (habilitar && DialogTFPuerto.getText().matches("^[0-9]+$"))   /* controla 0 <= puerto <= 65535 */
-                        habilitar = Integer.parseInt(DialogTFPuerto.getText()) <= 65535;
-                    else
-                        habilitar = false;
-
-                    DialogBotonEntrar.setEnabled(habilitar);
-                }
-            };
-        
+                while (iter.hasNext() && habilitar)                              /* controla campos no vacios */
+                    habilitar = !iter.next().getText().matches("^( |    |\n|\r)*$");
+                
+                DialogBotonEntrar.setEnabled(habilitar);
+            }
+        };
+    
         Iterator<JTextComponent> iter = this.camposDialog.iterator();
         
         while (iter.hasNext())
@@ -957,29 +1005,29 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
     private void agregarVerificadorNuevoMensaje()
     {
         ListSelectionListener listListener = new ListSelectionListener()
-            {
-                @Override
-                public void valueChanged(ListSelectionEvent e){ verificarNuevoMensaje(); }
-            };
+        {
+            @Override
+            public void valueChanged(ListSelectionEvent e){ verificarNuevoMensaje(); }
+        };
         
         DocumentListener listener = new DocumentListener() 
-            {
-                @Override
-                public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
-                
-                @Override
-                public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
-        
-                @Override
-                public void changedUpdate(DocumentEvent e) { verificarNuevoMensaje(); }
-            };
+        {
+            @Override
+            public void removeUpdate(DocumentEvent e) { changedUpdate(e); }
+            
+            @Override
+            public void insertUpdate(DocumentEvent e) { changedUpdate(e); }
+    
+            @Override
+            public void changedUpdate(DocumentEvent e) { verificarNuevoMensaje(); }
+        };
         
         Iterator<JTextComponent> iter = this.camposMensaje.iterator();
         
         while (iter.hasNext())
             iter.next().getDocument().addDocumentListener(listener);
         
-        jListDestinatarios.addListSelectionListener(listListener);
+        this.jListConectados.addListSelectionListener(listListener);
     }
     
     private void verificarNuevoMensaje()
@@ -990,8 +1038,23 @@ public class VistaEmisor extends javax.swing.JFrame implements IVista
         while (iter.hasNext() && habilitar)                    /* controla campos no vacios */
             habilitar = !iter.next().getText().matches("^( |	|\n|\r)*$");
 
-        habilitar &=  !jListDestinatarios.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
+        habilitar &= !jListConectados.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
 
         BotonEnviar.setEnabled(habilitar);
+    }
+
+
+    @Override
+    public void mostrarCarga()
+    {
+        Destinatario destinatario = new Destinatario("Cargando...", "", "", true);
+        
+        this.BotonActualizar.setEnabled(false);
+        this.jListConectados.setEnabled(false);
+        this.modeloConectados.clear();
+        this.modeloDesconectados.clear();
+        this.modeloConectados.addElement(destinatario);
+        this.modeloDesconectados.addElement(destinatario);
+        this.repaint();
     }
 }

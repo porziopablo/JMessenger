@@ -27,4 +27,19 @@ public abstract class Usuario
     {
         return puerto;
     }
+
+    public void setNombre(String nombre)
+    {
+        this.nombre = nombre;
+    }
+
+    public void setIp(String ip)
+    {
+        this.ip = ip;
+    }
+
+    public void setPuerto(String puerto)
+    {
+        this.puerto = puerto;
+    }
 }

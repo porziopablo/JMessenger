@@ -4,7 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowListener;
 import mensaje.Mensaje;
 
-public interface IVista {
+public interface IInteraccionDestinatario {
     
     String COMANDO_INICIAR = "iniciarSesion";
     

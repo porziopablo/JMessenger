@@ -16,7 +16,6 @@ public class Mensaje {
         this.nombreEmisor = nombreEmisor;
     }
 
-//getters
     public String getAsunto() {
         return asunto;
     }
