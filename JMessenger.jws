@@ -24,6 +24,7 @@
       <string v="oracle.jdeveloper.model.PathsConfiguration/ResourceBundlesContentSet"/>
    </list>
    <list n="listOfChildren">
+      <hash><url n="URL" path="Almacen/Almacen.jpr"/></hash>
       <hash><url n="URL" path="AppDestinatario/AppDestinatario.jpr"/></hash>
       <hash><url n="URL" path="AppEmisor/AppEmisor.jpr"/></hash>
       <hash><url n="URL" path="ServicioDirectorio/ServicioDirectorio.jpr"/></hash>
