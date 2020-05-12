@@ -13,5 +13,12 @@ public class Main
         VistaEmisor ventana = new VistaEmisor();
         Controlador controlador = new Controlador(ventana, new Agenda());
         ventana.setVisible(true);
+        /*
+         * GRACIAS PABLO POR LA AYUDA :)
+         * BUA, AHORA APARECE EL COSITO NEGRO. AYER NO
+         * TENIAS QUE APARECER
+         * QUE MILAGRO
+         * VAMOS A VER COMO SIGUE
+         * */
     }
 }
