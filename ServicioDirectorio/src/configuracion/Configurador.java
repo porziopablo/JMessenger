@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 
 public class Configurador implements IConfiguracion
 {
-    private static Configurador instance;
+    private static Configurador instance = null;
     
     private Configurador()
     {
@@ -18,7 +18,7 @@ public class Configurador implements IConfiguracion
     public static synchronized Configurador getInstance()
     {
         if (instance == null)
-            new Configurador();
+            instance = new Configurador();
         
         return instance;
     }
@@ -43,8 +43,15 @@ public class Configurador implements IConfiguracion
         
         if ((datos.length == CANT_DATOS))
         {                    
-            puertoDestinatario = Integer.parseInt(datos[0]); /* puerto destinatario */
-            puertoEmisor = Integer.parseInt(datos[1]);       /* puerto emisor */
+            try
+            {
+                puertoDestinatario = Integer.parseInt(datos[0]); /* puerto destinatario */
+                puertoEmisor = Integer.parseInt(datos[1]);       /* puerto emisor */
+            }
+            catch (NumberFormatException e)
+            {
+                throw new IOException("El puerto ingresado contiene caracteres no numéricos: " + e.getMessage());
+            }
         }
         else
             throw new IOException("faltan o sobran datos.");

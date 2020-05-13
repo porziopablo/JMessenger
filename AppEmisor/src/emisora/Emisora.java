@@ -97,7 +97,7 @@ public class Emisora extends Observable implements IEmisionMensaje
         catch (IOException e)
         {
             setChanged();
-            notifyObservers("Error al enviar mensaje al Almacén, reintentar luego.");
+            notifyObservers("Error al enviar mensaje, reintentar luego.");
             System.out.println("Error al enviar mensaje al Almacén: " + e.getMessage());
         }
         finally

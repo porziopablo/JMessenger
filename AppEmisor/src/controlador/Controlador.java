@@ -35,6 +35,7 @@ public class Controlador implements Observer, ActionListener
         
         this.emisora.addObserver(this);
         this.vista.addActionListener(this);
+        this.emisora.recibirConfirmacion();
     }
 
     @Override
