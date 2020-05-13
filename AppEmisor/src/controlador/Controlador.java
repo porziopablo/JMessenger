@@ -2,8 +2,6 @@ package controlador;
 
 import agenda.IActualizacionDestinatarios;
 
-import emisora.Emisora;
-
 import emisora.IEmisionMensaje;
 
 import java.awt.event.ActionEvent;
@@ -27,22 +25,24 @@ public class Controlador implements Observer, ActionListener
     private IInteraccionEmisor vista;
     private IEmisionMensaje emisora;
     private IActualizacionDestinatarios agenda;
+    private String nombreEmisor; 
     
-    public Controlador(IInteraccionEmisor vista, IActualizacionDestinatarios agenda)
+    public Controlador(IInteraccionEmisor vista, IActualizacionDestinatarios agenda, IEmisionMensaje emisora)
     {
         this.agenda = agenda;
         this.vista = vista;
-        vista.addActionListener(this);
+        this.emisora = emisora;
+        
+        this.emisora.addObserver(this);
+        this.vista.addActionListener(this);
+        this.emisora.recibirConfirmacion();
     }
 
     @Override
     public void update(Observable observado, Object arg)
     {
         if (observado == this.emisora)
-        {
-            String nombreDestinatario = (String) arg;
-            this.vista.informarEmisor(nombreDestinatario + " ha recibido tu mensaje.");
-        }
+            this.vista.informarEmisor((String) arg);
     }
 
     @Override
@@ -57,9 +57,8 @@ public class Controlador implements Observer, ActionListener
     }
 
     private void iniciarSesion()
-    {
-        this.emisora = new Emisora(this.vista.getNombre()); /* en ITER 3 ya no se necesita el nombre dentro de emisora */
-        this.emisora.addObserver(this);                     /* new emisora no se hará dentro del controlador */
+    {                    
+        this.nombreEmisor = this.vista.getNombre();
         this.actualizarDestinatarios();
     }
 
@@ -86,7 +85,7 @@ public class Controlador implements Observer, ActionListener
                 @Override
                 public void run() 
                 {
-                    emisora.emitirMensaje(new Mensaje(asunto, cuerpo, tipo, destinatarios));
+                    emisora.emitirMensaje(new Mensaje(nombreEmisor, asunto, cuerpo, tipo, destinatarios));
                     timer.cancel();
                 }
             }, 

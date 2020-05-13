@@ -8,4 +8,5 @@ public interface IEmisionMensaje
 {
     void emitirMensaje(Mensaje mensaje);
     void addObserver(Observer observe);
+    void recibirConfirmacion();
 }
