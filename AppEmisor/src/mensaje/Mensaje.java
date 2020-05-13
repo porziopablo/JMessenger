@@ -10,12 +10,13 @@ public class Mensaje
     public final static int MENSAJE_ALERTA = 1;
     public final static int MENSAJE_RECEPCION = 2;
     
-    private String asunto, cuerpo;
+    private String asunto, cuerpo, nombreEmisor;
     private int tipo;
     private List<Destinatario> destinatarios;
 
-    public Mensaje(String asunto, String cuerpo, int tipo, List<Destinatario> destinatarios)
+    public Mensaje(String nombreEmisor, String asunto, String cuerpo, int tipo, List<Destinatario> destinatarios)
     {
+        this.nombreEmisor = nombreEmisor;
         this.asunto = asunto;
         this.cuerpo = cuerpo;
         this.tipo = tipo;
@@ -40,5 +41,10 @@ public class Mensaje
     public List<Destinatario> getDestinatarios()
     {
         return destinatarios;
+    }
+
+    public String getNombreEmisor()
+    {
+        return nombreEmisor;
     }
 }

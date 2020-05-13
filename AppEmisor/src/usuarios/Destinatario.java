@@ -28,7 +28,8 @@ public class Destinatario extends Usuario
     @Override
     public String toString()
     {
-        return this.getNombre();
+        String estado = (this.online) ? " [ON]" : "";
+        
+        return this.getNombre() + estado;
     }
-    
 }
