@@ -12,7 +12,7 @@ import mensaje.Mensaje;
 
 import persistencia.IPersistencia;
 
-import usuario.Emisor;
+import usuarios.Emisor;
 
 public class Almacen implements IGestionConfirmaciones, IGestionMensajes
 {

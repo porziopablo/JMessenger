@@ -9,8 +9,9 @@ public class Mensaje
     private String nombreEmisor, nombreDestinatario, asunto, cuerpo, id;
     private int tipo;
 
-    public Mensaje(String nombreDestinatario, String asunto, String cuerpo, String id, int tipo)
+    public Mensaje(String nombreEmisor, String nombreDestinatario, String asunto, String cuerpo, String id, int tipo)
     {
+        this.nombreEmisor = nombreEmisor;
         this.nombreDestinatario = nombreDestinatario;
         this.asunto = asunto;
         this.cuerpo = cuerpo;

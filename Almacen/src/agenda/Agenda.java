@@ -11,7 +11,7 @@ import java.util.Iterator;
 
 import java.util.TreeMap;
 
-import usuario.Destinatario;
+import usuarios.Destinatario;
 
 public class Agenda implements IActualizacionDestinatarios
 {
