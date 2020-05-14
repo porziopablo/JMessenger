@@ -6,6 +6,8 @@ import almacen.Almacen;
 
 import configurador.Configurador;
 
+import confirmadora.Confirmadora;
+
 import emisora.Emisora;
 
 import java.io.IOException;
@@ -24,6 +26,7 @@ public class Main
             Almacen.getInstance().setPersistencia(FactoryPersistencia.getInstance().getPersistencia((String)configuracion[3]));
             new Thread(new Receptora((String) configuracion[2])).start();
             new Thread(new Emisora(new Agenda((String) configuracion[0], (Integer) configuracion[1]))).start();
+            new Thread(new Confirmadora()).start();
         } 
         catch (IOException e) 
         {
