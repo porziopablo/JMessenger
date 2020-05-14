@@ -2,6 +2,10 @@ package mensaje;
 
 public class Mensaje
 {
+    public final static int MENSAJE_SIMPLE = 0;
+    public final static int MENSAJE_ALERTA = 1;
+    public final static int MENSAJE_RECEPCION = 2;
+    
     private String nombreEmisor, nombreDestinatario, asunto, cuerpo, id;
     private int tipo;
 

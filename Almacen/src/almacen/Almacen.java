@@ -1,5 +1,8 @@
 package almacen;
 
+import configurador.Configurador;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
@@ -13,19 +16,32 @@ import usuario.Emisor;
 
 public class Almacen implements IGestionConfirmaciones, IGestionMensajes
 {
+    
+    private TreeMap<String, Mensaje> mensajesPendientes;
+    private HashMap<String, TreeSet<String>> confirmacionesPendientes;
+    private TreeMap<String, Emisor> emisores;
+    private IPersistencia persistencia;
+    private static Almacen instance = null; 
+        
     private Almacen()
     {
         super();
+        this.mensajesPendientes = new TreeMap<String, Mensaje>();
+        this.confirmacionesPendientes = new HashMap<String, TreeSet<String>>();
+        this.emisores = new TreeMap<String, Emisor>();
     }
     
     public static synchronized Almacen getInstance()
     {
-        return null;
+        if (instance == null)
+            instance = new Almacen();
+        
+        return instance;
     }
     
     public void setPersistencia(IPersistencia persistencia)
     {
-        
+        this.persistencia = persistencia;
     }
 
     @Override
@@ -61,7 +77,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     }
 
     @Override
-    public void agregarMensaje(String mensaje, Iterator<String> listaDestinatarios)
+    public void agregarMensaje(String mensaje, String[] listaDestinatarios)
     {
         // TODO Implement this method
     }
