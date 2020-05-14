@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 import mensaje.Mensaje;
 
-import usuario.Emisor;
+import usuarios.Emisor;
 
 public interface IPersistencia
 {
@@ -19,7 +19,7 @@ public interface IPersistencia
     void persistirEmisor(Emisor emisor) throws PersistenciaException;
     void eliminarEmisor(String nombreEmisor) throws PersistenciaException;
     TreeMap<String, Emisor> cargarEmisoresExistentes() throws PersistenciaException;
-    void persistirConfirmacion(String nombreEmisor, Iterator<String> confirmaciones) throws PersistenciaException;
+    void persistirConfirmacion(String nombreEmisor, TreeSet<String> confirmaciones) throws PersistenciaException;
     void eliminarConfirmaciones(String nombreEmisor) throws PersistenciaException;
     HashMap<String, TreeSet<String>> cargarConfirmacionesExistentes() throws PersistenciaException;
 }

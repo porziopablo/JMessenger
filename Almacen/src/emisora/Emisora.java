@@ -20,7 +20,7 @@ import java.util.TreeMap;
 
 import mensaje.Mensaje;
 
-import usuario.Destinatario;
+import usuarios.Destinatario;
 
 public class Emisora implements Runnable
 {

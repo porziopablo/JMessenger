@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import usuario.Emisor;
+import usuarios.Emisor;
 
 public interface IGestionConfirmaciones
 {

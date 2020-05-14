@@ -1,4 +1,4 @@
-package usuario;
+package usuarios;
 
 public class Destinatario extends Usuario
 {
