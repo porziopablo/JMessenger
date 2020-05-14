@@ -52,6 +52,10 @@ public class Emisora extends Observable implements IEmisionMensaje
         sb.append(SEPARADOR);
         sb.append(mensaje.getCuerpo());
         
+        /* tipo mensaje */
+        sb.append(SEPARADOR);
+        sb.append(mensaje.getTipo());
+        
         /* destinatarios */
         sb.append(SEPARADOR);
         while (destinatarios.hasNext())
@@ -59,11 +63,7 @@ public class Emisora extends Observable implements IEmisionMensaje
             sb.append(destinatarios.next().getNombre());
             sb.append(SEPARADOR_DEST);
         }
-        
-        /* tipo mensaje */
-        sb.append(SEPARADOR);
-        sb.append(mensaje.getTipo());
-        
+                
         /* ip y puerto emisor para confirmar recepcion */
         if (mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION)
         {

@@ -33,10 +33,10 @@ public class Configurador implements IConfiguracion{
         final int CANT_DATOS = 4;
         
         BufferedReader lector;
-        String ruta = System.getProperty("user.dir") + File.separator + origen, linea, tipoPersistencia;
+        String ruta = System.getProperty("user.dir") + File.separator + origen, linea, tipoPersistencia, ipDirectorio;
         String[] datos;
         Object[] configuracion = new Object[CANT_DATOS];
-        int ipDirectorio, puertoDirectorio, puertoEmisor;
+        int puertoDirectorio, puertoEmisor;
         
         lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
         linea = lector.readLine();
@@ -47,14 +47,14 @@ public class Configurador implements IConfiguracion{
         {                    
             try
             {
-                ipDirectorio = Integer.parseInt(datos[0]);       /* ip directorio */
+                ipDirectorio = datos[0];                         /* ip directorio */
                 puertoDirectorio = Integer.parseInt(datos[1]);   /* puerto directorio */
                 puertoEmisor = Integer.parseInt(datos[2]);       /* puerto emisor */
                 tipoPersistencia = datos[3];                     /* tipo de persistencia */
             }
             catch (NumberFormatException e)
             {
-                throw new IOException("La ip o puertos ingresados contienen caracteres no numéricos: " + e.getMessage());
+                throw new IOException("Uno de los puertos ingresados contienen caracteres no numéricos: " + e.getMessage());
             }
         }
         else
@@ -74,5 +74,4 @@ public class Configurador implements IConfiguracion{
         
         return configuracion;
     }
-
 }
