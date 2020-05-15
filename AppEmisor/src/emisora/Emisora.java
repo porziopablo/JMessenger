@@ -36,7 +36,7 @@ public class Emisora extends Observable implements IEmisionMensaje
     {
         final String SEPARADOR = "_###_";
         final String FINAL = "##FIN##";
-        final String SEPARADOR_DEST = "_||_";
+        final String SEPARADOR_DEST = "_@@_";
         
         StringBuilder sb = new StringBuilder();
         Iterator<Destinatario> destinatarios = mensaje.getDestinatarios().iterator();

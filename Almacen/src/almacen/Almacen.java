@@ -127,9 +127,11 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     public synchronized void eliminarMensaje(Iterator<String> idMensajes)
     {
         String id;
+        
         while(idMensajes.hasNext()){
             id = idMensajes.next();
-            this.mensajesPendientes.remove(id);
+            System.out.println("ID a borrar " + id);
+            System.out.println("ELIMINAR MENSAJE? " + this.mensajesPendientes.remove(id) );
             try {
                 this.persistencia.eliminarMensaje(id);
             } catch (PersistenciaException e) {
