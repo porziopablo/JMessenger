@@ -47,6 +47,7 @@ public class Confirmadora implements Runnable
                 System.out.println("Problema con sleep de confirmadora " + e.getMessage());
             }
             
+            System.out.println("ALMACEN INTENTA ENVIAR CONFIRMACIONES");
             emisores = Almacen.getInstance().getEmisores();
             confirmaciones = Almacen.getInstance().getConfirmacionesPendientes();
             iterConfirmaciones = confirmaciones.values().iterator();
