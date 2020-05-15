@@ -44,22 +44,9 @@ public class Receptora implements Runnable{
                 aux = builder.toString();
                 String text[];
                 text = aux.split(SEPARADOR);
-                String dest[] = text[4].split(SEPARADOR_DEST);
+                String dest[] = text[4].split(SEPARADOR_DEST);               
                 
-                /* nombre emisor */
-                builder.append(text[0]);           
-                /* asunto */
-                builder.append(SEPARADOR);
-                builder.append(text[1]);
-                /* cuerpo */
-                builder.append(SEPARADOR);
-                builder.append(text[2]);
-                /* tipo mensaje */
-                builder.append(SEPARADOR);
-                builder.append(text[3]);
-                
-                
-                Almacen.getInstance().agregarMensaje(builder.toString(), dest);
+                Almacen.getInstance().agregarMensaje(text[0],text[1],text[2],text[3],dest);
                 
                 if(Integer.parseInt(text[3]) == Mensaje.MENSAJE_RECEPCION && text.length == 7){
                     Almacen.getInstance().agregarEmisor(text[0], text[5], text[6]);
