@@ -24,7 +24,7 @@ public class Main
         {
             Object[] configuracion = Configurador.getInstance().cargarConfiguracion("config_almacen.txt");
             Almacen.getInstance().setPersistencia(FactoryPersistencia.getInstance().getPersistencia((String)configuracion[3]));
-            new Thread(new Receptora((String) configuracion[2])).start();
+            new Thread(new Receptora((Integer) configuracion[2])).start();
             new Thread(new Emisora(new Agenda((String) configuracion[0], (Integer) configuracion[1]))).start();
             new Thread(new Confirmadora()).start();
         } 

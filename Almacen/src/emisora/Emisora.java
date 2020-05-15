@@ -103,6 +103,10 @@ public class Emisora implements Runnable
                     }
                 }
             }
+            Iterator<String> iter = mensajesABorrar.iterator();
+            while(iter.hasNext()){
+                System.out.println("A BORRAR " + iter.next());    
+            }
             Almacen.getInstance().eliminarMensaje(mensajesABorrar.iterator());
         }
     }

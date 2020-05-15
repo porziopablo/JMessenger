@@ -79,6 +79,7 @@ public class Confirmadora implements Runnable
             
             salida.println(this.confirmacionAString(mensaje));
             salida.flush();
+            recibido = true;
         }
         catch (IOException e)
         {

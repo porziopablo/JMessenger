@@ -11,9 +11,9 @@ import mensaje.Mensaje;
 
 public class Receptora implements Runnable{
     
-    private String puerto;
+    private int puerto;
     
-    public Receptora(String puerto) {
+    public Receptora(int puerto) {
         this.puerto = puerto;
     }
 
@@ -21,10 +21,10 @@ public class Receptora implements Runnable{
     public void run() {
         final String SEPARADOR = "_###_"; 
         final String FINAL = "##FIN##";
-        final String SEPARADOR_DEST = "_||_";
+        final String SEPARADOR_DEST = "_@@_";
         
         try{
-            ServerSocket serverSocket = new ServerSocket(Integer.parseInt(puerto));
+            ServerSocket serverSocket = new ServerSocket(puerto);
             while(true){
                 Socket socket = serverSocket.accept();
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
@@ -44,7 +44,21 @@ public class Receptora implements Runnable{
                 aux = builder.toString();
                 String text[];
                 text = aux.split(SEPARADOR);
-                String dest[] = text[4].split(SEPARADOR_DEST);               
+                String dest[] = text[4].split(SEPARADOR_DEST);     
+                
+                System.out.println("emisor: " + text[0]);
+                System.out.println("asunto " + text[1]);
+                System.out.println("cuerpo "+ text[2]);
+                System.out.println("tipo " + text[3]);
+                System.out.println("destinatarios " + text[4]);
+                
+                for(int i=0; i<dest.length; i++)
+                    System.out.print(dest[i]);
+                
+                if(text.length == 7){
+                    System.out.println("" + text[5]);
+                    System.out.println(text[6]);    
+                }
                 
                 Almacen.getInstance().agregarMensaje(text[0],text[1],text[2],text[3],dest);
                 
