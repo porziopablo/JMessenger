@@ -43,12 +43,16 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
         
         return instance;
     }
-
+    
     @Override
     public synchronized void agregarMensaje(String nombreEmisor, String asunto, String cuerpo, String tipo, String[] listaDestinatarios) {
+        
+        System.out.println("ALMACEN AGREGA MENSAJE");
         for(int i=0; i<listaDestinatarios.length;i++){
-            Mensaje mensaje = new Mensaje(nombreEmisor, listaDestinatarios[i], asunto, cuerpo, listaDestinatarios[i]+"_"+Instant.now().toEpochMilli() ,Integer.parseInt(tipo));
-            this.mensajesPendientes.put(listaDestinatarios[i]+"_"+Instant.now().toEpochMilli(), mensaje);
+            String id = listaDestinatarios[i]+"_"+Instant.now().toEpochMilli();
+            Mensaje mensaje = new Mensaje(nombreEmisor, listaDestinatarios[i], asunto, cuerpo, id,Integer.parseInt(tipo));
+            this.mensajesPendientes.put(id, mensaje);
+            
             try {
                 this.persistencia.persistirMensaje(mensaje);
             } catch (PersistenciaException e) {
@@ -61,6 +65,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     @Override
     public synchronized void agregarEmisor(String nombreEmisor, String ip, String puerto)
     {
+        System.out.println("ALMACEN AGREGA EMISOR");
         Emisor emisor = new Emisor(nombreEmisor, ip, puerto);
         this.emisores.put(nombreEmisor, emisor);    
         try {
@@ -73,6 +78,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     @Override
     public synchronized void agregarConfirmacion(String nombreEmisor, String nombreDestinatario)
     {
+        System.out.println("ALMACEN AGREGA CONFIRMACION");
         TreeSet<String> confirm = this.confirmacionesPendientes.get(nombreEmisor);
         if(confirm == null){
             confirm = new TreeSet<String>();
@@ -89,6 +95,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     @Override
     public synchronized void eliminarConfirmacion(String nombreEmisor)
     {
+        System.out.println("ALMACEN ELIMINA CONFIRMACION");
         this.confirmacionesPendientes.remove(nombreEmisor);
         try {
             this.persistencia.eliminarConfirmaciones(nombreEmisor);
@@ -100,6 +107,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     
     private synchronized void eliminarEmisor(String nombreEmisor) {
         
+        System.out.println("ALMACEN INTENTA ELIMINAR EMISOR");
         if(!this.confirmacionesPendientes.containsKey(nombreEmisor) && !this.existeMsjRecepcion(nombreEmisor)){
             this.emisores.remove(nombreEmisor);
             try {
@@ -126,12 +134,12 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     @Override
     public synchronized void eliminarMensaje(Iterator<String> idMensajes)
     {
-        String id;
         
+        System.out.println("ALMACEN ELIMINA MENSAJE");
+        String id;
         while(idMensajes.hasNext()){
             id = idMensajes.next();
-            System.out.println("ID a borrar " + id);
-            System.out.println("ELIMINAR MENSAJE? " + this.mensajesPendientes.remove(id) );
+            this.mensajesPendientes.remove(id);
             try {
                 this.persistencia.eliminarMensaje(id);
             } catch (PersistenciaException e) {
@@ -160,6 +168,7 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
 
     public void setPersistencia(IPersistencia persistencia)
     {
+        System.out.println("ALMACEN SETEA PERSISTENCIA");
         this.persistencia = persistencia;
         try {
             this.confirmacionesPendientes = this.persistencia.cargarConfirmacionesExistentes();
@@ -170,4 +179,14 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
         }
     }
 
+//DEBUG
+    private void mostrarMensajes(){
+        Iterator<Mensaje> mensajes = this.mensajesPendientes.values().iterator();
+        Iterator<String> keys = this.mensajesPendientes.keySet().iterator();
+        
+        while(keys.hasNext()){
+            System.out.println("Key " + keys.next() +"//"+ mensajes.next().getId());
+        }
+    }
+    
 }

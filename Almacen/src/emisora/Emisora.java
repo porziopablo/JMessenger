@@ -82,6 +82,7 @@ public class Emisora implements Runnable
                 System.out.println("Problema con sleep de emisora " + e.getMessage());
             }
             
+            System.out.println("ALMACEN INTENTA ENVIAR MENSAJES");
             mensajes = Almacen.getInstance().getMensajesPendientes().values().iterator();
             destinatarios = this.agenda.actualizarDestinatarios();
             mensajesABorrar= new ArrayList<String>();
@@ -107,7 +108,8 @@ public class Emisora implements Runnable
             while(iter.hasNext()){
                 System.out.println("A BORRAR " + iter.next());    
             }
-            Almacen.getInstance().eliminarMensaje(mensajesABorrar.iterator());
+            if(!mensajesABorrar.isEmpty())
+                Almacen.getInstance().eliminarMensaje(mensajesABorrar.iterator());
         }
     }
     
