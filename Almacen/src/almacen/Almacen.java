@@ -113,15 +113,29 @@ public class Almacen implements IGestionConfirmaciones, IGestionMensajes
     
     private synchronized boolean existeMsjRecepcion(String nombreEmisor) {
         boolean existe = false;
-       
+        Iterator<Mensaje> mensajes = this.mensajesPendientes.values().iterator();
         
+        Mensaje prox;
+        while(mensajes.hasNext() && !existe){
+            prox = mensajes.next();
+            existe = prox.getNombreEmisor().equalsIgnoreCase(nombreEmisor) && prox.getTipo() == Mensaje.MENSAJE_RECEPCION; 
+        }  
         return existe;
     }
     
     @Override
     public synchronized void eliminarMensaje(Iterator<String> idMensajes)
     {
-        
+        String id;
+        while(idMensajes.hasNext()){
+            id = idMensajes.next();
+            this.mensajesPendientes.remove(id);
+            try {
+                this.persistencia.eliminarMensaje(id);
+            } catch (PersistenciaException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     @Override
