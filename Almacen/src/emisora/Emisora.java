@@ -68,7 +68,7 @@ public class Emisora implements Runnable
         Iterator<Mensaje> mensajes;
         ArrayList<String> mensajesABorrar;
         Mensaje mensaje;
-        Destinatario destinatario;
+        Destinatario destinatario = null;
         boolean recibido;
         
         while (true)
@@ -79,7 +79,7 @@ public class Emisora implements Runnable
             } 
             catch (InterruptedException e) 
             {
-                System.out.println("Problema con sleep del hilo " + e.getMessage());
+                System.out.println("Problema con sleep de emisora " + e.getMessage());
             }
             
             mensajes = Almacen.getInstance().getMensajesPendientes().values().iterator();
@@ -91,7 +91,7 @@ public class Emisora implements Runnable
                 mensaje = mensajes.next();
                 destinatario = destinatarios.get(mensaje.getNombreDestinatario());
                 
-                if (destinatario.isOnline())
+                if ((destinatario != null) && destinatario.isOnline())
                 {
                     recibido = this.emitirMensaje(mensaje, destinatario.getIp(), Integer.parseInt(destinatario.getPuerto()));
                     if (recibido)
