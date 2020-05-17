@@ -92,7 +92,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         BotonActualizar = new javax.swing.JButton();
         PanelConectados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jListConectados = new javax.swing.JList<>();
+        jListDestinatarios = new javax.swing.JList<>();
         PanelPrincipal = new javax.swing.JPanel();
         PanelSuperior = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -310,11 +310,11 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
 
         jScrollPane1.setBackground(new java.awt.Color(51, 204, 255));
 
-        jListConectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jListConectados.setModel(this.modeloDestinatarios);
-        jListConectados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jListConectados.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jScrollPane1.setViewportView(jListConectados);
+        jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListDestinatarios.setModel(this.modeloDestinatarios);
+        jListDestinatarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jListDestinatarios.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setViewportView(jListDestinatarios);
 
         javax.swing.GroupLayout PanelConectadosLayout = new javax.swing.GroupLayout(PanelConectados);
         PanelConectados.setLayout(PanelConectadosLayout);
@@ -827,7 +827,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelSuperior;
     private javax.swing.JPanel PanelTipoMsj;
-    private javax.swing.JList<Destinatario> jListConectados;
+    private javax.swing.JList<Destinatario> jListDestinatarios;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -847,7 +847,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     @Override
     public List<Destinatario> getDestinatarios()
     {
-        return this.jListConectados.getSelectedValuesList();
+        return this.jListDestinatarios.getSelectedValuesList();
     }
 
     @Override
@@ -908,7 +908,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         if (this.modeloDestinatarios.isEmpty())
             this.modeloDestinatarios.addElement(new Destinatario("No hay conectados", "", "", true));
         else
-            this.jListConectados.setEnabled(true);
+            this.jListDestinatarios.setEnabled(true);
         this.repaint();
         this.BotonActualizar.setEnabled(true);
     }
@@ -926,7 +926,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     {
         this.JTFAsunto.setText("");
         this.JECuerpo.setText("");
-        this.jListConectados.clearSelection();
+        this.jListDestinatarios.clearSelection();
         this.JRBSimple.setSelected(true);
     }
     
@@ -984,7 +984,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         while (iter.hasNext())
             iter.next().getDocument().addDocumentListener(listener);
         
-        this.jListConectados.addListSelectionListener(listListener);
+        this.jListDestinatarios.addListSelectionListener(listListener);
     }
     
     private void verificarNuevoMensaje()
@@ -995,7 +995,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         while (iter.hasNext() && habilitar)                    /* controla campos no vacios */
             habilitar = !iter.next().getText().matches("^( |	|\n|\r)*$");
 
-        habilitar &= !jListConectados.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
+        habilitar &= !jListDestinatarios.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
 
         BotonEnviar.setEnabled(habilitar);
     }
@@ -1007,7 +1007,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         Destinatario destinatario = new Destinatario("Cargando...", "", "", true);
         
         this.BotonActualizar.setEnabled(false);
-        this.jListConectados.setEnabled(false);
+        this.jListDestinatarios.setEnabled(false);
         this.modeloDestinatarios.clear();
         this.modeloDestinatarios.addElement(destinatario);
         this.repaint();
