@@ -26,15 +26,13 @@ import usuarios.Destinatario;
 
 public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmisor
 {
-    private DefaultListModel<Destinatario> modeloConectados;
-    private DefaultListModel<Destinatario> modeloDesconectados;
+    private DefaultListModel<Destinatario> modeloDestinatarios;
     private ArrayList<JTextComponent> camposDialog; 
     private ArrayList<JTextComponent> camposMensaje;
     
     public VistaEmisor()
     {
-        this.modeloConectados = new DefaultListModel<Destinatario>();
-        this.modeloDesconectados = new DefaultListModel<Destinatario>();
+        this.modeloDestinatarios = new DefaultListModel<Destinatario>();
         this.camposDialog = new ArrayList<JTextComponent>();
         this.camposMensaje = new ArrayList<JTextComponent>();
         
@@ -92,13 +90,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         PanelDestSuperior = new javax.swing.JPanel();
         LabelDestinatarios = new javax.swing.JLabel();
         BotonActualizar = new javax.swing.JButton();
-        TabsDestinatarios = new javax.swing.JTabbedPane();
         PanelConectados = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jListConectados = new javax.swing.JList<>();
-        PanelDesconectados = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jListDesconectados = new javax.swing.JList<>();
+        jListDestinatarios = new javax.swing.JList<>();
         PanelPrincipal = new javax.swing.JPanel();
         PanelSuperior = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
@@ -311,54 +305,31 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
 
         PanelDestinatarios.add(PanelDestSuperior, java.awt.BorderLayout.PAGE_START);
 
-        TabsDestinatarios.setBackground(new java.awt.Color(51, 204, 255));
-
         PanelConectados.setBackground(new java.awt.Color(51, 204, 255));
         PanelConectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
 
         jScrollPane1.setBackground(new java.awt.Color(51, 204, 255));
 
-        jListConectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jListConectados.setModel(this.modeloConectados);
-        jListConectados.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jListConectados.setSelectionBackground(new java.awt.Color(204, 204, 204));
-        jScrollPane1.setViewportView(jListConectados);
+        jListDestinatarios.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jListDestinatarios.setModel(this.modeloDestinatarios);
+        jListDestinatarios.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jListDestinatarios.setSelectionBackground(new java.awt.Color(204, 204, 204));
+        jScrollPane1.setViewportView(jListDestinatarios);
 
         javax.swing.GroupLayout PanelConectadosLayout = new javax.swing.GroupLayout(PanelConectados);
         PanelConectados.setLayout(PanelConectadosLayout);
         PanelConectadosLayout.setHorizontalGroup(
             PanelConectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
         );
         PanelConectadosLayout.setVerticalGroup(
             PanelConectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PanelConectadosLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        TabsDestinatarios.addTab("Conectados", PanelConectados);
-
-        PanelDesconectados.setBackground(new java.awt.Color(51, 204, 255));
-        PanelDesconectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-
-        jListDesconectados.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jListDesconectados.setModel(this.modeloDesconectados);
-        jListDesconectados.setEnabled(false);
-        jScrollPane4.setViewportView(jListDesconectados);
-
-        javax.swing.GroupLayout PanelDesconectadosLayout = new javax.swing.GroupLayout(PanelDesconectados);
-        PanelDesconectados.setLayout(PanelDesconectadosLayout);
-        PanelDesconectadosLayout.setHorizontalGroup(
-            PanelDesconectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
-        );
-        PanelDesconectadosLayout.setVerticalGroup(
-            PanelDesconectadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
-        );
-
-        TabsDestinatarios.addTab("Desconectados", PanelDesconectados);
-
-        PanelDestinatarios.add(TabsDestinatarios, java.awt.BorderLayout.CENTER);
+        PanelDestinatarios.add(PanelConectados, java.awt.BorderLayout.PAGE_END);
 
         PanelFondo.add(PanelDestinatarios, java.awt.BorderLayout.LINE_START);
 
@@ -840,7 +811,6 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     private javax.swing.JPanel PanelCentralInferiorIzq;
     private javax.swing.JPanel PanelConectados;
     private javax.swing.JPanel PanelCuerpo;
-    private javax.swing.JPanel PanelDesconectados;
     private javax.swing.JPanel PanelDestSuperior;
     private javax.swing.JPanel PanelDestinatarios;
     private javax.swing.JPanel PanelDialog1;
@@ -857,9 +827,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     private javax.swing.JPanel PanelPrincipal;
     private javax.swing.JPanel PanelSuperior;
     private javax.swing.JPanel PanelTipoMsj;
-    private javax.swing.JTabbedPane TabsDestinatarios;
-    private javax.swing.JList<Destinatario> jListConectados;
-    private javax.swing.JList<Destinatario> jListDesconectados;
+    private javax.swing.JList<Destinatario> jListDestinatarios;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -873,14 +841,13 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel labelUsuario;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public List<Destinatario> getDestinatarios()
     {
-        return this.jListConectados.getSelectedValuesList();
+        return this.jListDestinatarios.getSelectedValuesList();
     }
 
     @Override
@@ -934,24 +901,14 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     @Override
     public void actualizarAgenda(Iterator<Destinatario> destinatarios)
     {   
-        Destinatario proximo;
-        
-        this.modeloConectados.clear();
-        this.modeloDesconectados.clear();
+        this.modeloDestinatarios.clear();
         while (destinatarios.hasNext())
-        {
-            proximo = destinatarios.next();
-            if (proximo.isOnline())
-                this.modeloConectados.addElement(proximo);   
-            else
-                this.modeloDesconectados.addElement(proximo);
-        }
-        if (this.modeloConectados.isEmpty())
-            this.modeloConectados.addElement(new Destinatario("No hay conectados", "", "", true));
+            this.modeloDestinatarios.addElement(destinatarios.next());  
+        
+        if (this.modeloDestinatarios.isEmpty())
+            this.modeloDestinatarios.addElement(new Destinatario("No hay conectados", "", "", true));
         else
-            this.jListConectados.setEnabled(true);
-        if (this.modeloDesconectados.isEmpty())
-            this.modeloDesconectados.addElement(new Destinatario("No hay desconectados", "", "", false));
+            this.jListDestinatarios.setEnabled(true);
         this.repaint();
         this.BotonActualizar.setEnabled(true);
     }
@@ -969,7 +926,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
     {
         this.JTFAsunto.setText("");
         this.JECuerpo.setText("");
-        this.jListConectados.clearSelection();
+        this.jListDestinatarios.clearSelection();
         this.JRBSimple.setSelected(true);
     }
     
@@ -1027,7 +984,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         while (iter.hasNext())
             iter.next().getDocument().addDocumentListener(listener);
         
-        this.jListConectados.addListSelectionListener(listListener);
+        this.jListDestinatarios.addListSelectionListener(listListener);
     }
     
     private void verificarNuevoMensaje()
@@ -1038,7 +995,7 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         while (iter.hasNext() && habilitar)                    /* controla campos no vacios */
             habilitar = !iter.next().getText().matches("^( |	|\n|\r)*$");
 
-        habilitar &= !jListConectados.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
+        habilitar &= !jListDestinatarios.isSelectionEmpty();  /* controla al menos un destinatario seleccionado */                   
 
         BotonEnviar.setEnabled(habilitar);
     }
@@ -1050,11 +1007,9 @@ public class VistaEmisor extends javax.swing.JFrame implements IInteraccionEmiso
         Destinatario destinatario = new Destinatario("Cargando...", "", "", true);
         
         this.BotonActualizar.setEnabled(false);
-        this.jListConectados.setEnabled(false);
-        this.modeloConectados.clear();
-        this.modeloDesconectados.clear();
-        this.modeloConectados.addElement(destinatario);
-        this.modeloDesconectados.addElement(destinatario);
+        this.jListDestinatarios.setEnabled(false);
+        this.modeloDestinatarios.clear();
+        this.modeloDestinatarios.addElement(destinatario);
         this.repaint();
     }
 }

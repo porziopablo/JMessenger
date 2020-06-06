@@ -3,12 +3,9 @@ package agenda;
 import java.beans.XMLDecoder;
 
 import java.io.BufferedInputStream;
-
 import java.io.IOException;
 
 import java.net.Socket;
-
-import java.util.Iterator;
 
 import java.util.TreeMap;
 
@@ -26,7 +23,7 @@ public class Agenda implements IActualizacionDestinatarios
     }
 
     @Override
-    public Iterator<Destinatario> actualizarDestinatarios()
+    public TreeMap<String, Destinatario> actualizarDestinatarios()
     {
         TreeMap<String, Destinatario> destinatarios = new TreeMap<String, Destinatario>();
         XMLDecoder entrada;
@@ -45,6 +42,6 @@ public class Agenda implements IActualizacionDestinatarios
             System.out.println("Error al recibir agenda desde el Directorio: " + e.getMessage());
         }
 
-        return destinatarios.values().iterator();
+        return destinatarios;
     }
 }
