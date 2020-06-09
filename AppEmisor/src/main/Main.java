@@ -8,7 +8,12 @@ import controlador.Controlador;
 
 import emisora.Emisora;
 
+import encriptacion.EncriptadorAES;
+import encriptacion.FactoryEncriptacion;
+
 import java.io.IOException;
+
+import persistencia.FactoryPersistencia;
 
 import vista.VistaEmisor;
 
@@ -23,8 +28,14 @@ public class Main
             new Controlador(
                                 ventana, 
                                 new Agenda((String) configuracion[0], (Integer) configuracion[1]), 
-                                new Emisora((String) configuracion[2], (Integer) configuracion[3], 
-                                                                        (Integer) configuracion[4])
+                                new Emisora
+                                (
+                                            (String) configuracion[2], 
+                                            (Integer) configuracion[3], 
+                                            (Integer) configuracion[4], 
+                                            FactoryEncriptacion.getInstance().getEncriptacion("", ""),
+                                            FactoryPersistencia.getInstance().getPersistencia("")
+                                )
                             );
             ventana.setVisible(true);
         } 

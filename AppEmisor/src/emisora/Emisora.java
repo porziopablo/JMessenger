@@ -1,5 +1,7 @@
 package emisora;
 
+import encriptacion.IEncriptacion;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +19,8 @@ import java.util.Observable;
 
 import mensaje.Mensaje;
 
+import persistencia.IPersistencia;
+
 import usuarios.Destinatario;
 
 public class Emisora extends Observable implements IEmisionMensaje
@@ -24,12 +28,17 @@ public class Emisora extends Observable implements IEmisionMensaje
     private String ipAlmacen = "192.168.0.9";
     private int puertoAlmacen = 1234;       /* valores por defecto */
     private int puertoConfirmacion = 1234;
+    private IEncriptacion encriptador;
+    private IPersistencia persistencia;
 
-    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion)
+    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion, IEncriptacion encriptador, 
+                   IPersistencia persistencia)
     {
         this.ipAlmacen = ipAlmacen;
         this.puertoAlmacen = puertoAlmacen;
         this.puertoConfirmacion = puertoConfirmacion;
+        this.encriptador = encriptador;
+        this.persistencia = persistencia;
     }
 
     private String mensajeAString(Mensaje mensaje) throws UnknownHostException
@@ -39,18 +48,18 @@ public class Emisora extends Observable implements IEmisionMensaje
         final String SEPARADOR_DEST = "_@@_";
         
         StringBuilder sb = new StringBuilder();
-        Iterator<Destinatario> destinatarios = mensaje.getDestinatarios().iterator();
+        Iterator<String> destinatarios = mensaje.getDestinatarios().iterator();
         
         /* nombre emisor */
         sb.append(mensaje.getNombreEmisor());
         
         /* asunto */
         sb.append(SEPARADOR);
-        sb.append(mensaje.getAsunto());
+        sb.append(this.encriptador.encriptar(mensaje.getAsunto()));
         
         /* cuerpo */
         sb.append(SEPARADOR);
-        sb.append(mensaje.getCuerpo());
+        sb.append(this.encriptador.encriptar(mensaje.getCuerpo()));
         
         /* tipo mensaje */
         sb.append(SEPARADOR);
@@ -60,7 +69,7 @@ public class Emisora extends Observable implements IEmisionMensaje
         sb.append(SEPARADOR);
         while (destinatarios.hasNext())
         {
-            sb.append(destinatarios.next().getNombre());
+            sb.append(destinatarios.next());
             sb.append(SEPARADOR_DEST);
         }
                 
