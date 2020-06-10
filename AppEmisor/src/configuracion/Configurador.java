@@ -1,10 +1,18 @@
 package configuracion;
 
+import directorio.Directorio;
+
+import encriptacion.FactoryEncriptacion;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import java.util.ArrayList;
+
+import persistencia.FactoryPersistencia;
 
 public class Configurador implements IConfiguracion
 {
@@ -28,28 +36,32 @@ public class Configurador implements IConfiguracion
     {
         final String SEPARADOR = ", *"; /* regex */
         final String ENCODING = "UTF-8";
-        final int CANT_DATOS = 5;
+        final int CANT_DATOS = 7;
+        final int MIN_DIRECTORIOS = 2;
+        final int CANT_DATOS_DIRECTORIO = 2;
         
         BufferedReader lector;
-        String ruta = System.getProperty("user.dir") + File.separator + origen, linea;
+        String ruta = System.getProperty("user.dir") + File.separator + origen, linea, ipDirectorio;
         String[] datos;
         Object[] configuracion = new Object[CANT_DATOS];
-        int puertoDirectorio, puertoConfirmacion, puertoAlmacen;
+        int puertoDirectorio, puertoConfirmacion, puertoAlmacen, cantidadDirectorios = 0;
+        ArrayList<Directorio> directorios = new ArrayList<Directorio>();
         
         lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
         linea = lector.readLine();
-        lector.close();
         datos = linea.split(SEPARADOR);
         
-        if ((datos.length == CANT_DATOS))
+        if (datos.length == CANT_DATOS)
         {
             try
             {
-                configuracion[0] = datos[0];                     /* IP directorio */
-                puertoDirectorio = Integer.parseInt(datos[1]);   /* puerto directorio */
-                configuracion[2] = datos[2];                     /* IP almacen */
-                puertoAlmacen = Integer.parseInt(datos[3]);      /* puerto almacen */
-                puertoConfirmacion = Integer.parseInt(datos[4]); /* puerto confirmacion */
+                configuracion[0] = datos[0];                      /* algoritmo encriptacion */
+                configuracion[1] = datos[1];                      /* llave encriptacion */
+                configuracion[2] = datos[2];                      /* IP almacen */
+                puertoAlmacen = Integer.parseInt(datos[3]);       /* puerto almacen */
+                puertoConfirmacion = Integer.parseInt(datos[4]);  /* puerto confirmacion */
+                configuracion[5] = datos[5];                      /* tipo persistencia */     
+                cantidadDirectorios = Integer.parseInt(datos[6]); /* cantidad directorios */
             }
             catch (NumberFormatException e)
             {
@@ -58,16 +70,46 @@ public class Configurador implements IConfiguracion
         }
         else
             throw new IOException("faltan o sobran datos.");
-        if (! ((puertoDirectorio >= 0) && (puertoDirectorio <= 65535)))
-            throw new IOException("el puerto para recibir destinatarios del Directorio debe ser un entero en el rango [0-65535].");
+        if (! configuracion[0].equals(FactoryEncriptacion.AES))
+            throw new IOException("el algorimto de encriptación elegido no está soportado.");
+        if (! configuracion[5].equals(FactoryPersistencia.XML))
+            throw new IOException("el tipo de persistencia elegido no está soportado.");
         if (! ((puertoAlmacen >= 0) && (puertoAlmacen <= 65535)))
             throw new IOException("el puerto para enviar mensajes al Almacen debe ser un entero en el rango [0-65535].");
         if (! ((puertoConfirmacion >= 0) && (puertoConfirmacion <= 65535)))
             throw new IOException("el puerto para recibir confirmaciones de recepción debe ser un entero en el rango [0-65535].");
+        if (cantidadDirectorios < MIN_DIRECTORIOS)
+            throw new IOException("Debe haber al menos datos de " + MIN_DIRECTORIOS + " directorio/s.");
         
-        configuracion[1] = puertoDirectorio;
         configuracion[3] = puertoAlmacen;
         configuracion[4] = puertoConfirmacion;
+        
+        for (int i = 0; i < cantidadDirectorios; i++)
+        {
+            linea = lector.readLine();
+            datos = linea.split(SEPARADOR);
+            
+            if (datos.length == CANT_DATOS_DIRECTORIO)
+            {
+                try
+                {
+                    ipDirectorio = datos[0];                       /* IP directorio */
+                    puertoDirectorio = Integer.parseInt(datos[1]); /* puerto directorio */
+                }
+                catch (NumberFormatException e)
+                {
+                    throw new IOException("El puerto del directorio nro. " + (i+1) 
+                                          + " contiene caracteres no numéricos: " + e.getMessage());
+                }
+            }
+            else
+                throw new IOException("faltan o sobran datos del directorio nro. " + (i+1) + ".");
+            if (! ((puertoDirectorio >= 0) && (puertoDirectorio <= 65535)))
+                throw new IOException("el puerto del directorio nro. " + (i+1) + " debe ser un entero en el rango [0-65535].");
+            directorios.add(new Directorio(ipDirectorio, puertoDirectorio));
+        }
+        lector.close();
+        configuracion[6] = directorios;
         
         return configuracion;
     }

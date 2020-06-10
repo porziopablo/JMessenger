@@ -1,5 +1,7 @@
 package agenda;
 
+import directorio.Directorio;
+
 import java.beans.XMLDecoder;
 
 import java.io.BufferedInputStream;
@@ -8,6 +10,7 @@ import java.io.IOException;
 
 import java.net.Socket;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import java.util.TreeMap;
@@ -16,13 +19,13 @@ import usuarios.Destinatario;
 
 public class Agenda implements IActualizacionDestinatarios
 {
-    private String ipDirectorio;
-    private int puertoDirectorio;
+    private ArrayList<Directorio> directorios;
+    private int directorioActual;
 
-    public Agenda(String ipDirectorio, int puertoDirectorio)
+    public Agenda(ArrayList<Directorio> directorios)
     {
-        this.ipDirectorio = ipDirectorio;
-        this.puertoDirectorio = puertoDirectorio;
+        this.directorios = directorios;
+        this.directorioActual = 0;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class Agenda implements IActualizacionDestinatarios
                 
         try
         {
-            socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
+            socket = new Socket("", 0);
             entrada = new XMLDecoder(new BufferedInputStream(socket.getInputStream()));
             
             destinatarios = (TreeMap<String, Destinatario>) entrada.readObject();

@@ -21,8 +21,6 @@ import mensaje.Mensaje;
 
 import persistencia.IPersistencia;
 
-import usuarios.Destinatario;
-
 public class Emisora extends Observable implements IEmisionMensaje
 {
     private String ipAlmacen = "192.168.0.9";
