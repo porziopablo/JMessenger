@@ -55,12 +55,12 @@ public class Configurador implements IConfiguracion
         {
             try
             {
-                configuracion[0] = datos[0];                      /* algoritmo encriptacion */
+                configuracion[0] = datos[0].toUpperCase();        /* algoritmo encriptacion */
                 configuracion[1] = datos[1];                      /* llave encriptacion */
                 configuracion[2] = datos[2];                      /* IP almacen */
                 puertoAlmacen = Integer.parseInt(datos[3]);       /* puerto almacen */
                 puertoConfirmacion = Integer.parseInt(datos[4]);  /* puerto confirmacion */
-                configuracion[5] = datos[5];                      /* tipo persistencia */     
+                configuracion[5] = datos[5].toUpperCase();        /* tipo persistencia */     
                 cantidadDirectorios = Integer.parseInt(datos[6]); /* cantidad directorios */
             }
             catch (NumberFormatException e)
@@ -70,10 +70,12 @@ public class Configurador implements IConfiguracion
         }
         else
             throw new IOException("faltan o sobran datos.");
-        if (! configuracion[0].equals(FactoryEncriptacion.AES))
+        if (! ((String) configuracion[0]).equalsIgnoreCase(FactoryEncriptacion.AES))
             throw new IOException("el algorimto de encriptación elegido no está soportado.");
-        if (! configuracion[5].equals(FactoryPersistencia.XML))
+        if (! ((String) configuracion[5]).equalsIgnoreCase(FactoryPersistencia.XML))
             throw new IOException("el tipo de persistencia elegido no está soportado.");
+        if (((String) configuracion[1]).length() < 1)
+            throw new IOException("la llave de encriptación debe tener longitud mayor o igual a 1.");         
         if (! ((puertoAlmacen >= 0) && (puertoAlmacen <= 65535)))
             throw new IOException("el puerto para enviar mensajes al Almacen debe ser un entero en el rango [0-65535].");
         if (! ((puertoConfirmacion >= 0) && (puertoConfirmacion <= 65535)))
@@ -87,6 +89,8 @@ public class Configurador implements IConfiguracion
         for (int i = 0; i < cantidadDirectorios; i++)
         {
             linea = lector.readLine();
+            if (linea == null)
+                throw new IOException("Faltan datos de " + (cantidadDirectorios - i) + " directorio/s.");
             datos = linea.split(SEPARADOR);
             
             if (datos.length == CANT_DATOS_DIRECTORIO)
@@ -98,14 +102,14 @@ public class Configurador implements IConfiguracion
                 }
                 catch (NumberFormatException e)
                 {
-                    throw new IOException("El puerto del directorio nro. " + (i+1) 
+                    throw new IOException("El puerto del directorio nro " + (i+1) 
                                           + " contiene caracteres no numéricos: " + e.getMessage());
                 }
             }
             else
-                throw new IOException("faltan o sobran datos del directorio nro. " + (i+1) + ".");
+                throw new IOException("faltan o sobran datos del directorio nro " + (i+1) + ".");
             if (! ((puertoDirectorio >= 0) && (puertoDirectorio <= 65535)))
-                throw new IOException("el puerto del directorio nro. " + (i+1) + " debe ser un entero en el rango [0-65535].");
+                throw new IOException("el puerto del directorio nro " + (i+1) + " debe ser un entero en el rango [0-65535].");
             directorios.add(new Directorio(ipDirectorio, puertoDirectorio));
         }
         lector.close();

@@ -10,7 +10,6 @@ import directorio.Directorio;
 
 import emisora.Emisora;
 
-import encriptacion.EncriptadorAES;
 import encriptacion.FactoryEncriptacion;
 
 import java.io.IOException;
@@ -31,7 +30,7 @@ public class Main
             VistaEmisor ventana = new VistaEmisor();
             new Controlador(
                                 ventana, 
-                                new Agenda((ArrayList<Directorio>) configuracion[5]), 
+                                new Agenda((ArrayList<Directorio>) configuracion[6]), 
                                 new Emisora
                                 (
                                             (String) configuracion[2], 
@@ -42,7 +41,7 @@ public class Main
                                                 (String)configuracion[0],
                                                 (String) configuracion[1]
                                             ),
-                                            FactoryPersistencia.getInstance().getPersistencia((String) configuracion[6])
+                                            FactoryPersistencia.getInstance().getPersistencia((String) configuracion[5])
                                 )
                             );
             ventana.setVisible(true);
