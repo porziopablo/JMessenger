@@ -19,6 +19,7 @@ import mensaje.Mensaje;
 import notificadora.IConexion;
 import notificadora.Notificadora;
 
+import receptora.IRecepcionMensaje;
 import receptora.Receptora;
 
 import usuarios.Destinatario;
@@ -31,11 +32,12 @@ public class Controlador extends WindowAdapter implements ActionListener, Observ
     private Receptora receptora; //observable
     private IConexion notificadora;
     
-    public Controlador(IInteraccionDestinatario vista, IConexion notificadora) {
+    public Controlador(IInteraccionDestinatario vista, IConexion notificadora, Receptora receptora) {
         this.vista = vista;
         this.vista.addActionListener(this);
         this.vista.addWindowListener(this);
         this.notificadora = notificadora;
+        this.receptora = receptora;
     }
 
     private int iniciarSesion(){
@@ -50,7 +52,7 @@ public class Controlador extends WindowAdapter implements ActionListener, Observ
             
             if(registro == 1){
                 correcto = 1;
-                this.receptora = new Receptora(new Destinatario(nombre, ip, puerto)); 
+                this.receptora.setDestinatario(new Destinatario(nombre, ip, puerto)); 
                 this.receptora.addObserver(this);   
                 this.receptora.recibirMensaje();
             }
