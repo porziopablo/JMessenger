@@ -5,7 +5,7 @@ import java.util.List;
 
 import usuarios.Destinatario;
 
-public class Mensaje
+public class Mensaje implements Cloneable
 {
     public final static int MENSAJE_SIMPLE = 0;
     public final static int MENSAJE_ALERTA = 1;
@@ -23,6 +23,11 @@ public class Mensaje
         this.tipo = tipo;
         this.destinatarios = destinatarios;
         this.id = "";
+    }
+    
+    public Mensaje()
+    {
+        super();
     }
 
     public String getAsunto()
@@ -83,5 +88,21 @@ public class Mensaje
     public void setDestinatarios(ArrayList<String> destinatarios)
     {
         this.destinatarios = destinatarios;
+    }
+    
+    @Override
+    public Object clone()
+    {
+        Mensaje copia = null;
+        try 
+        {
+            copia = (Mensaje) super.clone();
+        } 
+        catch (CloneNotSupportedException e) 
+        {
+            System.out.println(e.getMessage());
+        }
+        
+        return copia;
     }
 }

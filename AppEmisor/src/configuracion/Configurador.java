@@ -49,7 +49,10 @@ public class Configurador implements IConfiguracion
         
         lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
         linea = lector.readLine();
-        datos = linea.split(SEPARADOR);
+        if (linea != null)
+            datos = linea.split(SEPARADOR);
+        else
+            throw new IOException("El archivo de configuración se encuentra vacío.");
         
         if (datos.length == CANT_DATOS)
         {
@@ -65,7 +68,8 @@ public class Configurador implements IConfiguracion
             }
             catch (NumberFormatException e)
             {
-                throw new IOException("El puerto ingresado contiene caracteres no numéricos: " + e.getMessage());
+                throw new IOException("El puerto o cant. de directorios ingresado contiene caracteres no numéricos: " 
+                                      + e.getMessage());
             }
         }
         else

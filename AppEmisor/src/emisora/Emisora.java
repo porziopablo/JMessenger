@@ -1,5 +1,7 @@
 package emisora;
 
+import almacen.Almacen;
+
 import encriptacion.IEncriptacion;
 
 import java.io.BufferedReader;
@@ -19,24 +21,21 @@ import java.util.Observable;
 
 import mensaje.Mensaje;
 
-import persistencia.IPersistencia;
-
 public class Emisora extends Observable implements IEmisionMensaje
 {
     private String ipAlmacen = "192.168.0.9";
     private int puertoAlmacen = 1234;       /* valores por defecto */
     private int puertoConfirmacion = 1234;
     private IEncriptacion encriptador;
-    private IPersistencia persistencia;
 
-    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion, IEncriptacion encriptador, 
-                   IPersistencia persistencia)
+    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion, IEncriptacion encriptador)
     {
         this.ipAlmacen = ipAlmacen;
         this.puertoAlmacen = puertoAlmacen;
         this.puertoConfirmacion = puertoConfirmacion;
         this.encriptador = encriptador;
-        this.persistencia = persistencia;
+        
+        this.emitirMensajesPendientes();
     }
 
     private String mensajeAString(Mensaje mensaje) throws UnknownHostException
@@ -88,9 +87,20 @@ public class Emisora extends Observable implements IEmisionMensaje
 
     @Override
     public void emitirMensaje(Mensaje mensaje)
+    {        
+        if (! this.intentarEmision(mensaje))
+        {
+            setChanged();
+            notifyObservers("Error al enviar mensaje, se reintentará luego.");
+            Almacen.getInstance().almacenarMensaje(mensaje);
+        }
+    }
+    
+    private synchronized boolean intentarEmision(Mensaje mensaje)
     {
         Socket socket;
         PrintWriter salida = null;
+        boolean emitido = false;
         
         try
         {
@@ -100,18 +110,19 @@ public class Emisora extends Observable implements IEmisionMensaje
             
             salida.println(this.mensajeAString(mensaje));
             salida.flush();
+            emitido = true;
         }
         catch (IOException e)
         {
-            setChanged();
-            notifyObservers("Error al enviar mensaje, reintentar luego.");
-            System.out.println("Error al enviar mensaje al Almacén: " + e.getMessage());
+            emitido = false;
         }
         finally
         {
             if (salida != null)
                 salida.close();
         }
+        
+        return emitido;
     }
     
     @Override
@@ -165,5 +176,40 @@ public class Emisora extends Observable implements IEmisionMensaje
                 }
             }
         }.start();
-    }  
+    }
+        
+    private void emitirMensajesPendientes()
+    {
+        new Thread()
+        {
+            public void run()
+            {
+                final int PERIODO = 10000; /* milisegundos */
+                
+                Iterator<Mensaje> mensajes;
+                Mensaje mensaje;
+                
+                while (true)
+                {
+                    try 
+                    {
+                        Thread.sleep(PERIODO);
+                    } 
+                    catch (InterruptedException e) 
+                    {
+                        System.out.println("Problema con sleep de emisora " + e.getMessage());
+                    }
+                    
+                    mensajes = Almacen.getInstance().getCopiaPendientes().values().iterator();
+                    
+                    while (mensajes.hasNext())
+                    {
+                        mensaje = mensajes.next();                        
+                        if (intentarEmision(mensaje))
+                            Almacen.getInstance().eliminarMensaje(mensaje.getId());
+                    }
+                }
+            }
+        }.start();
+    }
 }
