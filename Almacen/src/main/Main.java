@@ -8,9 +8,13 @@ import configurador.Configurador;
 
 import confirmadora.Confirmadora;
 
+import directorio.Directorio;
+
 import emisora.Emisora;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
 
 import persistencia.FactoryPersistencia;
 
@@ -23,9 +27,9 @@ public class Main
         try 
         {
             Object[] configuracion = Configurador.getInstance().cargarConfiguracion("config_almacen.txt");
-            Almacen.getInstance().setPersistencia(FactoryPersistencia.getInstance().getPersistencia((String)configuracion[3]));
-            new Thread(new Receptora((Integer) configuracion[2])).start();
-            new Thread(new Emisora(new Agenda((String) configuracion[0], (Integer) configuracion[1]))).start();
+            Almacen.getInstance().setPersistencia(FactoryPersistencia.getInstance().getPersistencia((String)configuracion[1]));
+            new Thread(new Receptora((Integer) configuracion[0])).start();
+            new Thread(new Emisora(new Agenda((ArrayList<Directorio>) configuracion[2]))).start();
             new Thread(new Confirmadora()).start();
         } 
         catch (IOException e) 
