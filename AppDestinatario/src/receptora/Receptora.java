@@ -1,5 +1,7 @@
 package receptora;
 
+import desencriptacion.IDesencriptacion;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -12,8 +14,13 @@ import usuarios.Destinatario;
 public class Receptora extends Observable implements IRecepcionMensaje{
     
     private Destinatario dest;
+    private IDesencriptacion desencriptador;
     
-    public Receptora(Destinatario destinatario) {
+    public Receptora(IDesencriptacion desencriptador) {
+        this.desencriptador = desencriptador;
+    }
+    
+    public void setDestinatario(Destinatario destinatario){
         this.dest = destinatario;
     }
     
@@ -48,7 +55,12 @@ public class Receptora extends Observable implements IRecepcionMensaje{
                         String text[];
                         text = aux.split(SEPARADOR);
                         System.out.println(text[3]);
-                        mensaje = new Mensaje(text[0], text[1], text[2], Integer.parseInt(text[3]));
+                        
+                        // PROBAR SI DESENCRIPTA BIEN
+                        String asunto = desencriptador.desencriptar(text[1]);
+                        String cuerpo = desencriptador.desencriptar(text[2]);
+                        
+                        mensaje = new Mensaje(text[0], asunto, cuerpo, Integer.parseInt(text[3]));
                         
                         if(mensaje.getTipo() == Mensaje.MENSAJE_RECEPCION){
                             out.println(dest.getNombre());

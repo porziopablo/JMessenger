@@ -1,5 +1,7 @@
 package notificadora;
 
+import directorio.Directorio;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -7,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+
+import java.util.ArrayList;
 
 
 public class Notificadora implements IConexion{
@@ -18,85 +22,112 @@ public class Notificadora implements IConexion{
     public final static int REG_EXITOSO = 1;
     public final static int REG_FALLIDO = 0;
 
-    private String ipDirectorio;
-    private int puertoDirectorio;
+    private ArrayList<Directorio> directorios;
+    private int directorioActual;
     private boolean encendido;
     private String nombreDestinatario; 
     
     
-    public Notificadora() {
-        this.ipDirectorio = "192.168.0.189";
-        this.puertoDirectorio = 1234; 
-        this.cargarConfiguracion();
+    public Notificadora(ArrayList<Directorio> directorios) {
+        this.directorios = directorios;
+        this.directorioActual = 0;
     }
   
     @Override
     public int registrarDestinatario(String nombreDest, String ipDest, String puertoDest){
         
         Socket socket;
-        PrintWriter salida;
-        BufferedReader entrada;  
+        PrintWriter salida = null;
+        BufferedReader entrada = null;  
         int rta = 0;
+        boolean opRealizada = false;
+        Directorio directorio;
         StringBuilder sb = new StringBuilder();
         final String SEPARADOR = "_###_";
         
-        try
+        while (! opRealizada) /* pre-condicion: al menos un directorio activo en todo momento */
         {
-            socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
-            salida = new PrintWriter(socket.getOutputStream(), true);
-            entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
-            sb.append(DESTINATARIO_LOG_UP + "\n");
-            sb.append(nombreDest);
-            sb.append(SEPARADOR);
-            sb.append(ipDest);
-            sb.append(SEPARADOR);
-            sb.append(puertoDest);
-            salida.println(sb.toString()); 
-            
-            
-            rta = Integer.parseInt(entrada.readLine());           
-            if( rta == 1){ 
-                this.nombreDestinatario = nombreDest;
-                this.encendido = true;
-                this.avisar();
+            directorio = this.directorios.get(this.directorioActual);
+            try
+            {
+                socket = new Socket(directorio.getIp(), directorio.getPuerto());
+                salida = new PrintWriter(socket.getOutputStream(), true);
+                entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+                sb.append(DESTINATARIO_LOG_UP + "\n");
+                sb.append(nombreDest);
+                sb.append(SEPARADOR);
+                sb.append(ipDest);
+                sb.append(SEPARADOR);
+                sb.append(puertoDest);
+                salida.println(sb.toString()); 
+                
+                rta = Integer.parseInt(entrada.readLine());           
+                if( rta == 1){ 
+                    this.nombreDestinatario = nombreDest;
+                    this.encendido = true;
+                    this.avisar();
+                }
+                opRealizada = true;             
+                 
+            }  
+            catch (IOException e)
+            {
+                this.directorioActual = ((this.directorioActual + 1) % this.directorios.size());
+                System.out.println("cambio directorio a " + this.directorioActual);
             }
-            
-            salida.close();
-            entrada.close();
-             
-        }  
-        catch (IOException e)
-        {
-            System.out.println("Problema en conexion" + e.getMessage());
+            finally
+            {
+                try {
+                    if( entrada!= null)
+                        entrada.close();
+                    if(salida != null)
+                        salida.close();
+                    }
+                catch (IOException e) {
+                }
+             }
         }
-        
         return rta;
     }
    
     @Override
     public void apagar(){
         
-        Socket socket;
+        Socket socket = null;
         PrintWriter salida;
         BufferedReader entrada;
+        boolean opRealizada = false;
+        Directorio directorio;
         
-        try
+        while (! opRealizada) /* pre-condicion: al menos un directorio activo en todo momento */
         {
-            socket = new Socket(this.ipDirectorio, this.puertoDirectorio);
-            salida = new PrintWriter(socket.getOutputStream(), true);
-            entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            
-            StringBuilder sb = new StringBuilder();
-            sb.append(DESTINATARIO_OFFLINE + "\n");
-            sb.append(this.nombreDestinatario);
-            salida.println(sb.toString()); 
-            
-            socket.close();
-        }
-        catch (IOException e)
-        {
-            System.out.println("Problema en conexion" + e.getMessage());
+            directorio = this.directorios.get(this.directorioActual);
+            try
+            {
+                socket = new Socket(directorio.getIp(), directorio.getPuerto());
+                salida = new PrintWriter(socket.getOutputStream(), true);
+                entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                
+                StringBuilder sb = new StringBuilder();
+                sb.append(DESTINATARIO_OFFLINE + "\n");
+                sb.append(this.nombreDestinatario);
+                salida.println(sb.toString()); 
+                opRealizada = true;
+            }
+            catch (IOException e)
+            {
+                this.directorioActual = ((this.directorioActual + 1) % this.directorios.size());
+                System.out.println("cambio directorio a " + this.directorioActual);
+            }
+            finally
+            {
+                try {
+                    if(socket != null)
+                        socket.close();
+                } catch (IOException e) {
+                }
+             }
         }
     }
     
@@ -104,80 +135,62 @@ public class Notificadora implements IConexion{
         
         Thread hilo = new Thread(){
             public void run(){
-                Socket socket;
+                
+                boolean opRealizada;
+                Directorio directorio;
+                Socket socket = null;
                 PrintWriter salida;
                 BufferedReader entrada;  
-                
-                
-                try
-                {
-                    while(true){
-                        try {
-                            Thread.sleep(FREC_AVISO * 1000);
-                        } catch (InterruptedException e) {
-                            System.out.println("Problema con sleep del hilo " + e.getMessage());
-                        }
-                        
-                        System.out.println("HILO VIVO");
-                        socket = new Socket(ipDirectorio, puertoDirectorio);
-                        salida = new PrintWriter(socket.getOutputStream(), true);
-                        entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                        
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(DESTINATARIO_ONLINE + "\n");
-                        sb.append(nombreDestinatario);
-                        salida.println(sb.toString());                  
-                        
-                        socket.close();
-                    }     
-                }  
-                catch (IOException e)
-                {
-                    System.out.println("Problema en conexion" + e.getMessage());
+                    
+                        while(true){
+                            
+                            try {
+                                Thread.sleep(FREC_AVISO * 1000);
+                            } catch (InterruptedException e) {
+                                System.out.println("Problema con sleep del hilo " + e.getMessage());
+                            }
+                            
+                            System.out.println("HILO VIVO");
+                            opRealizada = false;
+                            
+                            while (! opRealizada) 
+                            {
+                                directorio = directorios.get(directorioActual);
+                                try
+                                {    
+                                    socket = new Socket(directorio.getIp(), directorio.getPuerto());
+                                    salida = new PrintWriter(socket.getOutputStream(), true);
+                                    entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                                    
+                                    StringBuilder sb = new StringBuilder();
+                                    sb.append(DESTINATARIO_ONLINE + "\n");
+                                    sb.append(nombreDestinatario);
+                                    salida.println(sb.toString());                  
+                                    opRealizada = true;
+                                    
+                                }     
+                         
+                                catch (IOException e)
+                                {
+                                    directorioActual = ((directorioActual + 1) % directorios.size());
+                                    System.out.println("cambio directorio a " + directorioActual);
+                                }
+                                finally
+                                {
+                                    try {
+                                        if(socket != null)
+                                            socket.close();
+                                    } catch (IOException e) {
+                                    }
+                                 }
+                            }
                 }
             }
         };
         hilo.start();
     }
     
-    private void cargarConfiguracion()
-    {
-        final String NOMBRE_ARCHIVO = "config_destinatario.txt";
-        final String SEPARADOR = ", *"; /* regex */
-        final String ENCODING = "UTF-8";
-        final int CANT_DATOS = 2;
-        
-        BufferedReader lector;
-        String ruta = System.getProperty("user.dir") + File.separator + NOMBRE_ARCHIVO, linea;
-        String[] datos;
-
-        try
-        {
-            lector = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), ENCODING));
-            linea = lector.readLine();
-            lector.close();
-            
-            datos = linea.split(SEPARADOR);
-            if ((datos.length == CANT_DATOS))
-            {
-                this.ipDirectorio = datos[0];
-                this.puertoDirectorio = Integer.parseInt(datos[1]);
-            }
-            else
-                throw new IOException("faltan o sobran datos.");
-            
-            if (! ((this.puertoDirectorio >= 0) && (this.puertoDirectorio <= 65535)))
-                throw new IOException("el puerto para comunicarse con el Directorio debe ser un entero en el rango [0-65535].");
-        }
-        catch(IOException e)
-        {
-            System.out.println("Error al cargar configuracion: " + e.getMessage());
-        }
-        catch(NumberFormatException e)
-        {
-            System.out.println("Error al cargar configuracion: " + e.getMessage());
-        }
-    }
+    
     
 }
 
