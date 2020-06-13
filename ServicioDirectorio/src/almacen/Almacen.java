@@ -12,7 +12,7 @@ import usuarios.Destinatario;
 
 public class Almacen implements IEntrega, IRegistro, IActualizacion
 {    
-    private final int MAX_ESPERA = 15000; /* MILISEGUNDOS */
+    private final int MAX_ESPERA = 50000; /* MILISEGUNDOS */
     
     private TreeMap<String, Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;

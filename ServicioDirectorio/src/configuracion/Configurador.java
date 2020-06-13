@@ -33,7 +33,7 @@ public class Configurador implements IConfiguracion
         final String SEPARADOR = ", *"; /* regex */
         final String ENCODING = "UTF-8";
         final int CANT_DATOS = 4;
-        final int MIN_DIRECTORIOS = 2;
+        final int MIN_DIRECTORIOS = 1;
         final int CANT_DATOS_DIRECTORIO = 2;
         
         BufferedReader lector;
