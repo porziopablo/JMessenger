@@ -2,9 +2,9 @@ package almacen;
 
 public interface IRegistro
 {
-    boolean agregarNuevoDest(String data);
+    boolean agregarNuevoDest(String nombre, String ip, String puerto);
 
-    void online(String data);
+    void online(String nombreDest);
 
-    void offline(String data);
+    void offline(String nombreDest);
 }
