@@ -13,9 +13,7 @@ import java.io.IOException;
 
 import java.util.ArrayList;
 
-import java.util.Date;
-
-import replicacion.Replicacion;
+import replicacion.Replicador;
 
 public class Main
 {
@@ -24,7 +22,7 @@ public class Main
         try
         {
             Object[] configuracion = Configurador.getInstance().cargarConfiguracion("config_directorio.txt");
-            Replicacion replicacion = new Replicacion((ArrayList<Directorio>)configuracion[3],(Integer)configuracion[2]); 
+            Replicador replicacion = new Replicador((ArrayList<Directorio>)configuracion[3],(Integer)configuracion[2]); 
             
             Almacen.getInstance().setReplicacion(replicacion);
             replicacion.recibirCambios();

@@ -15,11 +15,11 @@ public class GestorDestinatario implements Runnable
     private final int REG_EXITOSO = 1;
     private final int REG_FALLIDO = 0;
     
-    public final String DESTINATARIO_LOG_UP = "Log Up";
-    public final String DESTINATARIO_ONLINE = "Online";
-    public final String DESTINATARIO_OFFLINE = "Offline";
+    public static final String DESTINATARIO_LOG_UP = "Log Up";
+    public static final String DESTINATARIO_ONLINE = "Online";
+    public static final String DESTINATARIO_OFFLINE = "Offline";
     
-    public final String SEPARADOR = "_###_";
+    public static final String SEPARADOR = "_###_";
     
     private int puertoDestinatario = 1234; /* valor por defecto */
 
