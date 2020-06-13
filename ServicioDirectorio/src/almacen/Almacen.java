@@ -125,7 +125,7 @@ public class Almacen implements IEntrega, IRegistro, IActualizacion
         return copia;
     }
     
-    public void setReplicacion(IReplicacion replicacion)
+    public synchronized void setReplicacion(IReplicacion replicacion)
     {
         this.replicacion = replicacion;
         
@@ -137,25 +137,46 @@ public class Almacen implements IEntrega, IRegistro, IActualizacion
     @Override
     public synchronized void agregarCopiaDest(String nombre, String ip, String puerto, long timestamp)
     {
-        // TODO Implement this method
+        if (!this.destinatarios.containsKey(nombre))
+        {
+            this.destinatarios.put(nombre, new Destinatario(nombre, ip, puerto, true));
+            this.fechasConexion.put(nombre, new Date(timestamp));
+        }
+        else
+        {
+            if (ip.equals(this.destinatarios.get(nombre).getIp()) && !this.destinatarios.get(nombre).isOnline())
+            {
+                this.destinatarios.get(nombre).setOnline(true);
+                this.destinatarios.get(nombre).setPuerto(puerto);
+                this.fechasConexion.put(nombre, new Date(timestamp));
+            }
+        }
     }
 
     @Override
     public synchronized void onlineCopia(String nombreDest, long timestamp)
     {
-        // TODO Implement this method
+        this.fechasConexion.put(nombreDest, new Date(timestamp));
     }
 
     @Override
     public synchronized void offlineCopia(String nombreDest)
     {
-        // TODO Implement this method
+        GregorianCalendar fecha = new GregorianCalendar(2010, 12, 3);
+        Date cambio = fecha.getTime();
+        
+        this.fechasConexion.put(nombreDest, cambio);
+        this.destinatarios.get(nombreDest).setOnline(false);
     }
 
     @Override
     public synchronized Object[] getEstado()
     {
-        // TODO Implement this method
-        return new Object[0];
+        Object[] estado = new Object[2];
+        
+        estado[0] = this.getDestinatariosActualizados();
+        estado[1] = this.fechasConexion.clone();
+            
+        return estado;
     }
 }
