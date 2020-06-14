@@ -56,7 +56,6 @@ public class Receptora extends Observable implements IRecepcionMensaje{
                         text = aux.split(SEPARADOR);
                         System.out.println(text[3]);
                         
-                        // PROBAR SI DESENCRIPTA BIEN
                         String asunto = desencriptador.desencriptar(text[1]);
                         String cuerpo = desencriptador.desencriptar(text[2]);
                         
