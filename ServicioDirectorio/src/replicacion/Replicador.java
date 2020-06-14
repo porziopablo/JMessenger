@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -67,12 +68,12 @@ public class Replicador implements IRecepecionCambios, IReplicacion
                         if(comando.equals(GestorDestinatario.DESTINATARIO_LOG_UP))
                         {
                             text = in.readLine().split(GestorDestinatario.SEPARADOR); // nombre - ip - puerto - timestamp
-                            Almacen.getInstance().agregarCopiaDest(text[0], text[1], text[2], Integer.parseInt(text[3]));
+                            Almacen.getInstance().agregarCopiaDest(text[0], text[1], text[2], Long.parseLong(text[3]));
                         }
                         else if(comando.equals(GestorDestinatario.DESTINATARIO_ONLINE))
                         {
                             text = in.readLine().split(GestorDestinatario.SEPARADOR); // nombre - timestamp
-                            Almacen.getInstance().onlineCopia(text[0], Integer.parseInt(text[1]));
+                            Almacen.getInstance().onlineCopia(text[0], Long.parseLong(text[1]));
                         }
                         else if(comando.equals(GestorDestinatario.DESTINATARIO_OFFLINE))
                         {
@@ -104,15 +105,18 @@ public class Replicador implements IRecepecionCambios, IReplicacion
         Socket socket;
         PrintWriter salida = null;
         
+        final int TIMEOUT = 1000; /* milisegundos */
+        
         while(iter.hasNext())
         {
             dir = iter.next();
 
             try 
             {
-                socket = new Socket(dir.getIp(), dir.getPuerto());
+                socket = new Socket();
+                socket.connect(new InetSocketAddress(dir.getIp(), dir.getPuerto()), TIMEOUT);
                 salida = new PrintWriter(socket.getOutputStream(), true);
-                
+                  
                 salida.println(cambio);             
             } 
             catch (IOException e) 
@@ -201,6 +205,8 @@ public class Replicador implements IRecepecionCambios, IReplicacion
             catch (IOException e)
             {
                 directorioActual = ((directorioActual + 1) % this.directorios.size());
+                opRealizada = (directorioActual == 0); /* para el caso del 1er directorio existente, 
+                                                        * no habria otro listo, por lo que debe inicializarse vacio */
                 System.out.println("cambio directorio a " + directorioActual);
             }
             finally

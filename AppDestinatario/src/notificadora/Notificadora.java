@@ -18,7 +18,7 @@ public class Notificadora implements IConexion{
     public final static String DESTINATARIO_LOG_UP = "Log Up";
     public final static String DESTINATARIO_ONLINE = "Online";
     public final static String DESTINATARIO_OFFLINE = "Offline";
-    public final static int FREC_AVISO = 5; 
+    public final static int FREC_AVISO = 15; 
     public final static int REG_EXITOSO = 1;
     public final static int REG_FALLIDO = 0;
 
