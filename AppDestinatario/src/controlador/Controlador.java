@@ -2,28 +2,16 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-
 import java.net.InetAddress;
-
 import java.net.UnknownHostException;
-
 import java.util.Observable;
 import java.util.Observer;
-
 import mensaje.Mensaje;
-
 import notificadora.IConexion;
-import notificadora.Notificadora;
-
-import receptora.IRecepcionMensaje;
 import receptora.Receptora;
-
 import usuarios.Destinatario;
-
 import vista.IInteraccionDestinatario;
 
 public class Controlador extends WindowAdapter implements ActionListener, Observer {

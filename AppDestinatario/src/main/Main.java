@@ -1,24 +1,14 @@
 package main;
 
 import configuracion.Configurador;
-
 import controlador.Controlador;
-
-import desencriptacion.DesencriptadorAES;
-
 import desencriptacion.FactoryDesencriptacion;
 import desencriptacion.IDesencriptacion;
-
 import directorio.Directorio;
-
 import java.io.IOException;
-
 import java.util.ArrayList;
-
 import notificadora.Notificadora;
-
 import receptora.Receptora;
-
 import vista.vistaDestinatario;
 
 
