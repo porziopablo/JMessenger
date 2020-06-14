@@ -1,9 +1,6 @@
 package mensaje;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import usuarios.Destinatario;
 
 public class Mensaje implements Cloneable
 {

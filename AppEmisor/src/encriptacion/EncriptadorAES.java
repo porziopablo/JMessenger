@@ -1,9 +1,6 @@
 package encriptacion;
 
-import java.io.UnsupportedEncodingException;
-
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import java.util.Arrays;
 import java.util.Base64;
@@ -57,22 +54,5 @@ public class EncriptadorAES implements IEncriptacion
         }
         
         return textoEncriptado;
-    }
-    
-    public String desencriptar(String texto) /* una vez que se copie a desencriptador borrar de acá */
-    {
-        String textoDesencriptado = "";
-        try
-        {
-            Cipher cipher = Cipher.getInstance(ALGORITMO + "/ECB/PKCS5PADDING");
-            cipher.init(Cipher.DECRYPT_MODE, this.llave);
-            textoDesencriptado = new String(cipher.doFinal(Base64.getDecoder().decode(texto)));
-        } 
-        catch (Exception e) 
-        {
-            System.out.println("Error al desencriptar: " + e.getMessage());
-        }
-        
-        return textoDesencriptado;
     }
 }
