@@ -6,21 +6,23 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeMap;
 
+import replicacion.IReplicacion;
+
 import usuarios.Destinatario;
 
-public class Almacen implements IEntrega, IRegistro
+public class Almacen implements IEntrega, IRegistro, IActualizacion
 {    
-    private final int MAX_ESPERA = 15000; /* MILISEGUNDOS */
+    private final int MAX_ESPERA = 50000; /* MILISEGUNDOS */
     
     private TreeMap<String, Destinatario> destinatarios;
     private HashMap<String, Date> fechasConexion;
+    private IReplicacion replicacion;
     
     private static Almacen instance = null; /* Singleton */
     
     private Almacen()
     {
-        this.destinatarios = new TreeMap<String, Destinatario>();
-        this.fechasConexion = new HashMap<String, Date>();
+        super();
     }
  
     public static synchronized Almacen getInstance()
@@ -32,47 +34,62 @@ public class Almacen implements IEntrega, IRegistro
     }
     
     @Override
-    public synchronized boolean agregarNuevoDest(String data){
+    public synchronized boolean agregarNuevoDest(String nombre, String ip, String puerto){
         
         boolean res = false;
-        final String SEPARADOR = "_###_";
-        
-        String text[];
-        text = data.split(SEPARADOR); // nombre - ip - puerto
-        Destinatario nuevo = new Destinatario(text[0], text[1], text[2], true);
-        
-        if(!this.destinatarios.containsKey(text[0])){
-            this.destinatarios.put(text[0], nuevo);
-            this.fechasConexion.put(text[0], new Date());
-            res =true;
+        Date timestamp = null;
+                
+        if (!this.destinatarios.containsKey(nombre))
+        {
+            this.destinatarios.put(nombre, new Destinatario(nombre, ip, puerto, true));
+            timestamp = new Date();
+            this.fechasConexion.put(nombre, timestamp);
+            res = true;
         }
-        else{
-            if(text[1].equals(this.destinatarios.get(text[0]).getIp()) && !this.destinatarios.get(text[0]).isOnline()){
-                this.destinatarios.get(text[0]).setOnline(true);
-                this.destinatarios.get(text[0]).setPuerto(text[2]);
-                this.fechasConexion.put(text[0], new Date());
+        else
+        {
+            if (ip.equals(this.destinatarios.get(nombre).getIp()) && !this.destinatarios.get(nombre).isOnline())
+            {
+                this.destinatarios.get(nombre).setOnline(true);
+                this.destinatarios.get(nombre).setPuerto(puerto);
+                timestamp = new Date();
+                this.fechasConexion.put(nombre, timestamp);
                 res = true;
             }
+        }
+        
+        if (res)
+        {
+            this.replicacion.replicarDest(nombre, ip, puerto, timestamp.getTime());
         }
         
         return res;
     }
     
     @Override
-    public synchronized void online(String data){
-        this.fechasConexion.put(data, new Date());
+    public synchronized void online(String nombreDest)
+    {
+        Date timestamp = new Date();
+        
+        this.fechasConexion.put(nombreDest, timestamp);
+        
+        this.replicacion.replicarOnline(nombreDest, timestamp.getTime());
     }
     
     @Override
-    public synchronized void offline(String data){
+    public synchronized void offline(String nombreDest)
+    {
 
         GregorianCalendar fecha = new GregorianCalendar(2010, 12, 3);
         Date cambio = fecha.getTime();
-        this.fechasConexion.put(data, cambio);
-        this.destinatarios.get(data).setOnline(false);
+        
+        this.fechasConexion.put(nombreDest, cambio);
+        this.destinatarios.get(nombreDest).setOnline(false);
+        
+        this.replicacion.replicarOffline(nombreDest);
     }
-            
-    private synchronized void actualizarEstados()
+
+    private synchronized void actualizarEstadosConexion()
     {
         Iterator<Destinatario> iter;
         Destinatario proximo;
@@ -95,7 +112,7 @@ public class Almacen implements IEntrega, IRegistro
         TreeMap<String, Destinatario> copia = new TreeMap<String, Destinatario>();
         Iterator<Destinatario> iterDestinatarios;
         
-        this.actualizarEstados();
+        this.actualizarEstadosConexion();
         iterDestinatarios = this.destinatarios.values().iterator();
         
         while (iterDestinatarios.hasNext())
@@ -106,5 +123,60 @@ public class Almacen implements IEntrega, IRegistro
         }
         
         return copia;
+    }
+    
+    public synchronized void setReplicacion(IReplicacion replicacion)
+    {
+        this.replicacion = replicacion;
+        
+        Object[] estado = this.replicacion.copiarEstado();
+        this.destinatarios = (TreeMap<String, Destinatario>) estado[0];
+        this.fechasConexion = (HashMap<String, Date>) estado[1];
+    }
+    
+    @Override
+    public synchronized void agregarCopiaDest(String nombre, String ip, String puerto, long timestamp)
+    {
+        if (!this.destinatarios.containsKey(nombre))
+        {
+            this.destinatarios.put(nombre, new Destinatario(nombre, ip, puerto, true));
+            this.fechasConexion.put(nombre, new Date(timestamp));
+        }
+        else
+        {
+            if (ip.equals(this.destinatarios.get(nombre).getIp()) && !this.destinatarios.get(nombre).isOnline())
+            {
+                this.destinatarios.get(nombre).setOnline(true);
+                this.destinatarios.get(nombre).setPuerto(puerto);
+                this.fechasConexion.put(nombre, new Date(timestamp));
+            }
+        }
+    }
+
+    @Override
+    public synchronized void onlineCopia(String nombreDest, long timestamp)
+    {
+        this.fechasConexion.put(nombreDest, new Date(timestamp));
+    }
+
+    @Override
+    public synchronized void offlineCopia(String nombreDest)
+    {
+        GregorianCalendar fecha = new GregorianCalendar(2010, 12, 3);
+        Date cambio = fecha.getTime();
+        
+        this.fechasConexion.put(nombreDest, cambio);
+        this.destinatarios.get(nombreDest).setOnline(false);
+    }
+
+    @Override
+    public synchronized Object[] getEstado()
+    {
+        Object[] estado = new Object[2];
+        
+        estado[0] = this.getDestinatariosActualizados();
+        estado[1] = this.fechasConexion.clone();
+            
+        return estado;
     }
 }

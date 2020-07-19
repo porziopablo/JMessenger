@@ -15,6 +15,12 @@ public class GestorDestinatario implements Runnable
     private final int REG_EXITOSO = 1;
     private final int REG_FALLIDO = 0;
     
+    public static final String DESTINATARIO_LOG_UP = "Log Up";
+    public static final String DESTINATARIO_ONLINE = "Online";
+    public static final String DESTINATARIO_OFFLINE = "Offline";
+    
+    public static final String SEPARADOR = "_###_";
+    
     private int puertoDestinatario = 1234; /* valor por defecto */
 
     public GestorDestinatario(int puertoDestinatario)
@@ -24,14 +30,11 @@ public class GestorDestinatario implements Runnable
 
     @Override
     public void run()
-    {
-        final String DESTINATARIO_LOG_UP = "Log Up";
-        final String DESTINATARIO_ONLINE = "Online";
-        final String DESTINATARIO_OFFLINE = "Offline";
-        
+    {        
         ServerSocket serverSocket;
         Socket socket;
-        
+        String text[];
+             
         System.out.println("ESCUCHANDO DESTINATARIOS");
         try
         {
@@ -47,7 +50,8 @@ public class GestorDestinatario implements Runnable
             
                 if(comando.equals(DESTINATARIO_LOG_UP))
                 {
-                    if(Almacen.getInstance().agregarNuevoDest(data))
+                    text = data.split(SEPARADOR); // nombre - ip - puerto
+                    if(Almacen.getInstance().agregarNuevoDest(text[0], text[1], text[2]))
                         out.println(REG_EXITOSO);
                     else
                         out.println(REG_FALLIDO);

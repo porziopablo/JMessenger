@@ -1,11 +1,19 @@
 package main;
 
+import almacen.Almacen;
+
 import configuracion.Configurador;
+
+import directorio.Directorio;
 
 import gestores.GestorDestinatario;
 import gestores.GestorEmisor;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
+
+import replicacion.Replicador;
 
 public class Main
 {
@@ -14,6 +22,11 @@ public class Main
         try
         {
             Object[] configuracion = Configurador.getInstance().cargarConfiguracion("config_directorio.txt");
+            Replicador replicacion = new Replicador((ArrayList<Directorio>)configuracion[3],(Integer)configuracion[2]); 
+            
+            Almacen.getInstance().setReplicacion(replicacion);
+            replicacion.recibirCambios();
+            
             new Thread(new GestorDestinatario((Integer) configuracion[0])).start();
             new Thread(new GestorEmisor((Integer) configuracion[1])).start();
         } 

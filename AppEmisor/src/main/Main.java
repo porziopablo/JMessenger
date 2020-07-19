@@ -2,13 +2,23 @@ package main;
 
 import agenda.Agenda;
 
+import almacen.Almacen;
+
 import configuracion.Configurador;
 
 import controlador.Controlador;
 
+import directorio.Directorio;
+
 import emisora.Emisora;
 
+import encriptacion.FactoryEncriptacion;
+
 import java.io.IOException;
+
+import java.util.ArrayList;
+
+import persistencia.FactoryPersistencia;
 
 import vista.VistaEmisor;
 
@@ -18,13 +28,18 @@ public class Main
     {
         try
         {
-            Object[] configuracion = Configurador.getInstance().cargarConfiguracion("config_emisor.txt");
+            Object[] config = Configurador.getInstance().cargarConfiguracion("config_emisor.txt");
             VistaEmisor ventana = new VistaEmisor();
-            new Controlador(
-                                ventana, 
-                                new Agenda((String) configuracion[0], (Integer) configuracion[1]), 
-                                new Emisora((String) configuracion[2], (Integer) configuracion[3], 
-                                                                        (Integer) configuracion[4])
+            Almacen.getInstance().setPersistencia(FactoryPersistencia.getInstance().getPersistencia((String)config[5]));
+            new Controlador(ventana, new Agenda((ArrayList<Directorio>) config[6]), 
+                                new Emisora
+                                (
+                                            (String) config[2], (Integer) config[3], (Integer) config[4], 
+                                            FactoryEncriptacion.getInstance().getEncriptacion
+                                            (
+                                                (String) config[0], (String) config[1]
+                                            )
+                                )
                             );
             ventana.setVisible(true);
         } 

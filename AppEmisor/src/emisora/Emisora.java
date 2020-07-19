@@ -1,5 +1,9 @@
 package emisora;
 
+import almacen.Almacen;
+
+import encriptacion.IEncriptacion;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,19 +21,21 @@ import java.util.Observable;
 
 import mensaje.Mensaje;
 
-import usuarios.Destinatario;
-
 public class Emisora extends Observable implements IEmisionMensaje
 {
     private String ipAlmacen = "192.168.0.9";
     private int puertoAlmacen = 1234;       /* valores por defecto */
     private int puertoConfirmacion = 1234;
+    private IEncriptacion encriptador;
 
-    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion)
+    public Emisora(String ipAlmacen, int puertoAlmacen, int puertoConfirmacion, IEncriptacion encriptador)
     {
         this.ipAlmacen = ipAlmacen;
         this.puertoAlmacen = puertoAlmacen;
         this.puertoConfirmacion = puertoConfirmacion;
+        this.encriptador = encriptador;
+        
+        this.emitirMensajesPendientes();
     }
 
     private String mensajeAString(Mensaje mensaje) throws UnknownHostException
@@ -39,18 +45,18 @@ public class Emisora extends Observable implements IEmisionMensaje
         final String SEPARADOR_DEST = "_@@_";
         
         StringBuilder sb = new StringBuilder();
-        Iterator<Destinatario> destinatarios = mensaje.getDestinatarios().iterator();
+        Iterator<String> destinatarios = mensaje.getDestinatarios().iterator();
         
         /* nombre emisor */
         sb.append(mensaje.getNombreEmisor());
         
         /* asunto */
         sb.append(SEPARADOR);
-        sb.append(mensaje.getAsunto());
+        sb.append(this.encriptador.encriptar(mensaje.getAsunto()));
         
         /* cuerpo */
         sb.append(SEPARADOR);
-        sb.append(mensaje.getCuerpo());
+        sb.append(this.encriptador.encriptar(mensaje.getCuerpo()));
         
         /* tipo mensaje */
         sb.append(SEPARADOR);
@@ -60,7 +66,7 @@ public class Emisora extends Observable implements IEmisionMensaje
         sb.append(SEPARADOR);
         while (destinatarios.hasNext())
         {
-            sb.append(destinatarios.next().getNombre());
+            sb.append(destinatarios.next());
             sb.append(SEPARADOR_DEST);
         }
                 
@@ -81,9 +87,20 @@ public class Emisora extends Observable implements IEmisionMensaje
 
     @Override
     public void emitirMensaje(Mensaje mensaje)
+    {        
+        if (! this.intentarEmision(mensaje))
+        {
+            setChanged();
+            notifyObservers("Error al enviar mensaje, se reintentará luego.");
+            Almacen.getInstance().almacenarMensaje(mensaje);
+        }
+    }
+    
+    private synchronized boolean intentarEmision(Mensaje mensaje)
     {
         Socket socket;
         PrintWriter salida = null;
+        boolean emitido = false;
         
         try
         {
@@ -93,18 +110,19 @@ public class Emisora extends Observable implements IEmisionMensaje
             
             salida.println(this.mensajeAString(mensaje));
             salida.flush();
+            emitido = true;
         }
         catch (IOException e)
         {
-            setChanged();
-            notifyObservers("Error al enviar mensaje, reintentar luego.");
-            System.out.println("Error al enviar mensaje al Almacén: " + e.getMessage());
+            emitido = false;
         }
         finally
         {
             if (salida != null)
                 salida.close();
         }
+        
+        return emitido;
     }
     
     @Override
@@ -158,5 +176,40 @@ public class Emisora extends Observable implements IEmisionMensaje
                 }
             }
         }.start();
-    }  
+    }
+        
+    private void emitirMensajesPendientes()
+    {
+        new Thread()
+        {
+            public void run()
+            {
+                final int PERIODO = 10000; /* milisegundos */
+                
+                Iterator<Mensaje> mensajes;
+                Mensaje mensaje;
+                
+                while (true)
+                {
+                    try 
+                    {
+                        Thread.sleep(PERIODO);
+                    } 
+                    catch (InterruptedException e) 
+                    {
+                        System.out.println("Problema con sleep de emisora " + e.getMessage());
+                    }
+                    
+                    mensajes = Almacen.getInstance().getCopiaPendientes().values().iterator();
+                    
+                    while (mensajes.hasNext())
+                    {
+                        mensaje = mensajes.next();                        
+                        if (intentarEmision(mensaje))
+                            Almacen.getInstance().eliminarMensaje(mensaje.getId());
+                    }
+                }
+            }
+        }.start();
+    }
 }

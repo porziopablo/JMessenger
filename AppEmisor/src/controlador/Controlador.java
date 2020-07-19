@@ -7,6 +7,7 @@ import emisora.IEmisionMensaje;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
@@ -68,14 +69,19 @@ public class Controlador implements Observer, ActionListener
         String asunto = this.vista.getAsunto();
         String cuerpo = this.vista.getCuerpo();
         int tipo = this.vista.getTipoMensaje();
-        List<Destinatario> destinatarios = this.vista.getDestinatarios();
-        Iterator<Destinatario> iter;
-        String nombres = "";
+        ArrayList<String> destinatarios = new ArrayList<String>();
+        Iterator<Destinatario> iter = this.vista.getDestinatarios().iterator();
+        String nombres = "", proximoNombre = "";
         
-        iter = destinatarios.iterator();
-        nombres = iter.next().getNombre();
+        proximoNombre = iter.next().getNombre();
+        nombres = proximoNombre;
+        destinatarios.add(proximoNombre);
         while (iter.hasNext())
-            nombres = nombres + ", " + iter.next().getNombre();
+        {
+            proximoNombre = iter.next().getNombre();
+            destinatarios.add(proximoNombre);
+            nombres = nombres + ", " + proximoNombre;
+        }
         this.vista.informarEmisor("Enviando mensaje a " + nombres + ".");
         
         timer.schedule
